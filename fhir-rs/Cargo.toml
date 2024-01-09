@@ -1,0 +1,14 @@
+[package]
+name = "fhir-rs"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+fhir-derive = { path = "../fhir-derive"}
+tracing = "0.1.37"
+thiserror = "1.0.50"
+chrono = { version = "0.4.26", features = [] }
+json-event-parser = "0.1.1"
+xml-rs = "0.8.19"
