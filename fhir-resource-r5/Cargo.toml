@@ -1,6 +1,6 @@
 [package]
 name = "fhir-resource-r5"
-version = "0.0.1"
+version = "0.0.2"
 authors = ["Yanbo Ye <yeyanbo@me.com>"]
 repository = "https://github.com/yeyanbo/fhir-rs.git"
 homepage = "http://app.yeyanbo.cn/fhir-rs"
@@ -17,5 +17,5 @@ license-file = "LICENSE"
 
 [dependencies]
 tracing = { version = "0.1.37", features = [] }
-fhir-rs = { path = "../fhir-rs"}
+fhir-rs = { version = "0.0.2", path = "../fhir-rs"}
 anyhow = "1.0.75"

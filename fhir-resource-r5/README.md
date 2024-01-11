@@ -1,8 +1,8 @@
-# fhir-rs
+# fhir-rs:fhir-resource-r5
 
 ## About
 
-FHIR-RS library is an implementation of [HL7 FHIR Specification](http://hl7.org/fhir/) for Rust.
+Resources that support HL7 FHIR R5 version definition.
 
 ## Versioning
 
