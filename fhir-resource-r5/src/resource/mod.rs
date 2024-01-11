@@ -315,6 +315,7 @@ pub use verification_result::*;
 mod vision_prescription;
 pub use vision_prescription::*;
 
+#[derive(Debug, Clone)]
 pub enum Resource {
 Account(Account),
 ActivityDefinition(ActivityDefinition),
