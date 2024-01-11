@@ -2,7 +2,5 @@
 members = [
     "fhir-resource-r5",
     "fhir-rs",
-    "fhir-derive",
-    "example",
-    "definition"
+    "fhir-derive"
 ]
