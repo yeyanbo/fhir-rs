@@ -38,7 +38,7 @@ pub struct Bundle {
     pub signature: Option<Signature>,
     /// Issues with the Bundle
     #[fhir(name="issues", min="0", max="1", summary="true", modifier="false")]
-    pub issues: Option<Resource>,
+    pub issues: Option<Box<Resource>>,
 }
 
 #[derive(BackboneElement, Debug, Clone, Default)]
