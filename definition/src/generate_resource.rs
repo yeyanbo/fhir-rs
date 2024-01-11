@@ -239,7 +239,7 @@ impl<R: Read> DefinitionParser<R> {
         self.names
             .iter()
             .for_each(|name| {
-                writeln!(writer, "{0}({0});", name).expect("TODO: panic message");
+                writeln!(writer, "{0}({0}),", name).expect("TODO: panic message");
             });
         writeln!(writer, "}}").expect("TODO: panic message");
 
