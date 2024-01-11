@@ -6,7 +6,7 @@ FHIR-RS macro library.
 
 ## Versioning
 
-0.0.1
+0.0.2
 
 This is still a draft version. The functionality is not yet fully developed and the performance has not been optimized, making it unsuitable for production environments.
 
