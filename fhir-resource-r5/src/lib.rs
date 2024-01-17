@@ -1,89 +1,165 @@
-pub mod resource;
+mod resource;
 
-use fhir_rs::prelude::*;
-use crate::resource::*;
+pub use resource::*;
 
-#[derive(Debug)]
-pub struct Patient {
-    pub name: Option<StringDt>,
-    pub age: Option<PositiveIntDt>,
-    pub telecom: Option<Vec<StringDt>>,
-    pub class: Option<Vec<Coding>>,
+#[derive(Debug, Clone)]
+pub enum Resource {
+    Account(Account),
+    ActivityDefinition(ActivityDefinition),
+    ActorDefinition(ActorDefinition),
+    AdministrableProductDefinition(AdministrableProductDefinition),
+    AdverseEvent(AdverseEvent),
+    AllergyIntolerance(AllergyIntolerance),
+    Appointment(Appointment),
+    AppointmentResponse(AppointmentResponse),
+    ArtifactAssessment(ArtifactAssessment),
+    AuditEvent(AuditEvent),
+    Basic(Basic),
+    Binary(Binary),
+    BiologicallyDerivedProduct(BiologicallyDerivedProduct),
+    BiologicallyDerivedProductDispense(BiologicallyDerivedProductDispense),
+    BodyStructure(BodyStructure),
+    Bundle(Bundle),
+    CapabilityStatement(CapabilityStatement),
+    CarePlan(CarePlan),
+    CareTeam(CareTeam),
+    ChargeItem(ChargeItem),
+    ChargeItemDefinition(ChargeItemDefinition),
+    Citation(Citation),
+    Claim(Claim),
+    ClaimResponse(ClaimResponse),
+    ClinicalImpression(ClinicalImpression),
+    ClinicalUseDefinition(ClinicalUseDefinition),
+    CodeSystem(CodeSystem),
+    Communication(Communication),
+    CommunicationRequest(CommunicationRequest),
+    CompartmentDefinition(CompartmentDefinition),
+    Composition(Composition),
+    ConceptMap(ConceptMap),
+    Condition(Condition),
+    ConditionDefinition(ConditionDefinition),
+    Consent(Consent),
+    Contract(Contract),
+    Coverage(Coverage),
+    CoverageEligibilityRequest(CoverageEligibilityRequest),
+    CoverageEligibilityResponse(CoverageEligibilityResponse),
+    DetectedIssue(DetectedIssue),
+    Device(Device),
+    DeviceAssociation(DeviceAssociation),
+    DeviceDefinition(DeviceDefinition),
+    DeviceDispense(DeviceDispense),
+    DeviceMetric(DeviceMetric),
+    DeviceRequest(DeviceRequest),
+    DeviceUsage(DeviceUsage),
+    DiagnosticReport(DiagnosticReport),
+    DocumentReference(DocumentReference),
+    Encounter(Encounter),
+    EncounterHistory(EncounterHistory),
+    Endpoint(Endpoint),
+    EnrollmentRequest(EnrollmentRequest),
+    EnrollmentResponse(EnrollmentResponse),
+    EpisodeOfCare(EpisodeOfCare),
+    EventDefinition(EventDefinition),
+    Evidence(Evidence),
+    EvidenceReport(EvidenceReport),
+    EvidenceVariable(EvidenceVariable),
+    ExampleScenario(ExampleScenario),
+    ExplanationOfBenefit(ExplanationOfBenefit),
+    FamilyMemberHistory(FamilyMemberHistory),
+    Flag(Flag),
+    FormularyItem(FormularyItem),
+    GenomicStudy(GenomicStudy),
+    Goal(Goal),
+    GraphDefinition(GraphDefinition),
+    Group(Group),
+    GuidanceResponse(GuidanceResponse),
+    HealthcareService(HealthcareService),
+    ImagingSelection(ImagingSelection),
+    ImagingStudy(ImagingStudy),
+    Immunization(Immunization),
+    ImmunizationEvaluation(ImmunizationEvaluation),
+    ImmunizationRecommendation(ImmunizationRecommendation),
+    ImplementationGuide(ImplementationGuide),
+    Ingredient(Ingredient),
+    InsurancePlan(InsurancePlan),
+    InventoryItem(InventoryItem),
+    InventoryReport(InventoryReport),
+    Invoice(Invoice),
+    Library(Library),
+    Linkage(Linkage),
+    List(List),
+    Location(Location),
+    ManufacturedItemDefinition(ManufacturedItemDefinition),
+    Measure(Measure),
+    MeasureReport(MeasureReport),
+    Medication(Medication),
+    MedicationAdministration(MedicationAdministration),
+    MedicationDispense(MedicationDispense),
+    MedicationKnowledge(MedicationKnowledge),
+    MedicationRequest(MedicationRequest),
+    MedicationStatement(MedicationStatement),
+    MedicinalProductDefinition(MedicinalProductDefinition),
+    MessageDefinition(MessageDefinition),
+    MessageHeader(MessageHeader),
+    MolecularSequence(MolecularSequence),
+    NamingSystem(NamingSystem),
+    NutritionIntake(NutritionIntake),
+    NutritionOrder(NutritionOrder),
+    NutritionProduct(NutritionProduct),
+    Observation(Observation),
+    ObservationDefinition(ObservationDefinition),
+    OperationDefinition(OperationDefinition),
+    OperationOutcome(OperationOutcome),
+    Organization(Organization),
+    OrganizationAffiliation(OrganizationAffiliation),
+    PackagedProductDefinition(PackagedProductDefinition),
+    Parameters(Parameters),
+    Patient(Patient),
+    PaymentNotice(PaymentNotice),
+    PaymentReconciliation(PaymentReconciliation),
+    Permission(Permission),
+    Person(Person),
+    PlanDefinition(PlanDefinition),
+    Practitioner(Practitioner),
+    PractitionerRole(PractitionerRole),
+    Procedure(Procedure),
+    Provenance(Provenance),
+    Questionnaire(Questionnaire),
+    QuestionnaireResponse(QuestionnaireResponse),
+    RegulatedAuthorization(RegulatedAuthorization),
+    RelatedPerson(RelatedPerson),
+    RequestOrchestration(RequestOrchestration),
+    Requirements(Requirements),
+    ResearchStudy(ResearchStudy),
+    ResearchSubject(ResearchSubject),
+    RiskAssessment(RiskAssessment),
+    Schedule(Schedule),
+    SearchParameter(SearchParameter),
+    ServiceRequest(ServiceRequest),
+    Slot(Slot),
+    Specimen(Specimen),
+    SpecimenDefinition(SpecimenDefinition),
+    StructureDefinition(StructureDefinition),
+    StructureMap(StructureMap),
+    Subscription(Subscription),
+    SubscriptionStatus(SubscriptionStatus),
+    SubscriptionTopic(SubscriptionTopic),
+    Substance(Substance),
+    SubstanceDefinition(SubstanceDefinition),
+    SubstanceNucleicAcid(SubstanceNucleicAcid),
+    SubstancePolymer(SubstancePolymer),
+    SubstanceProtein(SubstanceProtein),
+    SubstanceReferenceInformation(SubstanceReferenceInformation),
+    SubstanceSourceMaterial(SubstanceSourceMaterial),
+    SupplyDelivery(SupplyDelivery),
+    SupplyRequest(SupplyRequest),
+    Task(Task),
+    TerminologyCapabilities(TerminologyCapabilities),
+    TestPlan(TestPlan),
+    TestReport(TestReport),
+    TestScript(TestScript),
+    Transport(Transport),
+    ValueSet(ValueSet),
+    VerificationResult(VerificationResult),
+    VisionPrescription(VisionPrescription),
 }
-
-impl Serialize for Patient {
-    fn serialize<Ser>(&self, serializer: Ser) -> Result<()> where Ser: Serializer {
-        let mut resource  = serializer.serialize_struct("Patient")?;
-        resource.serialize_field("name", &self.name)?;
-        resource.serialize_field("age", &self.age)?;
-        resource.serialize_field("telecom", &self.telecom)?;
-        resource.serialize_field("class", &self.class)?;
-        resource.serialize_end()
-    }
-}
-
-impl<'de> Deserialize<'de> for Patient {
-    fn deserialize<De>(deserializer: De) -> Result<Self> where De: Deserializer<'de> {
-        tracing::info!("开始反序列化患者信息");
-        deserializer.deserialize_struct("Patient", PatientVisitor)
-    }
-}
-
-struct PatientVisitor;
-
-impl<'de> Visitor<'de> for PatientVisitor {
-    type Value = Patient;
-
-    fn visit_map<M>(self, mut map: M) -> Result<Self::Value>
-        where
-            M: MapAccess<'de>
-    {
-        tracing::debug!("进入到 Patient 的 visit-map 函数了");
-
-        let mut name: Option<StringDt> = None;
-        let mut age: Option<PositiveIntDt> = None;
-        let mut age_ext: Option<PositiveIntDt> = None;
-        let mut telecom: Option<Vec<StringDt>> = None;
-        let mut class: Option<Vec<Coding>> = None;
-
-        while let Some(key) = map.next_key()? {
-            match key.as_bytes() {
-                b"resourceType" => {
-                    let typ: StringDt = map.next_value()?;
-                    tracing::debug!("读取到值: {:?}", typ);
-                },
-                b"name" => {
-                    name = Some(map.next_value()?);
-                    tracing::debug!("读取到值: {:?}", &name);
-                },
-                b"age" => {
-                    age = Some(map.next_value()?);
-                    tracing::debug!("读取到值: {:?}", &age);
-                }
-                b"_age" => {
-                    age_ext = Some(map.next_value()?);
-                    tracing::debug!("读取到值: {:?}", &age_ext);
-                }
-                b"telecom" => {
-                    telecom = Some(map.next_value()?);
-                    tracing::debug!("读取到值: {:?}", &telecom);
-                }
-                b"class" => {
-                    class = Some(map.next_value()?);
-                    tracing::debug!("读取到值: {:?}", &class);
-                },
-                _ => {return Err(FhirError::error("Patient读到不存在的key了"));},
-            }
-        }
-
-        let age = self.with_extension(age, age_ext);
-
-        Ok(Patient{
-            name,
-            age,
-            telecom,
-            class,
-        })
-    }
-}
-
