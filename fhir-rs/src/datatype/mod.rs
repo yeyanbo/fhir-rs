@@ -35,9 +35,12 @@ pub trait Element {
     fn add_extension(self, ext: Extension) -> Self;
 }
 
+/// FHIR简单类型的特性
+/// FHIR简单类型是RUST简单数据类型的包装器
+///
 pub trait Primitive {
     type T;
-    fn new(v: Self::T) -> Self;
+    fn new<A: Into<Self::T>>(v: A) -> Self;
     fn value(&self) -> &Option<Self::T>;
     fn set_value(self, v: Self::T) -> Self;
 }
