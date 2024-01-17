@@ -9,6 +9,8 @@ pub use json_deserializer::from_str as from_json;
 
 use crate::prelude::*;
 
+/// 资源和数据类型的反序列化特性
+/// 所有的资源和数据类型（简单类型和复合类型）都应实现该特性
 pub trait Deserialize<'de>: Sized {
     fn deserialize<De>(deserializer: De) -> Result<Self> where De: Deserializer<'de>;
 }
