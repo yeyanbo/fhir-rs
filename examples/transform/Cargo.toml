@@ -1,0 +1,13 @@
+[package]
+name = "transform"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+fhir-rs = { path = "../../fhir-rs"}
+fhir-resource-r5 ={ path = "../../fhir-resource-r5"}
+
+tracing = "0.1.37"
+tracing-subscriber = "0.3.16"
+anyhow = "1.0.75"
+chrono = "0.4.31"
