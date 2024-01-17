@@ -10,6 +10,12 @@ pub mod error;
 pub mod datatype;
 pub mod de;
 pub mod ser;
+#[cfg(features = "server")]
+mod server;
+#[cfg(features = "client")]
+mod client;
+#[cfg(features = "validate")]
+mod validate;
 
 pub mod prelude {
     pub use super::de::*;
