@@ -626,3 +626,29 @@ impl FromStr for XhtmlDt {
         })
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use std::str::FromStr;
+    use crate::prelude::*;
+    use crate::prelude::Any::PositiveInt;
+
+    #[test]
+    fn test_string() {
+        let name = StringDt::new("zhangsan");
+        assert_eq!(name.value.unwrap(), "zhangsan".to_string())
+    }
+
+    #[test]
+    fn test_int() {
+        let size = PositiveIntDt::new(356usize);
+        assert_eq!(size.value.unwrap(), 356)
+    }
+
+    #[test]
+    fn test_bool() {
+        let gender = BooleanDt::new(false);
+        assert_eq!(gender.value.unwrap(), false)
+    }
+
+}
