@@ -1,7 +1,7 @@
 use fhir_rs::prelude::*;
 
 #[derive(Resource, Debug, Clone, Default)]
-#[fhir(base="DomainResource")]
+#[fhir(base="Resource")]
 pub struct Binary {
     /// Logical id of this artifact
     #[fhir(name="id", min="0", max="1", summary="true", modifier="false")]
