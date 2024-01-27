@@ -24,7 +24,6 @@ pub fn to_writer<W: Write, S: Serialize>(writer: W, value: &S) -> Result<()> {
 
 pub struct XmlSerializer<W: Write> {
     writer: EventWriter<W>,
-    root: bool,
     tags: Vec<String>,
     current_attr_key: Option<&'static str>,
     current_tag_attrs: Option<HashMap<&'static str, String>>,
@@ -34,7 +33,6 @@ impl<W: Write> XmlSerializer<W> {
     pub fn from_writer(writer: W) -> Self {
         XmlSerializer{
             writer: EventWriter::new(writer),
-            root: true,
             tags: Vec::with_capacity(32),
             current_attr_key: None,
             current_tag_attrs: None,
@@ -218,7 +216,7 @@ impl<'ser, W: Write> Serializer for &'ser mut XmlSerializer<W> {
         })
     }
 
-    fn serialize_struct(self, name: &'static str) -> Result<Self::SerializeStruct> {
+    fn serialize_struct(self, _name: &'static str) -> Result<Self::SerializeStruct> {
         Ok(XmlCompositeProcessor {
             ser: self,
         })

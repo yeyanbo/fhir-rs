@@ -17,7 +17,6 @@ pub fn to_writer<W: Write, S: Serialize>(writer: W, value: &S) -> Result<()> {
 
 pub struct JsonSerializer<W: Write> {
     pub writer: JsonWriter<W>,
-    root: bool,
     tags: Vec<String>,
 }
 
@@ -27,7 +26,6 @@ impl<W> JsonSerializer<W>
     pub fn from_writer(writer: W) -> Self {
         JsonSerializer{
             writer: JsonWriter::from_writer(writer),
-            root: true,
             tags: Vec::with_capacity(32),
         }
     }
@@ -171,7 +169,7 @@ impl<'ser, W: Write> Serializer for &'ser mut JsonSerializer<W> {
         })
     }
 
-    fn serialize_struct(self, name: &'static str) -> Result<Self::SerializeStruct> {
+    fn serialize_struct(self, _name: &'static str) -> Result<Self::SerializeStruct> {
         self.build_element()?;
         self.start_object()?;
 
