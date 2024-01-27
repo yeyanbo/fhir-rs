@@ -1,4 +1,4 @@
-// use syn::spanned::Spanned;
+use quote::format_ident;
 use crate::helper;
 use crate::helper::StructFields;
 
@@ -6,15 +6,73 @@ pub(crate) fn expand_derive_complex(st: &syn::DeriveInput) -> syn::Result<proc_m
     let struct_name_ident = &st.ident;
 
     let fields = helper::get_struct_fields(&st)?;
-
+    let element_impl = helper::impl_element(struct_name_ident)?;
+    let complex_impl = impl_complex(struct_name_ident, fields)?;
     let serialize_impl = impl_serialize(struct_name_ident, fields)?;
     let deserialize_impl = impl_deserialize(struct_name_ident, fields)?;
 
     let ret = quote::quote!(
+        #element_impl
+        #complex_impl
         #serialize_impl
         #deserialize_impl
     );
     Ok(ret)
+}
+
+fn impl_complex(struct_name_ident: &syn::Ident, struct_fields: &StructFields) -> syn::Result<proc_macro2::TokenStream> {
+    let fns = impl_complex_fields(struct_fields, struct_name_ident.span())?;
+
+    let ret = quote::quote!(
+        impl #struct_name_ident {
+            #( #fns )*
+        }
+    );
+    Ok(ret)
+}
+
+pub(crate) fn impl_complex_fields(struct_fields: &StructFields, span: proc_macro2::Span) -> syn::Result<Vec<proc_macro2::TokenStream>> {
+    let mut fields = Vec::with_capacity(32);
+
+    struct_fields.iter()
+        .skip(2)
+        .for_each(|f| {
+            let ident = &f.ident;
+            let typ = &f.ty;
+
+            // 赋值类型为Option的内部类型
+            let set_func = format_ident!("set_{}",  ident.clone().unwrap());
+            let value_type = helper::option_inner(typ).unwrap();
+
+            fields.push(quote::quote!(
+                pub fn #set_func(mut self, v: impl Into<#value_type>) -> Self {
+                    self.#ident = Some(v.into());
+                    self
+                }
+            ));
+
+            // 如果类型是Vec，添加形如add_xxxx的函数，参数为Vec的内部类型
+            if let Some(v_typ) = helper::vector_inner(value_type) {
+                let add_func = format_ident!("add_{}",  ident.clone().unwrap());
+                fields.push(quote::quote!(
+                    pub fn #add_func(mut self, v: impl Into<#v_typ>) -> Self {
+                        match self.#ident {
+                            None => {
+                                let mut vec = Vec::new();
+                                vec.push(v.into());
+                                self.#ident = Some(vec);
+                            }
+                            Some(ref mut vec) => {
+                                vec.push(v.into());
+                            }
+                        }
+                        self
+                    }
+                ));
+            }
+        });
+
+    Ok(fields)
 }
 
 fn impl_serialize(struct_name_ident: &syn::Ident, struct_fields: &StructFields) -> syn::Result<proc_macro2::TokenStream> {

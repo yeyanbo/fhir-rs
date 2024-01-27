@@ -42,20 +42,73 @@ pub(crate) fn option_inner(field_type: &syn::Type) -> Option<&syn::Type> {
     None
 }
 
+pub(crate) fn vector_inner(field_type: &syn::Type) -> Option<&syn::Type> {
+    if let syn::Type::Path(syn::TypePath { path: syn::Path { ref segments, .. }, ..}) = field_type
+    {
+        if let Some(seg) = segments.last() {
+            if seg.ident == "Vec" {
+                if let syn::PathArguments::AngleBracketed(
+                    syn::AngleBracketedGenericArguments{ref args, ..}
+                ) = seg.arguments {
+                    if let Some(syn::GenericArgument::Type(inner_type)) = args.first() {
+                        return Some(inner_type)
+                    }
+                }
+            }
+        }
+    }
+    None
+}
+
+/// 为简单类型和复合类型实现了Element特性
+pub(crate) fn impl_element(struct_name_ident: &syn::Ident) -> syn::Result<proc_macro2::TokenStream> {
+
+    let ret = quote::quote!(
+        impl Element for #struct_name_ident {
+            fn has_id(&self) -> bool {
+                self.id.is_some()
+            }
+            fn id(&self) -> &Option<String> {
+                &self.id
+            }
+            fn set_id(mut self, id: String) -> Self {
+                self.id = Some(id);
+                self
+            }
+            fn has_extension(&self) -> bool {
+                self.extension.is_some()
+            }
+            fn add_extension(mut self, ext: Extension) -> Self {
+                match self.extension {
+                    Some(ref mut exts) => {
+                        exts.push(ext);
+                    },
+                    None => {
+                        self.extension = Some(vec![ext])
+                    },
+                }
+                self
+            }
+            fn extension(&self) -> &Option<Vec<Extension>> {
+                &self.extension
+            }
+            fn set_extension(mut self, ext: Vec<Extension>) -> Self {
+                self.extension = Some(ext);
+                self
+            }
+        }
+    );
+    Ok(ret)
+}
+
 /// 在序列化函数中，用于生成所有字段（除id、extension之外）
 /// TODO 待优化：如果能够将id、extension的处理方法与其它通用字段保持一致，可以大大降低处理逻辑的复杂性
 pub(crate) fn impl_serialize_fields(struct_fields: &StructFields, span: proc_macro2::Span) -> syn::Result<Vec<proc_macro2::TokenStream>> {
     let mut fields = Vec::with_capacity(32);
 
-    let id = syn::Ident::new("id", span);
-    let ext = syn::Ident::new("extension", span);
-
     struct_fields.iter()
+        .skip(2)
         .map(|f| { &f.ident })
-        .filter(|f| {
-            let ident = f.as_ref().unwrap();
-            ident.ne(&id) && ident.ne(&ext)
-        })
         .for_each(|ident| {
             let ident_literal = ident.as_ref().unwrap().to_string();
             fields.push(quote::quote!(serialize_struct.serialize_field(#ident_literal, &self.#ident)?;));
@@ -64,12 +117,10 @@ pub(crate) fn impl_serialize_fields(struct_fields: &StructFields, span: proc_mac
     Ok(fields)
 }
 
-
 pub(crate) fn impl_deserialize_define(struct_fields: &StructFields) -> syn::Result<Vec<proc_macro2::TokenStream>> {
     let mut defines = Vec::with_capacity(32);
 
     struct_fields.iter()
-        // .map(|f| { &f.ident })
         .for_each(|f| {
             let ident = &f.ident;
             let typ = &f.ty;
