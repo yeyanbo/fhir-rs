@@ -286,6 +286,7 @@ impl<R: Read> DefinitionParser<R> {
         //
         let struct_field_name = struct_field.name.clone().unwrap();
         writeln!(writer, "#[derive(Resource, Debug, Clone, Default)]")?;
+        writeln!(writer, "#[fhir(base=\"DomainResource\")]")?;
         writeln!(writer, "pub struct {} {{", &struct_field_name)?;
 
         while let Some(field) = iter.next().take() {

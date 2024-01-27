@@ -2,6 +2,7 @@ use fhir_rs::prelude::*;
 use crate::AnyResource;
 
 #[derive(Resource, Debug, Clone, Default)]
+#[fhir(base="DomainResource")]
 pub struct OperationDefinition {
     /// Logical id of this artifact
     #[fhir(name="id", min="0", max="1", summary="true", modifier="false")]
