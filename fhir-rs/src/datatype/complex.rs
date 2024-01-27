@@ -25,7 +25,7 @@ pub struct Coding {
     pub user_selected: Option<BooleanDt>,
 }
 
-#[derive(Complex, Debug, Clone)]
+#[derive(Complex, Debug, Clone, Default)]
 pub struct Element {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary="false", modifier="false")]
@@ -35,7 +35,7 @@ pub struct Element {
     pub extension: Option<Vec<Extension>>,
 }
 
-#[derive(Complex, Debug, Clone)]
+#[derive(Complex, Debug, Clone, Default)]
 pub struct BackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary="false", modifier="false")]
@@ -48,7 +48,7 @@ pub struct BackboneElement {
     pub modifier_extension: Option<Vec<Extension>>,
 }
 
-#[derive(Complex, Debug, Clone)]
+#[derive(Complex, Debug, Clone, Default)]
 pub struct Address {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary="false", modifier="false")]
@@ -88,7 +88,7 @@ pub struct Address {
     pub period: Option<Period>,
 }
 
-#[derive(Complex, Debug, Clone)]
+#[derive(Complex, Debug, Clone, Default)]
 pub struct Age {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary="false", modifier="false")]
@@ -113,7 +113,7 @@ pub struct Age {
     pub code: Option<CodeDt>,
 }
 
-#[derive(Complex, Debug, Clone)]
+#[derive(Complex, Debug, Clone, Default)]
 pub struct Annotation {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary="false", modifier="false")]
@@ -132,7 +132,7 @@ pub struct Annotation {
     pub text: Option<MarkdownDt>,
 }
 
-#[derive(Complex, Debug, Clone)]
+#[derive(Complex, Debug, Clone, Default)]
 pub struct Attachment {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary="false", modifier="false")]
@@ -181,7 +181,7 @@ pub struct Attachment {
     pub pages: Option<PositiveIntDt>,
 }
 
-#[derive(Complex, Debug, Clone)]
+#[derive(Complex, Debug, Clone, Default)]
 pub struct Availability {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary="false", modifier="false")]
@@ -197,7 +197,7 @@ pub struct Availability {
     pub not_available_time: Option<Vec<AvailabilityNotAvailableTimeElement>>,
 }
 
-#[derive(Complex, Debug, Clone)]
+#[derive(Complex, Debug, Clone, Default)]
 pub struct AvailabilityAvailableTimeElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary="false", modifier="false")]
@@ -219,7 +219,7 @@ pub struct AvailabilityAvailableTimeElement {
     pub available_end_time: Option<TimeDt>,
 }
 
-#[derive(Complex, Debug, Clone)]
+#[derive(Complex, Debug, Clone, Default)]
 pub struct AvailabilityNotAvailableTimeElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary="false", modifier="false")]
@@ -235,7 +235,7 @@ pub struct AvailabilityNotAvailableTimeElement {
     pub during: Option<Period>,
 }
 
-#[derive(Complex, Debug, Clone)]
+#[derive(Complex, Debug, Clone, Default)]
 pub struct BackboneType {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary="false", modifier="false")]
@@ -248,7 +248,7 @@ pub struct BackboneType {
     pub modifier_extension: Option<Vec<Extension>>,
 }
 
-#[derive(Complex, Debug, Clone)]
+#[derive(Complex, Debug, Clone, Default)]
 pub struct CodeableConcept {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary="false", modifier="false")]
@@ -264,7 +264,7 @@ pub struct CodeableConcept {
     pub text: Option<StringDt>,
 }
 
-#[derive(Complex, Debug, Clone)]
+#[derive(Complex, Debug, Clone, Default)]
 pub struct CodeableReference {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary="false", modifier="false")]
@@ -280,7 +280,7 @@ pub struct CodeableReference {
     pub reference: Option<Reference>,
 }
 
-#[derive(Complex, Debug, Clone)]
+#[derive(Complex, Debug, Clone, Default)]
 pub struct ContactDetail {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary="false", modifier="false")]
@@ -296,7 +296,7 @@ pub struct ContactDetail {
     pub telecom: Option<Vec<ContactPoint>>,
 }
 
-#[derive(Complex, Debug, Clone)]
+#[derive(Complex, Debug, Clone, Default)]
 pub struct ContactPoint {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary="false", modifier="false")]
@@ -321,7 +321,7 @@ pub struct ContactPoint {
     pub period: Option<Period>,
 }
 
-#[derive(Complex, Debug, Clone)]
+#[derive(Complex, Debug, Clone, Default)]
 pub struct Contributor {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary="false", modifier="false")]
@@ -340,7 +340,7 @@ pub struct Contributor {
     pub contact: Option<Vec<ContactDetail>>,
 }
 
-#[derive(Complex, Debug, Clone)]
+#[derive(Complex, Debug, Clone, Default)]
 pub struct Count {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary="false", modifier="false")]
@@ -365,7 +365,7 @@ pub struct Count {
     pub code: Option<CodeDt>,
 }
 
-#[derive(Complex, Debug, Clone)]
+#[derive(Complex, Debug, Clone, Default)]
 pub struct DataRequirement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary="false", modifier="false")]
@@ -402,7 +402,7 @@ pub struct DataRequirement {
     pub sort: Option<Vec<DataRequirementSortElement>>,
 }
 
-#[derive(Complex, Debug, Clone)]
+#[derive(Complex, Debug, Clone, Default)]
 pub struct DataRequirementSortElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary="false", modifier="false")]
@@ -418,7 +418,7 @@ pub struct DataRequirementSortElement {
     pub direction: Option<CodeDt>,
 }
 
-#[derive(Complex, Debug, Clone)]
+#[derive(Complex, Debug, Clone, Default)]
 pub struct DataRequirementCodeFilterElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary="false", modifier="false")]
@@ -440,7 +440,7 @@ pub struct DataRequirementCodeFilterElement {
     pub code: Option<Vec<Coding>>,
 }
 
-#[derive(Complex, Debug, Clone)]
+#[derive(Complex, Debug, Clone, Default)]
 pub struct DataRequirementValueFilterElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary="false", modifier="false")]
@@ -462,7 +462,7 @@ pub struct DataRequirementValueFilterElement {
     pub value: Option<Duration>,
 }
 
-#[derive(Complex, Debug, Clone)]
+#[derive(Complex, Debug, Clone, Default)]
 pub struct DataRequirementDateFilterElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary="false", modifier="false")]
@@ -481,7 +481,7 @@ pub struct DataRequirementDateFilterElement {
     pub value: Option<Duration>,
 }
 
-#[derive(Complex, Debug, Clone)]
+#[derive(Complex, Debug, Clone, Default)]
 pub struct Complex {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary="false", modifier="false")]
@@ -491,7 +491,7 @@ pub struct Complex {
     pub extension: Option<Vec<Extension>>,
 }
 
-#[derive(Complex, Debug, Clone)]
+#[derive(Complex, Debug, Clone, Default)]
 pub struct Distance {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary="false", modifier="false")]
@@ -516,7 +516,7 @@ pub struct Distance {
     pub code: Option<CodeDt>,
 }
 
-#[derive(Complex, Debug, Clone)]
+#[derive(Complex, Debug, Clone, Default)]
 pub struct Dosage {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary="false", modifier="false")]
@@ -571,7 +571,7 @@ pub struct Dosage {
     pub max_dose_per_lifetime: Option<Quantity>,
 }
 
-#[derive(Complex, Debug, Clone)]
+#[derive(Complex, Debug, Clone, Default)]
 pub struct DosageDoseAndRateElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary="false", modifier="false")]
@@ -590,7 +590,7 @@ pub struct DosageDoseAndRateElement {
     pub rate: Option<Quantity>,
 }
 
-#[derive(Complex, Debug, Clone)]
+#[derive(Complex, Debug, Clone, Default)]
 pub struct Duration {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary="false", modifier="false")]
@@ -615,7 +615,7 @@ pub struct Duration {
     pub code: Option<CodeDt>,
 }
 
-#[derive(Complex, Debug, Clone)]
+#[derive(Complex, Debug, Clone, Default)]
 pub struct ElementDefinition {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary="false", modifier="false")]
@@ -736,7 +736,7 @@ pub struct ElementDefinition {
     // pub mapping: Option<Vec<ElementDefinitionMappingElement>>,
 }
 //
-// #[derive(Complex, Debug, Clone)]
+// #[derive(Complex, Debug, Clone, Default)]
 // pub struct ElementDefinitionBaseElement {
 //     /// Unique id for inter-element referencing
 //     #[fhir(name="id", min="0", max="1", summary="false", modifier="false")]
@@ -755,7 +755,7 @@ pub struct ElementDefinition {
 //     pub max: Option<StringDt>,
 // }
 //
-// #[derive(Complex, Debug, Clone)]
+// #[derive(Complex, Debug, Clone, Default)]
 // pub struct ElementDefinitionSlicingElement {
 //     /// Unique id for inter-element referencing
 //     #[fhir(name="id", min="0", max="1", summary="false", modifier="false")]
@@ -777,7 +777,7 @@ pub struct ElementDefinition {
 //     pub rules: Option<CodeDt>,
 // }
 //
-// #[derive(Complex, Debug, Clone)]
+// #[derive(Complex, Debug, Clone, Default)]
 // pub struct ElementDefinitionSlicingDiscriminatorElement {
 //     /// Unique id for inter-element referencing
 //     #[fhir(name="id", min="0", max="1", summary="false", modifier="false")]
@@ -793,7 +793,7 @@ pub struct ElementDefinition {
 //     pub path: Option<StringDt>,
 // }
 //
-// #[derive(Complex, Debug, Clone)]
+// #[derive(Complex, Debug, Clone, Default)]
 // pub struct ElementDefinitionMappingElement {
 //     /// Unique id for inter-element referencing
 //     #[fhir(name="id", min="0", max="1", summary="false", modifier="false")]
@@ -815,7 +815,7 @@ pub struct ElementDefinition {
 //     pub comment: Option<MarkdownDt>,
 // }
 //
-// #[derive(Complex, Debug, Clone)]
+// #[derive(Complex, Debug, Clone, Default)]
 // pub struct ElementDefinitionTypeElement {
 //     /// Unique id for inter-element referencing
 //     #[fhir(name="id", min="0", max="1", summary="false", modifier="false")]
@@ -840,7 +840,7 @@ pub struct ElementDefinition {
 //     pub versioning: Option<CodeDt>,
 // }
 //
-// #[derive(Complex, Debug, Clone)]
+// #[derive(Complex, Debug, Clone, Default)]
 // pub struct ElementDefinitionBindingElement {
 //     /// Unique id for inter-element referencing
 //     #[fhir(name="id", min="0", max="1", summary="false", modifier="false")]
@@ -862,7 +862,7 @@ pub struct ElementDefinition {
 //     pub additional: Option<Vec<ElementDefinitionBindingAdditionalElement>>,
 // }
 //
-// #[derive(Complex, Debug, Clone)]
+// #[derive(Complex, Debug, Clone, Default)]
 // pub struct ElementDefinitionBindingAdditionalElement {
 //     /// Unique id for inter-element referencing
 //     #[fhir(name="id", min="0", max="1", summary="false", modifier="false")]
@@ -890,7 +890,7 @@ pub struct ElementDefinition {
 //     pub any: Option<BooleanDt>,
 // }
 //
-// #[derive(Complex, Debug, Clone)]
+// #[derive(Complex, Debug, Clone, Default)]
 // pub struct ElementDefinitionExampleElement {
 //     /// Unique id for inter-element referencing
 //     #[fhir(name="id", min="0", max="1", summary="false", modifier="false")]
@@ -906,7 +906,7 @@ pub struct ElementDefinition {
 //     pub value: Option<Meta>,
 // }
 //
-// #[derive(Complex, Debug, Clone)]
+// #[derive(Complex, Debug, Clone, Default)]
 // pub struct ElementDefinitionConstraintElement {
 //     /// Unique id for inter-element referencing
 //     #[fhir(name="id", min="0", max="1", summary="false", modifier="false")]
@@ -937,7 +937,7 @@ pub struct ElementDefinition {
 //     pub source: Option<CanonicalDt>,
 // }
 
-#[derive(Complex, Debug, Clone)]
+#[derive(Complex, Debug, Clone, Default)]
 pub struct Expression {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary="false", modifier="false")]
@@ -962,7 +962,7 @@ pub struct Expression {
     pub reference: Option<UriDt>,
 }
 
-#[derive(Complex, Debug, Clone)]
+#[derive(Complex, Debug, Clone, Default)]
 pub struct ExtendedContactDetail {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary="false", modifier="false")]
@@ -992,7 +992,7 @@ pub struct ExtendedContactDetail {
 
 
 
-#[derive(Complex, Debug, Clone)]
+#[derive(Complex, Debug, Clone, Default)]
 pub struct HumanName {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary="false", modifier="false")]
@@ -1023,7 +1023,7 @@ pub struct HumanName {
     pub period: Option<Period>,
 }
 
-#[derive(Complex, Debug, Clone)]
+#[derive(Complex, Debug, Clone, Default)]
 pub struct Identifier {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary="false", modifier="false")]
@@ -1051,7 +1051,7 @@ pub struct Identifier {
     pub assigner: Option<Reference>,
 }
 
-#[derive(Complex, Debug, Clone)]
+#[derive(Complex, Debug, Clone, Default)]
 pub struct MarketingStatus {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary="false", modifier="false")]
@@ -1079,7 +1079,7 @@ pub struct MarketingStatus {
     pub restore_date: Option<DateTimeDt>,
 }
 
-#[derive(Complex, Debug, Clone)]
+#[derive(Complex, Debug, Clone, Default)]
 pub struct Meta {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary="false", modifier="false")]
@@ -1107,7 +1107,7 @@ pub struct Meta {
     pub tag: Option<Vec<Coding>>,
 }
 
-#[derive(Complex, Debug, Clone)]
+#[derive(Complex, Debug, Clone, Default)]
 pub struct MonetaryComponent {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary="false", modifier="false")]
@@ -1129,7 +1129,7 @@ pub struct MonetaryComponent {
     pub amount: Option<Money>,
 }
 
-#[derive(Complex, Debug, Clone)]
+#[derive(Complex, Debug, Clone, Default)]
 pub struct Money {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary="false", modifier="false")]
@@ -1145,7 +1145,7 @@ pub struct Money {
     pub currency: Option<CodeDt>,
 }
 
-#[derive(Complex, Debug, Clone)]
+#[derive(Complex, Debug, Clone, Default)]
 pub struct Narrative {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary="false", modifier="false")]
@@ -1161,7 +1161,7 @@ pub struct Narrative {
     pub div: Option<XhtmlDt>,
 }
 
-#[derive(Complex, Debug, Clone)]
+#[derive(Complex, Debug, Clone, Default)]
 pub struct ParameterDefinition {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary="false", modifier="false")]
@@ -1192,7 +1192,7 @@ pub struct ParameterDefinition {
     pub profile: Option<CanonicalDt>,
 }
 
-#[derive(Complex, Debug, Clone)]
+#[derive(Complex, Debug, Clone, Default)]
 pub struct Period {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary="false", modifier="false")]
@@ -1208,7 +1208,7 @@ pub struct Period {
     pub end: Option<DateTimeDt>,
 }
 
-#[derive(Complex, Debug, Clone)]
+#[derive(Complex, Debug, Clone, Default)]
 pub struct PrimitiveType {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary="false", modifier="false")]
@@ -1218,7 +1218,7 @@ pub struct PrimitiveType {
     pub extension: Option<Vec<Extension>>,
 }
 
-#[derive(Complex, Debug, Clone)]
+#[derive(Complex, Debug, Clone, Default)]
 pub struct ProductShelfLife {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary="false", modifier="false")]
@@ -1240,7 +1240,7 @@ pub struct ProductShelfLife {
     pub special_precautions_for_storage: Option<Vec<CodeableConcept>>,
 }
 
-#[derive(Complex, Debug, Clone)]
+#[derive(Complex, Debug, Clone, Default)]
 pub struct Quantity {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary="false", modifier="false")]
@@ -1265,7 +1265,7 @@ pub struct Quantity {
     pub code: Option<CodeDt>,
 }
 
-#[derive(Complex, Debug, Clone)]
+#[derive(Complex, Debug, Clone, Default)]
 pub struct Range {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary="false", modifier="false")]
@@ -1281,7 +1281,7 @@ pub struct Range {
     pub high: Option<Quantity>,
 }
 
-#[derive(Complex, Debug, Clone)]
+#[derive(Complex, Debug, Clone, Default)]
 pub struct Ratio {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary="false", modifier="false")]
@@ -1297,7 +1297,7 @@ pub struct Ratio {
     pub denominator: Option<Quantity>,
 }
 
-#[derive(Complex, Debug, Clone)]
+#[derive(Complex, Debug, Clone, Default)]
 pub struct RatioRange {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary="false", modifier="false")]
@@ -1316,7 +1316,7 @@ pub struct RatioRange {
     pub denominator: Option<Quantity>,
 }
 
-#[derive(Complex, Debug, Clone)]
+#[derive(Complex, Debug, Clone, Default)]
 pub struct Reference {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary="false", modifier="false")]
@@ -1338,7 +1338,7 @@ pub struct Reference {
     pub display: Option<StringDt>,
 }
 
-#[derive(Complex, Debug, Clone)]
+#[derive(Complex, Debug, Clone, Default)]
 pub struct RelatedArtifact {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary="false", modifier="false")]
@@ -1378,7 +1378,7 @@ pub struct RelatedArtifact {
     pub publication_date: Option<DateDt>,
 }
 
-#[derive(Complex, Debug, Clone)]
+#[derive(Complex, Debug, Clone, Default)]
 pub struct SampledData {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary="false", modifier="false")]
@@ -1418,7 +1418,7 @@ pub struct SampledData {
     pub data: Option<StringDt>,
 }
 
-#[derive(Complex, Debug, Clone)]
+#[derive(Complex, Debug, Clone, Default)]
 pub struct Signature {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary="false", modifier="false")]
@@ -1449,7 +1449,7 @@ pub struct Signature {
     pub data: Option<Base64BinaryDt>,
 }
 
-#[derive(Complex, Debug, Clone)]
+#[derive(Complex, Debug, Clone, Default)]
 pub struct Timing {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary="false", modifier="false")]
@@ -1471,7 +1471,7 @@ pub struct Timing {
     pub code: Option<CodeableConcept>,
 }
 
-#[derive(Complex, Debug, Clone)]
+#[derive(Complex, Debug, Clone, Default)]
 pub struct TimingRepeatElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary="false", modifier="false")]
@@ -1526,7 +1526,7 @@ pub struct TimingRepeatElement {
     pub offset: Option<UnsignedIntDt>,
 }
 
-#[derive(Complex, Debug, Clone)]
+#[derive(Complex, Debug, Clone, Default)]
 pub struct TriggerDefinition {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary="false", modifier="false")]
@@ -1557,7 +1557,7 @@ pub struct TriggerDefinition {
     pub condition: Option<Expression>,
 }
 
-#[derive(Complex, Debug, Clone)]
+#[derive(Complex, Debug, Clone, Default)]
 pub struct UsageContext {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary="false", modifier="false")]
@@ -1573,7 +1573,7 @@ pub struct UsageContext {
     pub value: Option<Reference>,
 }
 
-#[derive(Complex, Debug, Clone)]
+#[derive(Complex, Debug, Clone, Default)]
 pub struct VirtualServiceDetail {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary="false", modifier="false")]
@@ -1598,7 +1598,7 @@ pub struct VirtualServiceDetail {
     pub session_key: Option<StringDt>,
 }
 
-#[derive(Complex, Debug, Clone)]
+#[derive(Complex, Debug, Clone, Default)]
 pub struct MoneyQuantity {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary="false", modifier="false")]
@@ -1623,7 +1623,7 @@ pub struct MoneyQuantity {
     pub code: Option<CodeDt>,
 }
 
-#[derive(Complex, Debug, Clone)]
+#[derive(Complex, Debug, Clone, Default)]
 pub struct SimpleQuantity {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary="false", modifier="false")]
