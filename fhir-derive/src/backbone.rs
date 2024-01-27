@@ -17,7 +17,7 @@ pub(crate) fn expand_derive_backbone(st: &syn::DeriveInput) -> syn::Result<proc_
 }
 
 fn impl_serialize(struct_name_ident: &syn::Ident, struct_fields: &StructFields) -> syn::Result<proc_macro2::TokenStream> {
-    let fields = helper::impl_serialize_fields(struct_fields, struct_name_ident.span())?;
+    let fields = helper::impl_serialize_fields(struct_fields)?;
 
     let ret = quote::quote!(
         impl Serialize for #struct_name_ident {
