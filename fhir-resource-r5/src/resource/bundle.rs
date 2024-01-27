@@ -1,5 +1,5 @@
 use fhir_rs::prelude::*;
-use crate::Resource;
+use crate::AnyResource;
 
 #[derive(Resource, Debug, Clone, Default)]
 pub struct Bundle {
@@ -38,7 +38,7 @@ pub struct Bundle {
     pub signature: Option<Signature>,
     /// Issues with the Bundle
     #[fhir(name="issues", min="0", max="1", summary="true", modifier="false")]
-    pub issues: Option<Box<Resource>>,
+    pub issues: Option<Box<AnyResource>>,
 }
 
 #[derive(BackboneElement, Debug, Clone, Default)]
@@ -60,7 +60,7 @@ pub struct BundleEntryBackboneElement {
     pub full_url: Option<UriDt>,
     /// A resource in the bundle
     #[fhir(name="resource", min="0", max="1", summary="true", modifier="false")]
-    pub resource: Option<Resource>,
+    pub resource: Option<AnyResource>,
     /// Search related information
     #[fhir(name="search", min="0", max="1", summary="true", modifier="false")]
     pub search: Option<BundleEntrySearchBackboneElement>,
@@ -147,7 +147,7 @@ pub struct BundleEntryResponseBackboneElement {
     pub last_modified: Option<InstantDt>,
     /// OperationOutcome with hints and warnings (for batch/transaction)
     #[fhir(name="outcome", min="0", max="1", summary="true", modifier="false")]
-    pub outcome: Option<Resource>,
+    pub outcome: Option<AnyResource>,
 }
 
 #[derive(BackboneElement, Debug, Clone, Default)]

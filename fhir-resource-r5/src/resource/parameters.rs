@@ -1,5 +1,5 @@
 use fhir_rs::prelude::*;
-use crate::Resource;
+use crate::AnyResource;
 
 #[derive(Resource, Debug, Clone, Default)]
 pub struct Parameters {
@@ -39,7 +39,7 @@ pub struct ParametersParameterBackboneElement {
     pub value: Option<Meta>,
     /// If parameter is a whole resource
     #[fhir(name="resource", min="0", max="1", summary="true", modifier="false")]
-    pub resource: Option<Resource>,
+    pub resource: Option<AnyResource>,
     /// Named part of a multi-part parameter
     #[fhir(name="part", min="0", max="*", summary="true", modifier="false")]
     pub part: Option<Vec<ParametersParameterBackboneElement>>,

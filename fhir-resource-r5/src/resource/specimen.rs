@@ -1,5 +1,5 @@
 use fhir_rs::prelude::*;
-use crate::Resource;
+use crate::AnyResource;
 
 #[derive(Resource, Debug, Clone, Default)]
 pub struct Specimen {
@@ -20,7 +20,7 @@ pub struct Specimen {
     pub text: Option<Narrative>,
     /// Contained, inline Resources
     #[fhir(name="contained", min="0", max="*", summary="false", modifier="false")]
-    pub contained: Option<Vec<Resource>>,
+    pub contained: Option<Vec<AnyResource>>,
     /// Additional content defined by implementations
     #[fhir(name="extension", min="0", max="*", summary="false", modifier="false")]
     pub extension: Option<Vec<Extension>>,
