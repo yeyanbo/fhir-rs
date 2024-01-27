@@ -1,8 +1,7 @@
-// use syn::spanned::Spanned;
 use crate::helper;
 use crate::helper::StructFields;
 
-pub(crate) fn expand_derive_complex(st: &syn::DeriveInput) -> syn::Result<proc_macro2::TokenStream> {
+pub(crate) fn expand_derive_backbone(st: &syn::DeriveInput) -> syn::Result<proc_macro2::TokenStream> {
     let struct_name_ident = &st.ident;
 
     let fields = helper::get_struct_fields(&st)?;
@@ -51,8 +50,8 @@ fn impl_deserialize(struct_name_ident: &syn::Ident, struct_fields: &StructFields
                     fn visit_map<M>(self, mut map: M) -> Result<Self::Value> where M: MapAccess<'de> {
                         #( #defs )*
 
-                        while let Some(key) = map.next_key()? {
-                            match key.as_str() {
+                        while let Some(keys) = map.next_key()? {
+                            match keys.as_str() {
                                 #( #maps )*
                                 _ => {return Err(FhirError::error("读到不存在的键"));},
                             }
@@ -70,3 +69,6 @@ fn impl_deserialize(struct_name_ident: &syn::Ident, struct_fields: &StructFields
     );
     Ok(ret)
 }
+
+
+

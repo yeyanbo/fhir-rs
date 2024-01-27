@@ -65,14 +65,13 @@ fn impl_primitive(struct_name_ident: &syn::Ident) -> syn::Result<proc_macro2::To
         impl Primitive for #struct_name_ident {
             type T = #interal;
 
-            fn new(v: Self::T) -> Self {
+            fn new<A: Into<Self::T>>(v: A) -> Self {
                 #struct_name_ident {
                     id: None,
                     extension: None,
-                    value: Some(v),
+                    value: Some(v.into()),
                 }
             }
-
 
             fn value(&self) -> &Option<Self::T> {
                 &self.value

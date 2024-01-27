@@ -1,12 +1,10 @@
-// use syn::spanned::Spanned;
 use crate::helper;
 use crate::helper::StructFields;
 
-pub(crate) fn expand_derive_complex(st: &syn::DeriveInput) -> syn::Result<proc_macro2::TokenStream> {
+pub(crate) fn expand_derive_resource(st: &syn::DeriveInput) -> syn::Result<proc_macro2::TokenStream> {
     let struct_name_ident = &st.ident;
 
     let fields = helper::get_struct_fields(&st)?;
-
     let serialize_impl = impl_serialize(struct_name_ident, fields)?;
     let deserialize_impl = impl_deserialize(struct_name_ident, fields)?;
 
@@ -18,20 +16,36 @@ pub(crate) fn expand_derive_complex(st: &syn::DeriveInput) -> syn::Result<proc_m
 }
 
 fn impl_serialize(struct_name_ident: &syn::Ident, struct_fields: &StructFields) -> syn::Result<proc_macro2::TokenStream> {
-    let fields = helper::impl_serialize_fields(struct_fields, struct_name_ident.span())?;
+    let struct_name_literal = struct_name_ident.to_string();
+    let fields = impl_serialize_fields(struct_fields)?;
 
     let ret = quote::quote!(
         impl Serialize for #struct_name_ident {
             fn serialize<Ser: Serializer>(&self, serializer: Ser) -> Result<()> {
-                let mut serialize_struct = serializer.serialize_struct("")?;
+                let mut serialize_struct = serializer.serialize_resource( #struct_name_literal )?;
                 serialize_struct.serialize_id(&self.id)?;
-                serialize_struct.serialize_extension(&self.extension)?;
                 #( #fields )*
                 serialize_struct.serialize_end()
             }
         }
     );
     Ok(ret)
+}
+
+/// 在序列化函数中，用于生成所有字段（除id之外）
+/// 在资源中id是需要特殊处理的，skip(1)就是跳过id
+fn impl_serialize_fields(struct_fields: &StructFields) -> syn::Result<Vec<proc_macro2::TokenStream>> {
+    let mut fields = Vec::with_capacity(32);
+
+    struct_fields.iter()
+        .skip(1)
+        .map(|f| { &f.ident })
+        .for_each(|ident| {
+            let ident_literal = ident.as_ref().unwrap().to_string();
+            fields.push(quote::quote!(serialize_struct.serialize_field(#ident_literal, &self.#ident)?;));
+        });
+
+    Ok(fields)
 }
 
 fn impl_deserialize(struct_name_ident: &syn::Ident, struct_fields: &StructFields) -> syn::Result<proc_macro2::TokenStream> {
@@ -51,8 +65,8 @@ fn impl_deserialize(struct_name_ident: &syn::Ident, struct_fields: &StructFields
                     fn visit_map<M>(self, mut map: M) -> Result<Self::Value> where M: MapAccess<'de> {
                         #( #defs )*
 
-                        while let Some(key) = map.next_key()? {
-                            match key.as_str() {
+                        while let Some(keys) = map.next_key()? {
+                            match keys.as_str() {
                                 #( #maps )*
                                 _ => {return Err(FhirError::error("读到不存在的键"));},
                             }
@@ -70,3 +84,6 @@ fn impl_deserialize(struct_name_ident: &syn::Ident, struct_fields: &StructFields
     );
     Ok(ret)
 }
+
+
+

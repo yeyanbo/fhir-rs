@@ -1,6 +1,8 @@
 mod primitive;
 mod complex;
 mod helper;
+mod resource;
+mod backbone;
 
 use proc_macro::TokenStream;
 use syn;
@@ -29,27 +31,30 @@ pub fn derive_primitive(item: TokenStream) -> TokenStream {
 pub fn derive_resource(item: TokenStream) -> TokenStream {
     let st = syn::parse_macro_input!(item as syn::DeriveInput);
 
-    // eprintln!("{:#?}", st);
-    TokenStream::new()
+    resource::expand_derive_resource(&st)
+        .unwrap_or_else(syn::Error::into_compile_error)
+        .into()
 }
 
 #[proc_macro_derive(BackboneElement, attributes(fhir))]
 pub fn derive_backbone_element(item: TokenStream) -> TokenStream {
     let st = syn::parse_macro_input!(item as syn::DeriveInput);
 
-    TokenStream::new()
+    backbone::expand_derive_backbone(&st)
+        .unwrap_or_else(syn::Error::into_compile_error)
+        .into()
 }
 
-#[proc_macro_derive(Element, attributes(fhir))]
-pub fn derive_element(item: TokenStream) -> TokenStream {
-    let st = syn::parse_macro_input!(item as syn::DeriveInput);
-
-    TokenStream::new()
-}
+// #[proc_macro_derive(Element, attributes(fhir))]
+// pub fn derive_element(item: TokenStream) -> TokenStream {
+//     let st = syn::parse_macro_input!(item as syn::DeriveInput);
+//
+//     TokenStream::new()
+// }
 
 #[proc_macro_derive(Extension, attributes(fhir))]
 pub fn derive_extension(item: TokenStream) -> TokenStream {
-    let st = syn::parse_macro_input!(item as syn::DeriveInput);
+    let _ = syn::parse_macro_input!(item as syn::DeriveInput);
 
     TokenStream::new()
 }
