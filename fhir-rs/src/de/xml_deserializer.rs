@@ -241,17 +241,17 @@ impl<'de, 'a,  R: BufRead> Deserializer<'de> for &'a mut XmlDeserializer<R> {
         todo!()
     }
 
-    fn deserialize_struct<V>(self, name: &str, visitor: V) -> Result<V::Value> where V: Visitor<'de> {
+    fn deserialize_struct<V>(self, _name: &str, visitor: V) -> Result<V::Value> where V: Visitor<'de> {
         tracing::debug!("开始处理结构体");
         while let event = self.next()? {
-            match event {
-                XmlEvent::StartElement {..} => {
+            return match event {
+                XmlEvent::StartElement { .. } => {
                     let value = visitor.visit_map(XmlProcessor::new(self))?;
-                    return Ok(value);
+                    Ok(value)
                 }
                 _ => {
                     tracing::debug!("{:?}", &event);
-                    return Err(FhirError::error("未读到XML的根元素"));
+                    Err(FhirError::error("未读到XML的根元素"))
                 }
             };
         }

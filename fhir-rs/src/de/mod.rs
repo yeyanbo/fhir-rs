@@ -91,7 +91,7 @@ pub trait Visitor<'de>: Sized {
             (Some(v), None) => {Some(v)}
             (None, Some(v)) => {Some(v)}
             (None, None) => {None}
-            (Some(mut a), Some(b)) => {
+            (Some(a), Some(b)) => {
                 Some(a.set_id(b.id().clone().unwrap()).set_extension(b.extension().clone().unwrap()))
             }
         }

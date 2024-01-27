@@ -78,7 +78,7 @@ impl<'a, 'de, R: BufRead> Deserializer<'de> for &'a mut JsonDeserializer<R> {
         }
     }
 
-    fn deserialize_map<V>(self, visitor: V) -> Result<V::Value> where V: Visitor<'de> {
+    fn deserialize_map<V>(self, _visitor: V) -> Result<V::Value> where V: Visitor<'de> {
         todo!()
     }
 
@@ -100,11 +100,11 @@ impl<'a, 'de, R: BufRead> Deserializer<'de> for &'a mut JsonDeserializer<R> {
         // visitor.visit_vec()
     }
 
-    fn deserialize_enum<V>(self, visitor: V) -> Result<V::Value> where V: Visitor<'de> {
+    fn deserialize_enum<V>(self, _visitor: V) -> Result<V::Value> where V: Visitor<'de> {
         todo!()
     }
 
-    fn deserialize_struct<V>(self, name: &str, visitor: V) -> Result<V::Value>
+    fn deserialize_struct<V>(self, _name: &str, visitor: V) -> Result<V::Value>
         where V: Visitor<'de> {
         tracing::debug!("到这里了");
 
