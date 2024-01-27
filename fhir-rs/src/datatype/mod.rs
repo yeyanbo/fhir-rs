@@ -214,6 +214,17 @@ pub struct Extension {
     pub value: Option<Any>,
 }
 
+impl Extension {
+    pub fn new(url: Url, value: Any) -> Extension {
+        Extension {
+            id: None,
+            extension: None,
+            url: Some(url),
+            value: Some(value),
+        }
+    }
+}
+
 impl Serialize for Extension {
     fn serialize<Ser>(&self, serializer: Ser) -> Result<()> where Ser: Serializer {
         let mut extension  = serializer.serialize_extension()?;
