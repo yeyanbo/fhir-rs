@@ -60,6 +60,18 @@ pub(crate) fn vector_inner(field_type: &syn::Type) -> Option<&syn::Type> {
     None
 }
 
+pub(crate) fn is_primitive(field_type: &syn::Type) -> bool {
+    if let syn::Type::Path(syn::TypePath { path: syn::Path { ref segments, .. }, ..}) = field_type
+    {
+        if let Some(seg) = segments.last() {
+            if seg.ident.to_string().ends_with("Dt") {
+                return true;
+            }
+        }
+    }
+    false
+}
+
 /// 为简单类型和复合类型实现了Element特性
 pub(crate) fn impl_element(struct_name_ident: &syn::Ident) -> syn::Result<proc_macro2::TokenStream> {
 
