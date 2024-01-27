@@ -45,6 +45,22 @@ pub trait Primitive {
     fn set_value(self, v: Self::T) -> Self;
 }
 
+pub trait Resource {
+    fn id(&self) -> &Option<Id>;
+    fn set_id(self, id: Id) -> Self;
+    fn meta(&self) -> &Option<Meta>;
+    fn set_meta(self, meta: Meta) -> Self;
+}
+
+pub trait DomainResource: Resource {
+    fn extension(&self) -> &Option<Vec<Extension>>;
+    fn set_extension(self, ext: Vec<Extension>) -> Self;
+    fn add_extension(self, ext: Extension) -> Self;
+    fn modifier_extension(&self) -> &Option<Vec<Extension>>;
+    fn set_modifier_extension(self, ext: Vec<Extension>) -> Self;
+    fn add_modifier_extension(self, ext: Extension) -> Self;
+}
+
 #[derive(Clone, Debug)]
 pub struct Date(chrono::NaiveDate, usize);
 
