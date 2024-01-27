@@ -21,7 +21,7 @@ pub(crate) fn expand_derive_complex(st: &syn::DeriveInput) -> syn::Result<proc_m
 }
 
 fn impl_complex(struct_name_ident: &syn::Ident, struct_fields: &StructFields) -> syn::Result<proc_macro2::TokenStream> {
-    let fns = impl_complex_fields(struct_fields, struct_name_ident.span())?;
+    let fns = impl_complex_fields(struct_fields)?;
 
     let ret = quote::quote!(
         impl #struct_name_ident {
@@ -31,7 +31,7 @@ fn impl_complex(struct_name_ident: &syn::Ident, struct_fields: &StructFields) ->
     Ok(ret)
 }
 
-pub(crate) fn impl_complex_fields(struct_fields: &StructFields, span: proc_macro2::Span) -> syn::Result<Vec<proc_macro2::TokenStream>> {
+pub(crate) fn impl_complex_fields(struct_fields: &StructFields) -> syn::Result<Vec<proc_macro2::TokenStream>> {
     let mut fields = Vec::with_capacity(32);
 
     struct_fields.iter()
@@ -76,7 +76,7 @@ pub(crate) fn impl_complex_fields(struct_fields: &StructFields, span: proc_macro
 }
 
 fn impl_serialize(struct_name_ident: &syn::Ident, struct_fields: &StructFields) -> syn::Result<proc_macro2::TokenStream> {
-    let fields = helper::impl_serialize_fields(struct_fields, struct_name_ident.span())?;
+    let fields = helper::impl_serialize_fields(struct_fields)?;
 
     let ret = quote::quote!(
         impl Serialize for #struct_name_ident {

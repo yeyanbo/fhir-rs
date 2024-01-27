@@ -103,7 +103,7 @@ pub(crate) fn impl_element(struct_name_ident: &syn::Ident) -> syn::Result<proc_m
 
 /// 在序列化函数中，用于生成所有字段（除id、extension之外）
 /// TODO 待优化：如果能够将id、extension的处理方法与其它通用字段保持一致，可以大大降低处理逻辑的复杂性
-pub(crate) fn impl_serialize_fields(struct_fields: &StructFields, span: proc_macro2::Span) -> syn::Result<Vec<proc_macro2::TokenStream>> {
+pub(crate) fn impl_serialize_fields(struct_fields: &StructFields) -> syn::Result<Vec<proc_macro2::TokenStream>> {
     let mut fields = Vec::with_capacity(32);
 
     struct_fields.iter()
