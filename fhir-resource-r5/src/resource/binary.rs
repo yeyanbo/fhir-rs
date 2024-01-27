@@ -1,5 +1,4 @@
 use fhir_rs::prelude::*;
-use crate::AnyResource;
 
 #[derive(Resource, Debug, Clone, Default)]
 pub struct Binary {

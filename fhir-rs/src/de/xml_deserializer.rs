@@ -243,7 +243,8 @@ impl<'de, 'a,  R: BufRead> Deserializer<'de> for &'a mut XmlDeserializer<R> {
 
     fn deserialize_struct<V>(self, _name: &str, visitor: V) -> Result<V::Value> where V: Visitor<'de> {
         tracing::debug!("开始处理结构体");
-        while let event = self.next()? {
+        loop{
+            let event = self.next()?;
             return match event {
                 XmlEvent::StartElement { .. } => {
                     let value = visitor.visit_map(XmlProcessor::new(self))?;
@@ -255,8 +256,6 @@ impl<'de, 'a,  R: BufRead> Deserializer<'de> for &'a mut XmlDeserializer<R> {
                 }
             };
         }
-
-        Err(FhirError::error("未读到XML的根元素"))
     }
 }
 
