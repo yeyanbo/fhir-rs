@@ -93,6 +93,7 @@ impl<W> JsonSerializer<W>
 }
 
 impl<'ser, W: Write> Serializer for &'ser mut JsonSerializer<W> {
+    type SerializeResource = JsonCompositeProcessor<'ser, W>;
     type SerializeStruct = JsonCompositeProcessor<'ser, W>;
     type SerializeVec = JsonCompositeProcessor<'ser, W>;
     type SerializePrimitive = JsonPrimitiveProcessor<'ser, W>;
@@ -162,7 +163,7 @@ impl<'ser, W: Write> Serializer for &'ser mut JsonSerializer<W> {
         })
     }
 
-    fn serialize_vec(self, len: Option<usize>) -> Result<Self::SerializeVec> {
+    fn serialize_vec(self, _len: Option<usize>) -> Result<Self::SerializeVec> {
         self.build_element()?;
         self.start_array()?;
         Ok(JsonCompositeProcessor {
@@ -171,13 +172,8 @@ impl<'ser, W: Write> Serializer for &'ser mut JsonSerializer<W> {
     }
 
     fn serialize_struct(self, name: &'static str) -> Result<Self::SerializeStruct> {
-        if self.root {
-            self.root = false;
-            self.start_root(name)?;
-        } else {
-            self.build_element()?;
-            self.start_object()?;
-        }
+        self.build_element()?;
+        self.start_object()?;
 
         Ok(JsonCompositeProcessor {
             ser: self,
@@ -190,10 +186,37 @@ impl<'ser, W: Write> Serializer for &'ser mut JsonSerializer<W> {
             ser: self,
         })
     }
+
+    fn serialize_resource(self, name: &'static str) -> Result<Self::SerializeResource> {
+        self.start_root(name)?;
+        Ok(JsonCompositeProcessor {
+            ser: self,
+        })
+    }
 }
 
 pub struct JsonCompositeProcessor<'ser, W: Write> {
     ser: &'ser mut JsonSerializer<W>,
+}
+
+impl<'ser, W: Write> SerializeResource for JsonCompositeProcessor<'ser, W> {
+    fn serialize_id(&mut self, value: &Option<Id>) -> Result<()> {
+        if let Some(v) = value {
+            self.ser.open_element("id")?;
+            self.ser.build_element()?;
+            v.serialize(&mut *self.ser)?;
+        };
+        Ok(())
+    }
+
+    fn serialize_field<T: Serialize>(&mut self, name: &'static str, value: &T) -> Result<()> {
+        self.ser.open_element(name)?;
+        value.serialize(&mut *self.ser)
+    }
+
+    fn serialize_end(self) -> Result<()> {
+        self.ser.end_object()
+    }
 }
 
 impl<'ser, W: Write> SerializeStruct for JsonCompositeProcessor<'ser, W> {
@@ -309,7 +332,7 @@ impl<'ser, W: Write> SerializeVec for JsonCompositeProcessor<'ser, W> {
 }
 
 impl<'ser, W: Write> SerializeExtension for JsonCompositeProcessor<'ser, W> {
-    fn serialize_id(&mut self, value: &Option<String>) -> Result<()> {
+    fn serialize_id(&mut self, _value: &Option<String>) -> Result<()> {
        Ok(())
     }
 

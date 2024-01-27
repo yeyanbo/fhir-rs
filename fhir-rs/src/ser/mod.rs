@@ -23,10 +23,11 @@ pub trait Serialize {
 
 /// 能够将资源序列化到指定格式字符串的解析器
 pub trait Serializer: Sized {
-    type SerializeStruct: SerializeStruct;
-    type SerializeVec: SerializeVec;
+    type SerializeResource: SerializeResource;
     type SerializePrimitive: SerializePrimitive;
+    type SerializeStruct: SerializeStruct;
     type SerializeExtension: SerializeExtension;
+    type SerializeVec: SerializeVec;
 
     fn serialize_any<T: Serialize>(self, name: &str, value: &T) -> Result<()>;
     fn serialize_str(self, value: &str) -> Result<()>;
@@ -51,8 +52,15 @@ pub trait Serializer: Sized {
     fn serialize_none(self) -> Result<()>;
     fn serialize_primitive(self) -> Result<Self::SerializePrimitive>;
     fn serialize_vec(self, len: Option<usize>) -> Result<Self::SerializeVec>;
+    fn serialize_resource(self, name: &'static str) -> Result<Self::SerializeResource>;
     fn serialize_struct(self, name: &'static str) -> Result<Self::SerializeStruct>;
     fn serialize_extension(self) -> Result<Self::SerializeExtension>;
+}
+
+pub trait SerializeResource {
+    fn serialize_id(&mut self, value: &Option<Id>) -> Result<()>;
+    fn serialize_field<T: Serialize>(&mut self, name: &'static str, value: &T) -> Result<()>;
+    fn serialize_end(self) -> Result<()>;
 }
 
 pub trait SerializeStruct {

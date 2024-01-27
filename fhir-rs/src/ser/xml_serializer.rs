@@ -126,6 +126,7 @@ impl<W: Write> XmlSerializer<W> {
 }
 
 impl<'ser, W: Write> Serializer for &'ser mut XmlSerializer<W> {
+    type SerializeResource = XmlCompositeProcessor<'ser, W>;
     type SerializeStruct = XmlCompositeProcessor<'ser, W>;
     type SerializeVec = XmlCompositeProcessor<'ser, W>;
     type SerializePrimitive = XmlCompositeProcessor<'ser, W>;
@@ -218,12 +219,6 @@ impl<'ser, W: Write> Serializer for &'ser mut XmlSerializer<W> {
     }
 
     fn serialize_struct(self, name: &'static str) -> Result<Self::SerializeStruct> {
-        if self.root {
-            self.root = false;
-            self.start_document()?;
-            self.start_root(name)?;
-        };
-
         Ok(XmlCompositeProcessor {
             ser: self,
         })
@@ -234,10 +229,38 @@ impl<'ser, W: Write> Serializer for &'ser mut XmlSerializer<W> {
             ser: self,
         })
     }
+
+    fn serialize_resource(self, name: &'static str) -> Result<Self::SerializeResource> {
+        self.start_document()?;
+        self.start_root(name)?;
+
+        Ok(XmlCompositeProcessor {
+            ser: self,
+        })
+    }
 }
 
 pub struct XmlCompositeProcessor<'ser, W: Write> {
     ser: &'ser mut XmlSerializer<W>,
+}
+
+impl<'ser, W: Write> SerializeResource for XmlCompositeProcessor<'ser, W> {
+    fn serialize_id(&mut self, value: &Option<Id>) -> Result<()> {
+        if let Some(id) = value {
+            let iddt = IdDt::new(id);
+            SerializeResource::serialize_field(self, "id", &iddt)?;
+        }
+        Ok(())
+    }
+
+    fn serialize_field<T: Serialize>(&mut self, name: &'static str, value: &T) -> Result<()> {
+        self.ser.open_element(name)?;
+        value.serialize(&mut *self.ser)
+    }
+
+    fn serialize_end(self) -> Result<()> {
+        self.ser.end_element()
+    }
 }
 
 impl<'ser, W: Write> SerializeStruct for XmlCompositeProcessor<'ser, W> {
@@ -247,6 +270,7 @@ impl<'ser, W: Write> SerializeStruct for XmlCompositeProcessor<'ser, W> {
             self.ser.set_current_attr_key("id")?;
             v.serialize(&mut *self.ser)?;
         };
+        self.ser.build_start_element()?;
         Ok(())
 }
 
@@ -259,6 +283,7 @@ impl<'ser, W: Write> SerializeStruct for XmlCompositeProcessor<'ser, W> {
         }
         Ok(())
     }
+
     fn serialize_field<T: Serialize>(&mut self, name: &'static str, value: &T) -> Result<()> {
         self.ser.open_element(name)?;
         value.serialize(&mut *self.ser)
