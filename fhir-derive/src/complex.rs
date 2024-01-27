@@ -44,31 +44,59 @@ pub(crate) fn impl_complex_fields(struct_fields: &StructFields) -> syn::Result<V
             let set_func = format_ident!("set_{}",  ident.clone().unwrap());
             let value_type = helper::option_inner(typ).unwrap();
 
-            fields.push(quote::quote!(
-                pub fn #set_func(mut self, v: impl Into<#value_type>) -> Self {
-                    self.#ident = Some(v.into());
-                    self
-                }
-            ));
-
-            // 如果类型是Vec，添加形如add_xxxx的函数，参数为Vec的内部类型
-            if let Some(v_typ) = helper::vector_inner(value_type) {
-                let add_func = format_ident!("add_{}",  ident.clone().unwrap());
+            if helper::is_primitive(value_type) {
                 fields.push(quote::quote!(
-                    pub fn #add_func(mut self, v: impl Into<#v_typ>) -> Self {
-                        match self.#ident {
-                            None => {
-                                let mut vec = Vec::new();
-                                vec.push(v.into());
-                                self.#ident = Some(vec);
-                            }
-                            Some(ref mut vec) => {
-                                vec.push(v.into());
-                            }
-                        }
+                    pub fn #set_func<T: Into<#value_type>>(mut self, v: T) -> Self {
+                        self.#ident = Some(v.into());
                         self
                     }
                 ));
+            } else {
+                fields.push(quote::quote!(
+                    pub fn #set_func(mut self, v: #value_type) -> Self {
+                        self.#ident = Some(v);
+                        self
+                    }
+                ));
+            };
+
+            // 如果类型是Vec，添加形如add_xxxx的函数，参数为Vec的内部类型
+            if let Some(v_typ) = helper::vector_inner(value_type) {
+
+                let add_func = format_ident!("add_{}",  ident.clone().unwrap());
+                if helper::is_primitive(v_typ) {
+                    fields.push(quote::quote!(
+                        pub fn #add_func<T: Into<#v_typ>>(mut self, v: T) -> Self {
+                            match self.#ident {
+                                None => {
+                                    let mut vec = Vec::new();
+                                    vec.push(v.into());
+                                    self.#ident = Some(vec);
+                                }
+                                Some(ref mut vec) => {
+                                    vec.push(v.into());
+                                }
+                            }
+                            self
+                        }
+                    ));
+                } else {
+                    fields.push(quote::quote!(
+                        pub fn #add_func(mut self, v: #v_typ) -> Self {
+                            match self.#ident {
+                                None => {
+                                    let mut vec = Vec::new();
+                                    vec.push(v);
+                                    self.#ident = Some(vec);
+                                }
+                                Some(ref mut vec) => {
+                                    vec.push(v);
+                                }
+                            }
+                            self
+                        }
+                    ));
+                }
             }
         });
 

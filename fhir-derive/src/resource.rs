@@ -1,3 +1,5 @@
+use quote::format_ident;
+use crate::complex::impl_complex_fields;
 use crate::helper;
 use crate::helper::StructFields;
 
@@ -5,14 +7,180 @@ pub(crate) fn expand_derive_resource(st: &syn::DeriveInput) -> syn::Result<proc_
     let struct_name_ident = &st.ident;
 
     let fields = helper::get_struct_fields(&st)?;
+    let resource_trait_impl = impl_resource_trait(struct_name_ident)?;
+    // let domain_resource_trait_impl = impl_domain_resource_trait(struct_name_ident)?;
+    let resource_impl = impl_resource(struct_name_ident, fields)?;
     let serialize_impl = impl_serialize(struct_name_ident, fields)?;
     let deserialize_impl = impl_deserialize(struct_name_ident, fields)?;
 
     let ret = quote::quote!(
+        #resource_trait_impl
+        // #domain_resource_trait_impl
+        #resource_impl
         #serialize_impl
         #deserialize_impl
     );
     Ok(ret)
+}
+
+fn impl_resource_trait(struct_name_ident: &syn::Ident) -> syn::Result<proc_macro2::TokenStream> {
+
+    let ret = quote::quote!(
+        impl Resource for #struct_name_ident {
+
+            fn id(&self) -> &Option<String> {
+                &self.id
+            }
+
+            fn set_id(mut self, id: String) -> Self {
+                self.id = Some(id);
+                self
+            }
+
+            fn meta(&self) -> &Option<Meta> {
+                &self.meta
+            }
+
+            fn set_meta(mut self, meta: Meta) -> Self {
+                self.meta = Some(meta);
+                self
+            }
+        }
+    );
+    Ok(ret)
+}
+
+fn impl_domain_resource_trait(struct_name_ident: &syn::Ident) -> syn::Result<proc_macro2::TokenStream> {
+
+    let ret = quote::quote!(
+        impl DomainResource for #struct_name_ident {
+            fn extension(&self) -> &Option<Vec<Extension>> {
+                &self.extension
+            }
+
+            fn set_extension(mut self, ext: Vec<Extension>) -> Self {
+                self.extension = Some(ext);
+                self
+            }
+
+            fn add_extension(mut self, ext: Extension) -> Self {
+                match self.extension {
+                    Some(ref mut exts) => {
+                        exts.push(ext);
+                    },
+                    None => {
+                        self.extension = Some(vec![ext])
+                    },
+                }
+                self
+            }
+
+            fn modifier_extension(&self) -> &Option<Vec<Extension>> {
+                &self.modifier_extension
+            }
+
+            fn set_modifier_extension(mut self, ext: Vec<Extension>) -> Self {
+                self.modifier_extension = Some(ext);
+                self
+            }
+
+            fn add_modifier_extension(mut self, ext: Extension) -> Self {
+                match self.modifier_extension {
+                    Some(ref mut exts) => {
+                        exts.push(ext);
+                    },
+                    None => {
+                        self.modifier_extension = Some(vec![ext])
+                    },
+                }
+                self
+            }
+        }
+    );
+    Ok(ret)
+}
+
+fn impl_resource(struct_name_ident: &syn::Ident, struct_fields: &StructFields) -> syn::Result<proc_macro2::TokenStream> {
+    let fns = impl_resource_fields(struct_fields)?;
+
+    let ret = quote::quote!(
+        impl #struct_name_ident {
+            #( #fns )*
+        }
+    );
+    Ok(ret)
+}
+
+fn impl_resource_fields(struct_fields: &StructFields) -> syn::Result<Vec<proc_macro2::TokenStream>> {
+    let mut fields = Vec::with_capacity(32);
+
+    struct_fields.iter()
+        .skip(8)
+        .for_each(|f| {
+            let ident = &f.ident;
+            let typ = &f.ty;
+
+            // 赋值类型为Option的内部类型
+            let set_func = format_ident!("set_{}",  ident.clone().unwrap());
+            let value_type = helper::option_inner(typ).unwrap();
+
+            if helper::is_primitive(value_type) {
+                fields.push(quote::quote!(
+                    pub fn #set_func<T: Into<#value_type>>(mut self, v: T) -> Self {
+                        self.#ident = Some(v.into());
+                        self
+                    }
+                ));
+            } else {
+                fields.push(quote::quote!(
+                    pub fn #set_func(mut self, v: #value_type) -> Self {
+                        self.#ident = Some(v);
+                        self
+                    }
+                ));
+            };
+
+            // 如果类型是Vec，添加形如add_xxxx的函数，参数为Vec的内部类型
+            if let Some(v_typ) = helper::vector_inner(value_type) {
+
+                let add_func = format_ident!("add_{}",  ident.clone().unwrap());
+                if helper::is_primitive(v_typ) {
+                    fields.push(quote::quote!(
+                        pub fn #add_func<T: Into<#v_typ>>(mut self, v: T) -> Self {
+                            match self.#ident {
+                                None => {
+                                    let mut vec = Vec::new();
+                                    vec.push(v.into());
+                                    self.#ident = Some(vec);
+                                }
+                                Some(ref mut vec) => {
+                                    vec.push(v.into());
+                                }
+                            }
+                            self
+                        }
+                    ));
+                } else {
+                    fields.push(quote::quote!(
+                        pub fn #add_func(mut self, v: #v_typ) -> Self {
+                            match self.#ident {
+                                None => {
+                                    let mut vec = Vec::new();
+                                    vec.push(v);
+                                    self.#ident = Some(vec);
+                                }
+                                Some(ref mut vec) => {
+                                    vec.push(v);
+                                }
+                            }
+                            self
+                        }
+                    ));
+                }
+            }
+        });
+
+    Ok(fields)
 }
 
 fn impl_serialize(struct_name_ident: &syn::Ident, struct_fields: &StructFields) -> syn::Result<proc_macro2::TokenStream> {
