@@ -1,6 +1,7 @@
 use fhir_rs::prelude::*;
 use crate::AnyResource;
 
+#[derive(Resource, Debug, Clone, Default)]
 #[fhir(base="DomainResource")]
 pub struct ImagingSelection {
     /// Logical id of this artifact
