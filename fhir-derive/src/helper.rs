@@ -1,4 +1,4 @@
-// use syn::spanned::Spanned;
+use syn::{Fields, LitStr};
 
 pub(crate) type StructFields = syn::punctuated::Punctuated<syn::Field, syn::Token!(,)>;
 
@@ -71,6 +71,38 @@ pub(crate) fn is_primitive(field_type: &syn::Type) -> bool {
     }
     false
 }
+
+pub(crate) fn base_resource(st: &syn::DeriveInput) -> Option<String> {
+    let mut rst : Option<String> = None;
+    let attrs = &st.attrs;
+    if let Some(attr) = attrs.first() {
+        attr.parse_nested_meta(|meta| {
+            if meta.path.is_ident("base") {
+                let value = meta.value()?;
+                let str: LitStr = value.parse()?;
+                rst = Some(str.value());
+            }
+            Ok(())
+        }).expect("TODO: panic message");
+    }
+    rst
+}
+
+// pub(crate) fn field_attr(field: &syn::Field, attr_key: &str) -> Option<String> {
+//     let mut rst : Option<String> = None;
+//     let attrs = &field.attrs;
+//     if let Some(attr) = attrs.first() {
+//         attr.parse_nested_meta(|meta| {
+//             if meta.path.is_ident("base") {
+//                 let value = meta.value()?;
+//                 let str: LitStr = value.parse()?;
+//                 rst = Some(str.value());
+//             }
+//             Ok(())
+//         }).expect("TODO: panic message");
+//     }
+//     rst
+// }
 
 /// 为简单类型和复合类型实现了Element特性
 pub(crate) fn impl_element(struct_name_ident: &syn::Ident) -> syn::Result<proc_macro2::TokenStream> {
