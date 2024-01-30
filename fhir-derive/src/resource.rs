@@ -116,6 +116,9 @@ fn impl_resource(struct_name_ident: &syn::Ident, struct_fields: &Vec<Field>) -> 
     Ok(ret)
 }
 
+/// 为资源的每一个字段，增加一个赋值函数。
+/// 如果字段类型为Primitive类型，则赋值函数的参数为impl Into<T>
+/// 如果字段类型为Vec类型，则分配两个赋值函数：set_xxx 和 add_xxx
 fn impl_resource_fields(struct_fields: &Vec<Field>) -> syn::Result<Vec<proc_macro2::TokenStream>> {
     let mut fields = Vec::with_capacity(32);
 
@@ -211,10 +214,12 @@ fn impl_serialize_fields(struct_fields: &Vec<Field>) -> syn::Result<Vec<proc_mac
 
     struct_fields.iter()
         .skip(1)
-        .map(|f| { &f.name })
-        .for_each(|ident| {
-            let ident_literal = ident.to_string();
-            fields.push(quote::quote!(serialize_struct.serialize_field(#ident_literal, &self.#ident)?;));
+        .for_each(|f| {
+            let name = &f.name;
+            let name_literal = &f.original;
+            fields.push(quote::quote!(
+                serialize_struct.serialize_field(#name_literal, &self.#name)?;
+            ));
         });
 
     Ok(fields)

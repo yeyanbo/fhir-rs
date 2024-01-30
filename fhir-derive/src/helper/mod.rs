@@ -224,10 +224,12 @@ pub(crate) fn impl_serialize_fields(struct_fields: &Vec<Field>) -> syn::Result<V
 
     struct_fields.iter()
         .skip(2)
-        .map(|f| { &f.name })
-        .for_each(|ident| {
-            let ident_literal = ident.to_string();
-            fields.push(quote::quote!(serialize_struct.serialize_field(#ident_literal, &self.#ident)?;));
+        .for_each(|f| {
+            let name = &f.name;
+            let name_literal = &f.original;
+            fields.push(quote::quote!(
+                serialize_struct.serialize_field(#name_literal, &self.#name)?;
+            ));
         });
 
     Ok(fields)
