@@ -1,21 +1,27 @@
+use proc_macro2::TokenStream;
 use quote::format_ident;
-use crate::complex::impl_complex_fields;
-use crate::helper;
-use crate::helper::StructFields;
+use crate::helper::{self, Field};
 
 pub(crate) fn expand_derive_resource(st: &syn::DeriveInput) -> syn::Result<proc_macro2::TokenStream> {
     let struct_name_ident = &st.ident;
 
     let fields = helper::get_struct_fields(&st)?;
     let resource_trait_impl = impl_resource_trait(struct_name_ident)?;
-    // let domain_resource_trait_impl = impl_domain_resource_trait(struct_name_ident)?;
-    let resource_impl = impl_resource(struct_name_ident, fields)?;
-    let serialize_impl = impl_serialize(struct_name_ident, fields)?;
-    let deserialize_impl = impl_deserialize(struct_name_ident, fields)?;
+
+    let mut domain_resource_trait_impl = TokenStream::new();
+    if let Some(base) = helper::base_resource(st) {
+        if base == "DomainResource" {
+            domain_resource_trait_impl = impl_domain_resource_trait(struct_name_ident)?;
+        }
+    }
+
+    let resource_impl = impl_resource(struct_name_ident, &fields)?;
+    let serialize_impl = impl_serialize(struct_name_ident, &fields)?;
+    let deserialize_impl = impl_deserialize(struct_name_ident, &fields)?;
 
     let ret = quote::quote!(
         #resource_trait_impl
-        // #domain_resource_trait_impl
+        #domain_resource_trait_impl
         #resource_impl
         #serialize_impl
         #deserialize_impl
@@ -27,7 +33,6 @@ fn impl_resource_trait(struct_name_ident: &syn::Ident) -> syn::Result<proc_macro
 
     let ret = quote::quote!(
         impl Resource for #struct_name_ident {
-
             fn id(&self) -> &Option<String> {
                 &self.id
             }
@@ -100,7 +105,7 @@ fn impl_domain_resource_trait(struct_name_ident: &syn::Ident) -> syn::Result<pro
     Ok(ret)
 }
 
-fn impl_resource(struct_name_ident: &syn::Ident, struct_fields: &StructFields) -> syn::Result<proc_macro2::TokenStream> {
+fn impl_resource(struct_name_ident: &syn::Ident, struct_fields: &Vec<Field>) -> syn::Result<proc_macro2::TokenStream> {
     let fns = impl_resource_fields(struct_fields)?;
 
     let ret = quote::quote!(
@@ -111,17 +116,17 @@ fn impl_resource(struct_name_ident: &syn::Ident, struct_fields: &StructFields) -
     Ok(ret)
 }
 
-fn impl_resource_fields(struct_fields: &StructFields) -> syn::Result<Vec<proc_macro2::TokenStream>> {
+fn impl_resource_fields(struct_fields: &Vec<Field>) -> syn::Result<Vec<proc_macro2::TokenStream>> {
     let mut fields = Vec::with_capacity(32);
 
     struct_fields.iter()
         .skip(8)
         .for_each(|f| {
-            let ident = &f.ident;
+            let ident = &f.name;
             let typ = &f.ty;
 
             // 赋值类型为Option的内部类型
-            let set_func = format_ident!("set_{}",  ident.clone().unwrap());
+            let set_func = format_ident!("set_{}",  &ident);
             let value_type = helper::option_inner(typ).unwrap();
 
             if helper::is_primitive(value_type) {
@@ -142,8 +147,7 @@ fn impl_resource_fields(struct_fields: &StructFields) -> syn::Result<Vec<proc_ma
 
             // 如果类型是Vec，添加形如add_xxxx的函数，参数为Vec的内部类型
             if let Some(v_typ) = helper::vector_inner(value_type) {
-
-                let add_func = format_ident!("add_{}",  ident.clone().unwrap());
+                let add_func = format_ident!("add_{}", &ident);
                 if helper::is_primitive(v_typ) {
                     fields.push(quote::quote!(
                         pub fn #add_func<T: Into<#v_typ>>(mut self, v: T) -> Self {
@@ -183,7 +187,7 @@ fn impl_resource_fields(struct_fields: &StructFields) -> syn::Result<Vec<proc_ma
     Ok(fields)
 }
 
-fn impl_serialize(struct_name_ident: &syn::Ident, struct_fields: &StructFields) -> syn::Result<proc_macro2::TokenStream> {
+fn impl_serialize(struct_name_ident: &syn::Ident, struct_fields: &Vec<Field>) -> syn::Result<proc_macro2::TokenStream> {
     let struct_name_literal = struct_name_ident.to_string();
     let fields = impl_serialize_fields(struct_fields)?;
 
@@ -202,21 +206,21 @@ fn impl_serialize(struct_name_ident: &syn::Ident, struct_fields: &StructFields) 
 
 /// 在序列化函数中，用于生成所有字段（除id之外）
 /// 在资源中id是需要特殊处理的，skip(1)就是跳过id
-fn impl_serialize_fields(struct_fields: &StructFields) -> syn::Result<Vec<proc_macro2::TokenStream>> {
+fn impl_serialize_fields(struct_fields: &Vec<Field>) -> syn::Result<Vec<proc_macro2::TokenStream>> {
     let mut fields = Vec::with_capacity(32);
 
     struct_fields.iter()
         .skip(1)
-        .map(|f| { &f.ident })
+        .map(|f| { &f.name })
         .for_each(|ident| {
-            let ident_literal = ident.as_ref().unwrap().to_string();
+            let ident_literal = ident.to_string();
             fields.push(quote::quote!(serialize_struct.serialize_field(#ident_literal, &self.#ident)?;));
         });
 
     Ok(fields)
 }
 
-fn impl_deserialize(struct_name_ident: &syn::Ident, struct_fields: &StructFields) -> syn::Result<proc_macro2::TokenStream> {
+fn impl_deserialize(struct_name_ident: &syn::Ident, struct_fields: &Vec<Field>) -> syn::Result<proc_macro2::TokenStream> {
     let visitor = helper::visitor(struct_name_ident)?;
 
     let fields = helper::impl_deserialize_fields(struct_fields)?;

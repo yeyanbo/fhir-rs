@@ -1,13 +1,13 @@
 use crate::helper;
-use crate::helper::StructFields;
+use crate::helper::{Field};
 
 pub(crate) fn expand_derive_backbone(st: &syn::DeriveInput) -> syn::Result<proc_macro2::TokenStream> {
     let struct_name_ident = &st.ident;
 
     let fields = helper::get_struct_fields(&st)?;
 
-    let serialize_impl = impl_serialize(struct_name_ident, fields)?;
-    let deserialize_impl = impl_deserialize(struct_name_ident, fields)?;
+    let serialize_impl = impl_serialize(struct_name_ident, &fields)?;
+    let deserialize_impl = impl_deserialize(struct_name_ident, &fields)?;
 
     let ret = quote::quote!(
         #serialize_impl
@@ -16,7 +16,7 @@ pub(crate) fn expand_derive_backbone(st: &syn::DeriveInput) -> syn::Result<proc_
     Ok(ret)
 }
 
-fn impl_serialize(struct_name_ident: &syn::Ident, struct_fields: &StructFields) -> syn::Result<proc_macro2::TokenStream> {
+fn impl_serialize(struct_name_ident: &syn::Ident, struct_fields: &Vec<Field>) -> syn::Result<proc_macro2::TokenStream> {
     let fields = helper::impl_serialize_fields(struct_fields)?;
 
     let ret = quote::quote!(
@@ -33,7 +33,7 @@ fn impl_serialize(struct_name_ident: &syn::Ident, struct_fields: &StructFields) 
     Ok(ret)
 }
 
-fn impl_deserialize(struct_name_ident: &syn::Ident, struct_fields: &StructFields) -> syn::Result<proc_macro2::TokenStream> {
+fn impl_deserialize(struct_name_ident: &syn::Ident, struct_fields: &Vec<Field>) -> syn::Result<proc_macro2::TokenStream> {
     let visitor = helper::visitor(struct_name_ident)?;
 
     let fields = helper::impl_deserialize_fields(struct_fields)?;

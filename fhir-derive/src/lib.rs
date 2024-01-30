@@ -45,16 +45,10 @@ pub fn derive_backbone_element(item: TokenStream) -> TokenStream {
         .into()
 }
 
-// #[proc_macro_derive(Element, attributes(fhir))]
-// pub fn derive_element(item: TokenStream) -> TokenStream {
-//     let st = syn::parse_macro_input!(item as syn::DeriveInput);
-//
-//     TokenStream::new()
-// }
-
 #[proc_macro_derive(Extension, attributes(fhir))]
 pub fn derive_extension(item: TokenStream) -> TokenStream {
-    let _ = syn::parse_macro_input!(item as syn::DeriveInput);
+    let st = syn::parse_macro_input!(item as syn::DeriveInput);
 
+    eprintln!("{:#?}", helper::base_resource(&st));
     TokenStream::new()
 }
