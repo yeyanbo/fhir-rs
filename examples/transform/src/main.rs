@@ -1,4 +1,4 @@
-use tracing::{debug, Level};
+use tracing::{info, Level};
 use tracing_subscriber::FmtSubscriber;
 use fhir_resource_r5::Patient;
 use fhir_rs::prelude::*;
@@ -6,24 +6,19 @@ use core::str::FromStr;
 
 fn main() -> Result<()> {
     let subscriber = FmtSubscriber::builder()
-        .with_max_level(Level::TRACE)
+        .with_max_level(Level::INFO)
         .finish();
 
     tracing::subscriber::set_global_default(subscriber)
         .expect("setting default subscriber failed");
 
-    let mut patient = Patient::default();
-    patient.id = Some("df".to_string());
-    patient.extension = Some(vec![Extension::new("dd".to_string(), Any::String(StringDt::new("ddf")))]);
-    patient.meta = Some(Meta::default()
-        .set_version_id(IdDt::new("v1"))
-        .set_last_updated(InstantDt::from_str("2001-10-10T10:10:12Z")?));
-    // test_date()?;
-    // test_chrono()?;
-    //
-    // test_json_serialize(&patient)?;
-    // test_json_deserialize();
-    //
+    let patient = Patient::default()
+        .set_id("12345".to_string())
+        .set_meta(Meta::default()
+            .set_version_id(IdDt::new("v1"))
+            .set_last_updated(InstantDt::from_str("2001-10-10T10:10:12Z")?))
+        .add_extension(Extension::new("dd".to_string(), Any::String(StringDt::new("ddf"))));
+
     test_xml_serialize(&patient)?;
     Ok(())
 }
@@ -126,7 +121,7 @@ fn main() -> Result<()> {
 
 fn test_xml_serialize(patient: &Patient) -> Result<()> {
     let str = to_xml(patient)?;
-    debug!("Patient Formatter: {:?}", str);
+    info!("Patient Formatter: {:#?}", str);
     Ok(())
 }
 
