@@ -12,7 +12,9 @@ mod json_serializer;
 mod xml_serializer;
 
 pub use json_serializer::to_string as to_json;
+pub use json_serializer::to_string_pretty as to_json_pretty;
 pub use xml_serializer::to_string as to_xml;
+pub use xml_serializer::to_string_pretty as to_xml_pretty;
 
 use crate::prelude::*;
 

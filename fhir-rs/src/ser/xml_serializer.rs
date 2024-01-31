@@ -1,7 +1,7 @@
 use std::collections::HashMap;
 use std::io::Write;
 use xml::common::XmlVersion;
-use xml::EventWriter;
+use xml::{EmitterConfig, EventWriter};
 use xml::writer::{
     XmlEvent,
     events::StartElementBuilder
@@ -10,16 +10,22 @@ use crate::prelude::*;
 
 pub fn to_string<Ser: Serialize>(value: &Ser) -> Result<String> {
     let mut buffer = Vec::with_capacity(128);
-    to_writer(&mut buffer, value)?;
+    // to_writer(&mut buffer, value)?;
+
+    let mut ser = XmlSerializer::from_writer(&mut buffer, false);
+    value.serialize(&mut ser)?;
 
     let string = String::from_utf8(buffer)?;
     Ok(string)
 }
 
-pub fn to_writer<W: Write, S: Serialize>(writer: W, value: &S) -> Result<()> {
-    let mut ser = XmlSerializer::from_writer(writer);
+pub fn to_string_pretty<Ser: Serialize>(value: &Ser) -> Result<String> {
+    let mut buffer = Vec::with_capacity(128);
+    let mut ser = XmlSerializer::from_writer(&mut buffer, true);
     value.serialize(&mut ser)?;
-    Ok(())
+
+    let string = String::from_utf8(buffer)?;
+    Ok(string)
 }
 
 pub struct XmlSerializer<W: Write> {
@@ -30,9 +36,13 @@ pub struct XmlSerializer<W: Write> {
 }
 
 impl<W: Write> XmlSerializer<W> {
-    pub fn from_writer(writer: W) -> Self {
+    pub fn from_writer(writer: W, pretty: bool) -> Self {
+        let writer = EmitterConfig::new()
+            .perform_indent(pretty)
+            .create_writer(writer);
+
         XmlSerializer{
-            writer: EventWriter::new(writer),
+            writer,
             tags: Vec::with_capacity(32),
             current_attr_key: None,
             current_tag_attrs: None,
@@ -101,7 +111,6 @@ impl<W: Write> XmlSerializer<W> {
                     self.writer.write(event)?;
                 }
             };
-
         };
         Ok(())
     }
@@ -112,14 +121,11 @@ impl<W: Write> XmlSerializer<W> {
         tracing::debug!("{:?}", &event);
 
         self.writer.write(event)?;
-
         Ok(())
     }
 
     fn debug(&mut self) {
-        tracing::warn!("===Debug===");
-        tracing::warn!("tags: {:?} attr_key: {:?}", self.tags, self.current_attr_key);
-        tracing::warn!("===Debug===");
+        tracing::debug!("tags: {:?} attr_key: {:?}", self.tags, self.current_attr_key);
     }
 }
 
