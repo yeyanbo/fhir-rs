@@ -1,19 +1,31 @@
 use std::io::Write;
 use json_event_parser::{JsonEvent, JsonWriter};
+use json_pretty::PrettyFormatter;
 use crate::prelude::*;
 
 pub fn to_string<Ser: Serialize>(value: &Ser) -> Result<String> {
     let mut buffer = Vec::with_capacity(128);
-    to_writer(&mut buffer, value)?;
+    let mut ser = JsonSerializer::from_writer(&mut buffer);
+    value.serialize(&mut ser)?;
 
     let string = String::from_utf8(buffer)?;
     Ok(string)
 }
 
-pub fn to_writer<W: Write, S: Serialize>(writer: W, value: &S) -> Result<()> {
-    let mut ser = JsonSerializer::from_writer(writer);
-    value.serialize(&mut ser)
+pub fn to_string_pretty<Ser: Serialize>(value: &Ser) -> Result<String> {
+    let mut buffer = Vec::with_capacity(128);
+    let mut ser = JsonSerializer::from_writer(&mut buffer);
+    value.serialize(&mut ser)?;
+
+    let string = String::from_utf8(buffer)?;
+    let formatter = PrettyFormatter::from_string(&string);
+    Ok(formatter.pretty())
 }
+
+// pub fn to_writer<W: Write, S: Serialize>(writer: W, value: &S) -> Result<()> {
+//     let mut ser = JsonSerializer::from_writer(writer);
+//     value.serialize(&mut ser)
+// }
 
 pub struct JsonSerializer<W: Write> {
     pub writer: JsonWriter<W>,
@@ -85,8 +97,7 @@ impl<W> JsonSerializer<W>
     }
 
     fn debug(&mut self) {
-        tracing::warn!("===Debug===");
-        tracing::warn!("tags: {:?}", self.tags);
+        tracing::debug!("tags: {:?}", self.tags);
     }
 }
 
