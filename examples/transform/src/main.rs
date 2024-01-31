@@ -20,6 +20,7 @@ fn main() -> Result<()> {
         .add_extension(Extension::new("dd".to_string(), Any::String(StringDt::new("ddf"))));
 
     test_xml_serialize(&patient)?;
+    test_json_serialize(&patient)?;
     Ok(())
 }
 
@@ -111,17 +112,15 @@ fn main() -> Result<()> {
 //     }
 // }
 
-// fn test_json_serialize(patient: &Patient) -> Result<()> {
-//     let str = to_json(patient)?;
-//
-//     debug!("Patient Formatter: {:?}", str);
-//
-//     Ok(())
-// }
+fn test_json_serialize(patient: &Patient) -> Result<()> {
+    let str = to_json_pretty(patient)?;
+    info!("Patient Formatter: {}", str);
+    Ok(())
+}
 
 fn test_xml_serialize(patient: &Patient) -> Result<()> {
-    let str = to_xml(patient)?;
-    info!("Patient Formatter: {:#?}", str);
+    let str = to_xml_pretty(patient)?;
+    info!("Patient Formatter: {}", str);
     Ok(())
 }
 
