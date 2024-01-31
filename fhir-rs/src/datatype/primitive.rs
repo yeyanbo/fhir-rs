@@ -647,6 +647,8 @@ impl FromStr for XhtmlDt {
 
 #[cfg(test)]
 mod tests {
+    use std::str::FromStr;
+
     use crate::prelude::*;
 
     #[test]
@@ -665,6 +667,50 @@ mod tests {
     fn test_bool() {
         let gender = BooleanDt::new(false);
         assert_eq!(gender.value.unwrap(), false)
+    }
+    
+    #[test]
+    fn test_date() -> Result<()> {
+        let d1 = DateDt::from_str("2009")?;
+        tracing::debug!("Date: {}", d1.to_string());
+        let d1 = DateDt::from_str("2009-12")?;
+        tracing::debug!("Date: {}", d1);
+        let d1 = DateDt::from_str("2009-12-23")?;
+        tracing::debug!("Date: {}", d1);
+
+        let t1 = TimeDt::from_str("23:12:45")?;
+        tracing::debug!("Time: {:?}", t1);
+        let t1 = TimeDt::from_str("23:12:45.234")?;
+        tracing::debug!("Time: {}", t1);
+        let t1 = TimeDt::from_str("23:12:60.040")?;
+        tracing::debug!("Time: {}", t1);
+
+        tracing::debug!("=======================");
+
+        let dt1 = DateTimeDt::from_str("2009")?;
+        tracing::debug!("DateTime: {}", dt1.to_string());
+        let dt1 = DateTimeDt::from_str("2009-12")?;
+        tracing::debug!("DateTime: {:?}", dt1);
+        let dt1 = DateTimeDt::from_str("2009-12-23")?;
+        tracing::debug!("DateTime: {}", dt1);
+        let dt1 = DateTimeDt::from_str("2009-12-23T23:12:45Z")?;
+        tracing::debug!("DateTime: {:?}", dt1);
+        let dt1 = DateTimeDt::from_str("2009-12-23T23:12:45.234Z")?;
+        tracing::debug!("DateTime: {}", dt1);
+        let dt1 = DateTimeDt::from_str("2009-12-23T23:12:45-06:00")?;
+        tracing::debug!("DateTime: {}", dt1);
+
+        tracing::debug!("=======================");
+
+        let instant1 = InstantDt::from_str("2009-12-23T23:12:45Z")?;
+        tracing::debug!("Instant: {}", instant1);
+        let instant1 = InstantDt::from_str("2009-12-23T23:12:45.234Z")?;
+        tracing::debug!("Instant: {}", instant1);
+        let instant1 = InstantDt::from_str("2009-12-23T23:12:45-06:00")?;
+        tracing::debug!("Instant: {}", instant1);
+        let instant1 = InstantDt::from_str("2009-12-23T23:12:45.456-06:00")?;
+        tracing::debug!("Instant: {}", instant1);
+        Ok(())
     }
 
 }
