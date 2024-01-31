@@ -1,6 +1,8 @@
 use std::str::FromStr;
 use crate::datatype::*;
 
+
+
 #[derive(Primitive, Debug, Clone)]
 pub struct StringDt {
     /// xml:id (or equivalent in JSON)
@@ -12,25 +14,6 @@ pub struct StringDt {
     /// Primitive value for string
     #[fhir(name="value", min="0", max="1", summary=false, modifier=false)]
     pub value: Option<String>,
-}
-
-impl From<&str> for StringDt {
-    fn from(value: &str) -> Self {
-        StringDt::from_str(value).unwrap()
-    }
-}
-
-impl FromStr for StringDt {
-    type Err = FhirError;
-
-    fn from_str(s: &str) -> std::prelude::v1::Result<Self, Self::Err> {
-        let val = String::from_str(s)?;
-        Ok(StringDt {
-            id: None,
-            extension: None,
-            value: Some(val),
-        })
-    }
 }
 
 #[derive(Primitive, Debug, Clone)]
@@ -46,25 +29,6 @@ pub struct IdDt {
     pub value: Option<Id>,
 }
 
-impl From<&str> for IdDt {
-    fn from(value: &str) -> Self {
-        IdDt::from_str(value).unwrap()
-    }
-}
-
-impl FromStr for IdDt {
-    type Err = FhirError;
-
-    fn from_str(s: &str) -> std::prelude::v1::Result<Self, Self::Err> {
-        let val = String::from_str(s)?;
-        Ok(IdDt {
-            id: None,
-            extension: None,
-            value: Some(val),
-        })
-    }
-}
-
 #[derive(Primitive, Debug, Clone)]
 pub struct Base64BinaryDt {
     /// xml:id (or equivalent in JSON)
@@ -76,19 +40,6 @@ pub struct Base64BinaryDt {
     /// Primitive value for base64Binary
     #[fhir(name="value", min="0", max="1", summary=false, modifier=false)]
     pub value: Option<Base64Binary>,
-}
-
-impl FromStr for Base64BinaryDt {
-    type Err = FhirError;
-
-    fn from_str(s: &str) -> std::prelude::v1::Result<Self, Self::Err> {
-        let val = String::from_str(s)?;
-        Ok(Base64BinaryDt {
-            id: None,
-            extension: None,
-            value: Some(val),
-        })
-    }
 }
 
 #[derive(Primitive, Debug, Clone)]
@@ -104,19 +55,6 @@ pub struct MarkdownDt {
     pub value: Option<Markdown>,
 }
 
-impl FromStr for MarkdownDt {
-    type Err = FhirError;
-
-    fn from_str(s: &str) -> std::prelude::v1::Result<Self, Self::Err> {
-        let val = String::from_str(s)?;
-        Ok(MarkdownDt {
-            id: None,
-            extension: None,
-            value: Some(val),
-        })
-    }
-}
-
 #[derive(Primitive, Debug, Clone)]
 pub struct UriDt {
     /// xml:id (or equivalent in JSON)
@@ -130,20 +68,6 @@ pub struct UriDt {
     pub value: Option<Uri>,
 }
 
-impl FromStr for UriDt {
-    type Err = FhirError;
-
-    fn from_str(s: &str) -> std::prelude::v1::Result<Self, Self::Err> {
-        let val = String::from_str(s)?;
-        Ok(UriDt {
-            id: None,
-            extension: None,
-            value: Some(val),
-        })
-    }
-}
-
-
 #[derive(Primitive, Debug, Clone)]
 pub struct OidDt {
     /// xml:id (or equivalent in JSON)
@@ -155,19 +79,6 @@ pub struct OidDt {
     /// Primitive value for oid
     #[fhir(name="value", min="0", max="1", summary=false, modifier=false)]
     pub value: Option<Oid>,
-}
-
-impl FromStr for OidDt {
-    type Err = FhirError;
-
-    fn from_str(s: &str) -> std::prelude::v1::Result<Self, Self::Err> {
-        let val = String::from_str(s)?;
-        Ok(OidDt {
-            id: None,
-            extension: None,
-            value: Some(val),
-        })
-    }
 }
 
 #[derive(Primitive, Debug, Clone)]
@@ -183,19 +94,6 @@ pub struct CanonicalDt {
     pub value: Option<Canonical>,
 }
 
-impl FromStr for CanonicalDt {
-    type Err = FhirError;
-
-    fn from_str(s: &str) -> std::prelude::v1::Result<Self, Self::Err> {
-        let val = String::from_str(s)?;
-        Ok(CanonicalDt {
-            id: None,
-            extension: None,
-            value: Some(val),
-        })
-    }
-}
-
 #[derive(Primitive, Debug, Clone)]
 pub struct CodeDt {
     /// xml:id (or equivalent in JSON)
@@ -207,25 +105,6 @@ pub struct CodeDt {
     /// Primitive value for code
     #[fhir(name="value", min="0", max="1", summary=false, modifier=false)]
     pub value: Option<Code>,
-}
-
-impl From<&str> for CodeDt {
-    fn from(value: &str) -> Self {
-        CodeDt::from_str(value).unwrap()
-    }
-}
-
-impl FromStr for CodeDt {
-    type Err = FhirError;
-
-    fn from_str(s: &str) -> std::prelude::v1::Result<Self, Self::Err> {
-        let val = String::from_str(s)?;
-        Ok(CodeDt {
-            id: None,
-            extension: None,
-            value: Some(val),
-        })
-    }
 }
 
 /// 布尔类型
@@ -244,19 +123,6 @@ pub struct BooleanDt {
     pub value: Option<Boolean>,
 }
 
-impl FromStr for BooleanDt {
-    type Err = FhirError;
-
-    fn from_str(s: &str) -> std::prelude::v1::Result<Self, Self::Err> {
-        let val = bool::from_str(s)?;
-        Ok(BooleanDt {
-            id: None,
-            extension: None,
-            value: Some(val),
-        })
-    }
-}
-
 /// 正整数类型
 ///
 /// 1..2,147,483,647
@@ -273,18 +139,6 @@ pub struct PositiveIntDt {
     pub value: Option<PositiveInt>,
 }
 
-impl FromStr for PositiveIntDt {
-    type Err = FhirError;
-
-    fn from_str(s: &str) -> std::prelude::v1::Result<Self, Self::Err> {
-        let val = usize::from_str(s)?;
-        Ok(PositiveIntDt {
-            id: None,
-            extension: None,
-            value: Some(val),
-        })
-    }
-}
 
 #[derive(Primitive, Clone, Debug)]
 pub struct IntegerDt {
@@ -299,18 +153,7 @@ pub struct IntegerDt {
     pub value: Option<Integer>,
 }
 
-impl FromStr for IntegerDt {
-    type Err = FhirError;
 
-    fn from_str(s: &str) -> std::prelude::v1::Result<Self, Self::Err> {
-        let val = isize::from_str(s)?;
-        Ok(IntegerDt {
-            id: None,
-            extension: None,
-            value: Some(val),
-        })
-    }
-}
 
 #[derive(Primitive, Debug, Clone)]
 pub struct Integer64Dt {
@@ -325,19 +168,6 @@ pub struct Integer64Dt {
     pub value: Option<Integer64>,
 }
 
-impl FromStr for Integer64Dt {
-    type Err = FhirError;
-
-    fn from_str(s: &str) -> std::prelude::v1::Result<Self, Self::Err> {
-        let val = Integer64::from_str(s)?;
-        Ok(Integer64Dt {
-            id: None,
-            extension: None,
-            value: Some(val),
-        })
-    }
-}
-
 #[derive(Primitive, Debug, Clone)]
 pub struct DecimalDt {
     /// xml:id (or equivalent in JSON)
@@ -349,19 +179,6 @@ pub struct DecimalDt {
     /// Primitive value for decimal
     #[fhir(name="value", min="0", max="1", summary=false, modifier=false)]
     pub value: Option<Decimal>,
-}
-
-impl FromStr for DecimalDt {
-    type Err = FhirError;
-
-    fn from_str(s: &str) -> std::prelude::v1::Result<Self, Self::Err> {
-        let val = f64::from_str(s)?;
-        Ok(DecimalDt {
-            id: None,
-            extension: None,
-            value: Some(val),
-        })
-    }
 }
 
 /// 日期类型
@@ -386,19 +203,6 @@ impl Display for DateDt {
             None => {write!(f, "")}
             Some(val) => {write!(f, "{}", val)}
         }
-    }
-}
-
-impl FromStr for DateDt {
-    type Err = FhirError;
-
-    fn from_str(s: &str) -> std::prelude::v1::Result<Self, Self::Err> {
-        let val = Date::from_str(s)?;
-        Ok(DateDt {
-            id: None,
-            extension: None,
-            value: Some(val),
-        })
     }
 }
 
@@ -428,19 +232,18 @@ impl Display for TimeDt {
     }
 }
 
-impl FromStr for TimeDt {
-    type Err = FhirError;
-
-    fn from_str(s: &str) -> std::prelude::v1::Result<Self, Self::Err> {
-        let val = Time::from_str(s)?;
-        Ok(TimeDt {
-            id: None,
-            extension: None,
-            value: Some(val),
-        })
-    }
-}
-
+/// 日期与时间
+///
+/// 时间部分如果存在，必须到秒，如果精度不足，可以使用00填充。
+/// 如果存在时间，则必须提供时区。如果不确定时区，可以使用Z表示当地时区。
+///
+/// 精度不限，展示形式灵活。可以表示如下几种格式：
+/// * 年 - 2023
+/// * 年月 - 2023-08
+/// * 年月日 - 2023-08-17
+/// * 年月日时分秒 - 2023-08-17T08:21:45Z
+/// * 年月日时分秒(毫秒) - 2023-08-17T08:21:45.234Z
+/// * 年月日时分秒(毫秒)时区 - 2023-08-17T08:21:45.234+08:00
 #[derive(Primitive, Debug, Clone)]
 pub struct DateTimeDt {
     /// xml:id (or equivalent in JSON)
@@ -460,31 +263,6 @@ impl Display for DateTimeDt {
             None => {write!(f, "")}
             Some(val) => {write!(f, "{}", val)}
         }
-    }
-}
-
-/// 日期与时间
-///
-/// 时间部分如果存在，必须到秒，如果精度不足，可以使用00填充。
-/// 如果存在时间，则必须提供时区。如果不确定时区，可以使用Z表示当地时区。
-///
-/// 精度不限，展示形式灵活。可以表示如下几种格式：
-/// * 年 - 2023
-/// * 年月 - 2023-08
-/// * 年月日 - 2023-08-17
-/// * 年月日时分秒 - 2023-08-17T08:21:45Z
-/// * 年月日时分秒(毫秒) - 2023-08-17T08:21:45.234Z
-/// * 年月日时分秒(毫秒)时区 - 2023-08-17T08:21:45.234+08:00
-impl FromStr for DateTimeDt {
-    type Err = FhirError;
-
-    fn from_str(s: &str) -> std::prelude::v1::Result<Self, Self::Err> {
-        let val = DateTime::from_str(s)?;
-        Ok(DateTimeDt {
-            id: None,
-            extension: None,
-            value: Some(val),
-        })
     }
 }
 
@@ -525,21 +303,6 @@ impl Display for InstantDt {
     }
 }
 
-impl FromStr for InstantDt {
-    type Err = FhirError;
-
-    fn from_str(s: &str) -> std::prelude::v1::Result<Self, Self::Err> {
-        let val = Instant::from_str(s)?;
-        Ok(InstantDt {
-            id: None,
-            extension: None,
-            value: Some(val),
-        })
-    }
-}
-
-
-
 #[derive(Primitive, Debug, Clone)]
 pub struct UnsignedIntDt {
     /// xml:id (or equivalent in JSON)
@@ -551,19 +314,6 @@ pub struct UnsignedIntDt {
     /// Primitive value for unsignedInt
     #[fhir(name="value", min="0", max="1", summary=false, modifier=false)]
     pub value: Option<UnsignedInt>,
-}
-
-impl FromStr for UnsignedIntDt {
-    type Err = FhirError;
-
-    fn from_str(s: &str) -> std::prelude::v1::Result<Self, Self::Err> {
-        let val = UnsignedInt::from_str(s)?;
-        Ok(UnsignedIntDt {
-            id: None,
-            extension: None,
-            value: Some(val),
-        })
-    }
 }
 
 #[derive(Primitive, Debug, Clone)]
@@ -579,19 +329,6 @@ pub struct UrlDt {
     pub value: Option<Url>,
 }
 
-impl FromStr for UrlDt {
-    type Err = FhirError;
-
-    fn from_str(s: &str) -> std::prelude::v1::Result<Self, Self::Err> {
-        let val = Url::from_str(s)?;
-        Ok(UrlDt {
-            id: None,
-            extension: None,
-            value: Some(val),
-        })
-    }
-}
-
 #[derive(Primitive, Debug, Clone)]
 pub struct UuidDt {
     /// xml:id (or equivalent in JSON)
@@ -603,19 +340,6 @@ pub struct UuidDt {
     /// Primitive value for uuid
     #[fhir(name="value", min="0", max="1", summary=false, modifier=false)]
     pub value: Option<Uuid>,
-}
-
-impl FromStr for UuidDt {
-    type Err = FhirError;
-
-    fn from_str(s: &str) -> std::prelude::v1::Result<Self, Self::Err> {
-        let val = Uuid::from_str(s)?;
-        Ok(UuidDt {
-            id: None,
-            extension: None,
-            value: Some(val),
-        })
-    }
 }
 
 // TODO 这里的extension的基数为0..0,需要特殊处理一下
@@ -632,18 +356,106 @@ pub struct XhtmlDt {
     pub value: Option<Xhtml>,
 }
 
-impl FromStr for XhtmlDt {
-    type Err = FhirError;
 
-    fn from_str(s: &str) -> std::prelude::v1::Result<Self, Self::Err> {
-        let val = Xhtml::from_str(s)?;
-        Ok(XhtmlDt {
-            id: None,
-            extension: None,
-            value: Some(val),
-        })
+macro_rules! primitive_fromstr_impl {
+    ($primitive:ident, $inner:ident) => {
+        impl FromStr for $primitive {
+            type Err = FhirError;
+        
+            fn from_str(s: &str) -> std::prelude::v1::Result<Self, Self::Err> {
+                let val = $inner::from_str(s)?;
+                Ok($primitive {
+                    id: None,
+                    extension: None,
+                    value: Some(val),
+                })
+            }
+        }
     }
 }
+
+primitive_fromstr_impl!(StringDt, String);
+primitive_fromstr_impl!(IdDt, Id);
+primitive_fromstr_impl!(Base64BinaryDt, Base64Binary);
+primitive_fromstr_impl!(MarkdownDt, Markdown);
+primitive_fromstr_impl!(UriDt, Uri);
+primitive_fromstr_impl!(UrlDt, Url);
+primitive_fromstr_impl!(OidDt, Oid);
+primitive_fromstr_impl!(CanonicalDt, Canonical);
+primitive_fromstr_impl!(CodeDt, Code);
+primitive_fromstr_impl!(UuidDt, Uuid);
+primitive_fromstr_impl!(XhtmlDt, Xhtml);
+
+primitive_fromstr_impl!(BooleanDt, Boolean);
+
+primitive_fromstr_impl!(UnsignedIntDt, UnsignedInt);
+primitive_fromstr_impl!(DecimalDt, Decimal);
+primitive_fromstr_impl!(IntegerDt, Integer);
+primitive_fromstr_impl!(Integer64Dt, Integer64);
+primitive_fromstr_impl!(PositiveIntDt, PositiveInt);
+
+primitive_fromstr_impl!(InstantDt, Instant);
+primitive_fromstr_impl!(DateTimeDt, DateTime);
+primitive_fromstr_impl!(DateDt, Date);
+primitive_fromstr_impl!(TimeDt, Time);
+
+macro_rules! primitive_from_impl {
+    ($primitive:ident) => {
+        impl From<&str> for $primitive {
+            fn from(value: &str) -> Self {
+                $primitive::from_str(value).unwrap()
+            }
+        }
+    };
+
+    ($primitive:ident, $from:ident $($cast:tt)*) => {
+        impl From<$from> for $primitive {
+            fn from(value: $from) -> Self {
+                $primitive {
+                    id: None,
+                    extension: None,
+                    value: Some(value $($cast)*),
+                }
+            }
+        }
+    }
+}
+
+primitive_from_impl!(StringDt);
+primitive_from_impl!(UriDt);
+primitive_from_impl!(UrlDt);
+primitive_from_impl!(CanonicalDt);
+primitive_from_impl!(UuidDt);
+primitive_from_impl!(OidDt);
+primitive_from_impl!(IdDt);
+primitive_from_impl!(CodeDt);
+primitive_from_impl!(MarkdownDt);
+primitive_from_impl!(Base64BinaryDt);
+primitive_from_impl!(XhtmlDt);
+
+primitive_from_impl!(BooleanDt, bool);
+
+primitive_from_impl!(PositiveIntDt, u8 as usize);
+primitive_from_impl!(PositiveIntDt, u16 as usize);
+primitive_from_impl!(PositiveIntDt, u32 as usize);
+primitive_from_impl!(PositiveIntDt, i8 as usize);
+primitive_from_impl!(PositiveIntDt, i16 as usize);
+primitive_from_impl!(PositiveIntDt, i32 as usize);
+primitive_from_impl!(IntegerDt, u8 as isize);
+primitive_from_impl!(IntegerDt, u16 as isize);
+primitive_from_impl!(IntegerDt, u32 as isize);
+primitive_from_impl!(IntegerDt, i8 as isize);
+primitive_from_impl!(IntegerDt, i16 as isize);
+primitive_from_impl!(IntegerDt, i32 as isize);
+primitive_from_impl!(Integer64Dt, i8 as i64);
+primitive_from_impl!(Integer64Dt, i16 as i64);
+primitive_from_impl!(Integer64Dt, i32 as i64);
+primitive_from_impl!(Integer64Dt, i64);
+
+primitive_from_impl!(InstantDt);
+primitive_from_impl!(DateTimeDt);
+primitive_from_impl!(DateDt);
+primitive_from_impl!(TimeDt);
 
 #[cfg(test)]
 mod tests {
