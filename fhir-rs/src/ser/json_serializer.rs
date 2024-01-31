@@ -3,6 +3,7 @@ use json_event_parser::{JsonEvent, JsonWriter};
 use json_pretty::PrettyFormatter;
 use crate::prelude::*;
 
+/// 将资源转换为紧凑的JSON字符串，无空白字符。
 pub fn to_string<Ser: Serialize>(value: &Ser) -> Result<String> {
     let mut buffer = Vec::with_capacity(128);
     let mut ser = JsonSerializer::from_writer(&mut buffer);
@@ -12,6 +13,7 @@ pub fn to_string<Ser: Serialize>(value: &Ser) -> Result<String> {
     Ok(string)
 }
 
+/// 将资源转换为格式化良好的JSON字符串，有回车和缩进。
 pub fn to_string_pretty<Ser: Serialize>(value: &Ser) -> Result<String> {
     let mut buffer = Vec::with_capacity(128);
     let mut ser = JsonSerializer::from_writer(&mut buffer);
