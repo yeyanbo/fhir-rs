@@ -187,13 +187,25 @@ pub(crate) fn impl_element(struct_name_ident: &syn::Ident) -> syn::Result<proc_m
             fn id(&self) -> &Option<String> {
                 &self.id
             }
-            fn set_id(mut self, id: String) -> Self {
-                self.id = Some(id);
+
+            fn set_id<T: Into<String>>(mut self, id: T) -> Self {
+                self.id = Some(id.into());
                 self
             }
+
             fn has_extension(&self) -> bool {
                 self.extension.is_some()
             }
+
+            fn extension(&self) -> &Option<Vec<Extension>> {
+                &self.extension
+            }
+
+            fn set_extension(mut self, ext: Vec<Extension>) -> Self {
+                self.extension = Some(ext);
+                self
+            }
+
             fn add_extension(mut self, ext: Extension) -> Self {
                 match self.extension {
                     Some(ref mut exts) => {
@@ -203,13 +215,6 @@ pub(crate) fn impl_element(struct_name_ident: &syn::Ident) -> syn::Result<proc_m
                         self.extension = Some(vec![ext])
                     },
                 }
-                self
-            }
-            fn extension(&self) -> &Option<Vec<Extension>> {
-                &self.extension
-            }
-            fn set_extension(mut self, ext: Vec<Extension>) -> Self {
-                self.extension = Some(ext);
                 self
             }
         }

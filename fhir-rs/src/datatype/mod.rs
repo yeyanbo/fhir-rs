@@ -28,7 +28,7 @@ pub type Integer64 = i64;
 pub trait Element {
     fn has_id(&self) -> bool;
     fn id(&self) -> &Option<String>;
-    fn set_id(self, id: String) -> Self;
+    fn set_id<T: Into<String>>(self, id: T) -> Self;
     fn has_extension(&self) -> bool;
     fn extension(&self) -> &Option<Vec<Extension>>;
     fn set_extension(self, ext: Vec<Extension>) -> Self;
@@ -47,7 +47,7 @@ pub trait Primitive {
 
 pub trait Resource {
     fn id(&self) -> &Option<Id>;
-    fn set_id(self, id: Id) -> Self;
+    fn set_id<T: Into<Id>>(self, id: T) -> Self;
     fn meta(&self) -> &Option<Meta>;
     fn set_meta(self, meta: Meta) -> Self;
 }
@@ -214,8 +214,7 @@ impl FromStr for Instant {
     }
 }
 
-#[derive(Extension, Debug, Clone)]
-#[fhir(base="DomainResource")]
+#[derive(Extension, Debug, Clone, Default)]
 pub struct Extension {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false)]
@@ -232,81 +231,22 @@ pub struct Extension {
 }
 
 impl Extension {
-    pub fn new(url: Url, value: Any) -> Extension {
+    pub fn new<U: Into<Url>>(url: U, value: Any) -> Extension {
         Extension {
             id: None,
             extension: None,
-            url: Some(url),
+            url: Some(url.into()),
             value: Some(value),
         }
     }
-}
 
-impl Serialize for Extension {
-    fn serialize<Ser>(&self, serializer: Ser) -> Result<()> where Ser: Serializer {
-        let mut extension  = serializer.serialize_extension()?;
-        extension.serialize_id(&self.id)?;
-        extension.serialize_url(&self.url)?;
-        extension.serialize_extension(&self.extension)?;
-        extension.serialize_value(&self.value)?;
-        extension.serialize_end()
-    }
-}
-
-impl<'de> Deserialize<'de> for Extension {
-    fn deserialize<De>(deserializer: De) -> Result<Self> where De: Deserializer<'de> {
-
-        pub struct ExtensionVisitor;
-        impl<'de> Visitor<'de> for ExtensionVisitor {
-            type Value = Extension;
-
-            fn visit_map<V>(self, mut map: V) -> Result<Extension>
-                where
-                    V: MapAccess<'de>,
-            {
-                let mut id: Option<String> = None;
-                let mut url : Option<String> = None;
-                let mut extension: Option<Vec<Extension>> = None;
-                let mut value: Option<Any> = None;
-
-                while let Some(key) = map.next_key()? {
-                    match key.as_str() {
-                        "id" => {
-                            id = Some(map.next_value()?);
-                            tracing::debug!("读取到值: {:?}", &id);
-                        },
-                        "url" => {
-                            url = Some(map.next_value()?);
-                            tracing::debug!("读取到值: {:?}", &url);
-                        }
-                        "extension" => {
-                            extension = Some(map.next_value()?);
-                            tracing::debug!("读取到值: {:?}", &url);
-                        }
-                        "valueString" => {
-                            let temp: StringDt = map.next_value()?;
-                            value = Some(Any::String(temp));
-                            tracing::debug!("读取到值: {:?}", &value);
-                        }
-                        "valuePositiveInt" => {
-                            let temp: PositiveIntDt = map.next_value()?;
-                            value = Some(Any::PositiveInt(temp));
-                            tracing::debug!("读取到值: {:?}", &value);
-                        }
-                        _ => {return Err(FhirError::error("Extension读到不存在的key了"));},
-                    }
-                }
-
-                Ok(Extension {
-                    id,
-                    url,
-                    extension,
-                    value,
-                })
-            }
+    pub fn with_url<U: Into<Url>>(url: U) -> Extension {
+        Extension {
+            id: None,
+            extension: None,
+            url: Some(url.into()),
+            value: None,
         }
-
-        deserializer.deserialize_struct("Extension", ExtensionVisitor)
     }
 }
 

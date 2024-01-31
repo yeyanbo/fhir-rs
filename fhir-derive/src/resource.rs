@@ -37,8 +37,8 @@ fn impl_resource_trait(struct_name_ident: &syn::Ident) -> syn::Result<proc_macro
                 &self.id
             }
 
-            fn set_id(mut self, id: String) -> Self {
-                self.id = Some(id);
+            fn set_id<T: Into<Id>>(mut self, id: T) -> Self {
+                self.id = Some(id.into());
                 self
             }
 

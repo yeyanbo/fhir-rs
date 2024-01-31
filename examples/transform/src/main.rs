@@ -12,105 +12,23 @@ fn main() -> Result<()> {
     tracing::subscriber::set_global_default(subscriber)
         .expect("setting default subscriber failed");
 
+    let complex_extension = Extension::with_url("http://yeyanbo.cn")
+        .add_extension(Extension::new("abc", Any::Coding(Coding::default().set_code(CodeDt::new("cc")))))
+        .add_extension(Extension::new("xcv", Any::Coding(Coding::default().set_code(CodeDt::new("bb")))));
+
     let patient = Patient::default()
-        .set_id("12345".to_string())
+        .set_id("12345")
         .set_meta(Meta::default()
-            .set_version_id(IdDt::new("v1"))
+            .set_version_id("v1")
             .set_last_updated(InstantDt::from_str("2001-10-10T10:10:12Z")?))
-        .add_extension(Extension::new("dd".to_string(), Any::String(StringDt::new("ddf"))));
+        .add_extension(Extension::new("dd", Any::String(StringDt::new("ddf"))))
+        .add_name(HumanName::default().set_text("ZhangSan"))
+        .add_telecom(ContactPoint::default().set_value("1234567890").add_extension(complex_extension));
 
     test_xml_serialize(&patient)?;
     test_json_serialize(&patient)?;
     Ok(())
 }
-
-// fn test_json_deserialize() {
-//     let patient_str = r##"
-//     {
-//         "resourceType": "Patient",
-//         "name": "zhang",
-//         "age": 13,
-//         "_age": {
-//             "id": "123456",
-//             "extension":[
-//                 {
-//                 "url":"birth_date_time",
-//                 "valueString":"2008-12-19"
-//                 },
-//                 {
-//                 "url":"number",
-//                 "valuePositiveInt": 2023
-//                 }
-//             ]
-//         },
-//         "telecom":[
-//             "010-2345678",
-//             "022-23456567545"
-//         ],
-//         "class":[
-//             {"code":"abc","system":"gender","display":"student"},
-//             {"code":"kiss","system":"gender","display":"kiss"}
-//         ]
-//     }
-//     "##;
-//
-//     let ret: Result<Patient> = from_json(patient_str);
-//     match ret {
-//         Ok(patient) => {
-//             tracing::info!("Patient Name: {:?}", patient);
-//         }
-//         Err(err) => {
-//             tracing::error!("{:?}", err);
-//         }
-//     }
-// }
-
-// fn test_xml_deserialize() {
-//     let patient_str = r##"<?xml version="1.0" encoding="UTF-8"?>
-//     <Patient xmlns="http://hl7.org/fhir">
-//         <name value="zhangsan"/>
-//         <age value="32">
-//             <extension url="count">
-//                 <valuePositiveInt value="200"/>
-//             </extension>
-//             <extension url="hello">
-//                 <extension url="first">
-//                     <valuePositiveInt value="200" />
-//                 </extension>
-//                 <extension url="second">
-//                     <valueString value="hello2" />
-//                 </extension>
-//                 <valueString value="hello2" />
-//             </extension>
-//             <extension url="world">
-//                 <valueString value="world"/>
-//             </extension>
-//         </age>
-//         <telecom value="010-12345678"/>
-//         <telecom value="022-98765432"/>
-//         <class>
-//             <code value="123"/>
-//             <system value="http://fhir.org"/>
-//             <display value="Feed"/>
-//         </class>
-//         <class>
-//             <code value="453"/>
-//             <system value="http://fhir.org"/>
-//             <display value="Food"/>
-//         </class>
-//     </Patient>
-//     "##;
-//
-//     let ret: Result<Patient> = from_xml(patient_str);
-//     match ret {
-//         Ok(patient) => {
-//             tracing::info!("Patient Name: {:?}", patient);
-//         }
-//         Err(err) => {
-//             tracing::error!("{:?}", err);
-//         }
-//     }
-// }
 
 fn test_json_serialize(patient: &Patient) -> Result<()> {
     let str = to_json_pretty(patient)?;

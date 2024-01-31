@@ -14,6 +14,12 @@ pub struct StringDt {
     pub value: Option<String>,
 }
 
+impl From<&str> for StringDt {
+    fn from(value: &str) -> Self {
+        StringDt::from_str(value).unwrap()
+    }
+}
+
 impl FromStr for StringDt {
     type Err = FhirError;
 
@@ -38,6 +44,12 @@ pub struct IdDt {
     /// Primitive value for id
     #[fhir(name="value", min="0", max="1", summary=false, modifier=false)]
     pub value: Option<Id>,
+}
+
+impl From<&str> for IdDt {
+    fn from(value: &str) -> Self {
+        IdDt::from_str(value).unwrap()
+    }
 }
 
 impl FromStr for IdDt {
@@ -195,6 +207,12 @@ pub struct CodeDt {
     /// Primitive value for code
     #[fhir(name="value", min="0", max="1", summary=false, modifier=false)]
     pub value: Option<Code>,
+}
+
+impl From<&str> for CodeDt {
+    fn from(value: &str) -> Self {
+        CodeDt::from_str(value).unwrap()
+    }
 }
 
 impl FromStr for CodeDt {
@@ -629,9 +647,7 @@ impl FromStr for XhtmlDt {
 
 #[cfg(test)]
 mod tests {
-    use std::str::FromStr;
     use crate::prelude::*;
-    use crate::prelude::Any::PositiveInt;
 
     #[test]
     fn test_string() {

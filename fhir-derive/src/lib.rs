@@ -3,11 +3,10 @@ mod complex;
 mod helper;
 mod resource;
 mod backbone;
+mod extension;
 
 use proc_macro::TokenStream;
 use syn;
-// use quote;
-// use syn::spanned::Spanned;
 
 #[proc_macro_derive(Complex, attributes(fhir))]
 pub fn derive_complex(item: TokenStream) -> TokenStream {
@@ -49,6 +48,7 @@ pub fn derive_backbone_element(item: TokenStream) -> TokenStream {
 pub fn derive_extension(item: TokenStream) -> TokenStream {
     let st = syn::parse_macro_input!(item as syn::DeriveInput);
 
-    eprintln!("{:#?}", helper::base_resource(&st));
-    TokenStream::new()
+    extension::expand_derive_extension(&st)
+        .unwrap_or_else(syn::Error::into_compile_error)
+        .into()
 }
