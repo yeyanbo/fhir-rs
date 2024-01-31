@@ -17,13 +17,30 @@ fn main() -> Result<()> {
         .add_extension(Extension::new("xcv", Any::Coding(Coding::default().set_code("bb"))));
 
     let patient = Patient::default()
-        .set_id("12345")
+        .set_id("example")
         .set_meta(Meta::default()
             .set_version_id("v1")
             .set_last_updated(InstantDt::from_str("2001-10-10T10:10:12Z")?))
         .add_extension(Extension::new("dd", Any::String(StringDt::new("ddf"))))
-        .add_name(HumanName::default().set_text("ZhangSan"))
-        .add_telecom(ContactPoint::default().set_value("1234567890").add_extension(complex_extension));
+        .add_extension(complex_extension)
+        .set_active(true)
+        .add_identifier(Identifier::default()
+            .set_use_("usual")
+            .set_system("urn:oid:1.2.36.146.595.217.0.1")
+            .set_value("12345"))       
+        .add_name(HumanName::default()
+            .set_use_("maiden")
+            .set_family("Windsor")
+            .add_given("Peter"))
+        .add_telecom(ContactPoint::default()
+            .set_value("1234567890")
+            .set_use_("work")
+            .set_rank(1))
+        .set_gender("male")
+        .set_birth_date(DateDt::from_str("1974-12-25")?
+            .add_extension(Extension::new(
+                "http://hl7.org/fhir/StructureDefinition/patient-birthTime", 
+                Any::DateTime(DateTimeDt::from_str("1974-12-25T14:35:45-05:00")?))));
 
     test_xml_serialize(&patient)?;
     test_json_serialize(&patient)?;
