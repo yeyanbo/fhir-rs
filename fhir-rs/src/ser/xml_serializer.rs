@@ -1,3 +1,7 @@
+//! 资源向XML格式字符串转换的序列化处理器。
+//! 
+//! 
+//! 
 use std::collections::HashMap;
 use std::io::Write;
 use xml::common::XmlVersion;
@@ -8,10 +12,9 @@ use xml::writer::{
 };
 use crate::prelude::*;
 
+/// 将资源转换为紧凑的XML字符串，无空白字符。
 pub fn to_string<Ser: Serialize>(value: &Ser) -> Result<String> {
     let mut buffer = Vec::with_capacity(128);
-    // to_writer(&mut buffer, value)?;
-
     let mut ser = XmlSerializer::from_writer(&mut buffer, false);
     value.serialize(&mut ser)?;
 
@@ -19,6 +22,7 @@ pub fn to_string<Ser: Serialize>(value: &Ser) -> Result<String> {
     Ok(string)
 }
 
+/// 将资源转换为格式化良好的XML字符串，有回车和缩进。
 pub fn to_string_pretty<Ser: Serialize>(value: &Ser) -> Result<String> {
     let mut buffer = Vec::with_capacity(128);
     let mut ser = XmlSerializer::from_writer(&mut buffer, true);
@@ -209,6 +213,8 @@ impl<'ser, W: Write> Serializer for &'ser mut XmlSerializer<W> {
         })
     }
 
+    /// 按照数组的大小，在tags数组中批量生成XML元素名称，备用。
+    /// 后续每迭代一次，从tags取出一个XML元素名称，来使用。
     fn serialize_vec(self, len: Option<usize>) -> Result<Self::SerializeVec> {
         let name = self.tags.pop().unwrap();
         if let Some(size) = len {
@@ -279,8 +285,6 @@ impl<'ser, W: Write> SerializeStruct for XmlCompositeProcessor<'ser, W> {
 }
 
     fn serialize_extension(&mut self, value: &Option<Vec<Extension>>) -> Result<()> {
-        self.ser.build_start_element()?;
-
         if let Some(ext) = value {
             self.ser.open_element("extension")?;
             ext.serialize(&mut *self.ser)?;
