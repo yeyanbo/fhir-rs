@@ -258,9 +258,9 @@ pub(crate) fn impl_deserialize_map(struct_fields: &Vec<Field>) -> syn::Result<Ve
     let mut maps = Vec::with_capacity(32);
 
     struct_fields.iter()
-        .map(|f| { &f.name })
-        .for_each(|ident| {
-            let ident_literal = ident.to_string();
+        .for_each(|field| {
+            let ident = field.name.clone();
+            let ident_literal = field.original.clone();
             maps.push(quote::quote!( #ident_literal => { #ident = Some(map.next_value()?);}, ));
         });
 
