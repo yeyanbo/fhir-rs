@@ -245,7 +245,7 @@ fn impl_deserialize(struct_name_ident: &syn::Ident, struct_fields: &Vec<Field>) 
                         while let Some(keys) = map.next_key()? {
                             match keys.as_str() {
                                 #( #maps )*
-                                _ => {return Err(FhirError::error("读到不存在的键"));},
+                                _ => {return Err(FhirError::error_string(format!("读到不存在的键:{}", keys)));},
                             }
                         }
 
