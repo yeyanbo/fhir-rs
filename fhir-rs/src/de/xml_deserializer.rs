@@ -204,7 +204,7 @@ impl<'de, 'a,  R: BufRead> Deserializer<'de> for &'a mut XmlDeserializer<R> {
                 visitor.visit_str(text.as_str())?
             }
             _ => {
-                return Err(FhirError::error("错误的元素"));
+                return Err(FhirError::error("错误的字符串元素"));
             }
         };
         self.next()?;
@@ -219,7 +219,7 @@ impl<'de, 'a,  R: BufRead> Deserializer<'de> for &'a mut XmlDeserializer<R> {
                 visitor.visit_str(text.as_str())?
             }
             _ => {
-                return Err(FhirError::error("错误的元素"));
+                return Err(FhirError::error("错误的数值元素"));
             }
         };
         self.next()?;

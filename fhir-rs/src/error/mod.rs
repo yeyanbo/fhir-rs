@@ -14,6 +14,10 @@ impl FhirError {
         FhirError::Message(String::from(msg))
     }
 
+    pub fn error_string(msg: String) -> Self {
+        FhirError::Message(msg)
+    }
+
     pub fn un_implementation(msg: &str) -> Self {
         FhirError::UnImplementation(String::from(msg))
     }
