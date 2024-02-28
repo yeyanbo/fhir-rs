@@ -1,6 +1,6 @@
 # fhir-rs
 
-## 关于(About)
+## About
 
 FHIR-RS是[HL7 FHIR规范](http://hl7.org/fhir/)的Rust实现。
 
@@ -18,7 +18,43 @@ This is still a draft version. The functionality is not yet fully developed and 
 
 Healthcare Interoperability.
 
-## 计划(Todo)
+
+```rust
+fn main() -> Result<()> {
+
+    let complex_extension = Extension::with_url("http://yeyanbo.cn")
+        .add_extension(Extension::new("abc", Any::Coding(Coding::default().set_code("cc"))))
+        .add_extension(Extension::new("xcv", Any::Coding(Coding::default().set_code("bb"))));
+
+    let patient = Patient::default()
+        .set_id("example")
+        .set_meta(Meta::default()
+            .set_version_id("v1")
+            .set_last_updated(InstantDt::from_str("2001-10-10T10:10:12Z")?))
+        .add_extension(Extension::new("dd", Any::String(StringDt::new("ddf"))))
+        .add_extension(complex_extension)
+        .add_name(HumanName::default().set_text("Mike"))
+        .add_telecom(ContactPoint::default().set_value("1234567890"));
+
+    test_xml_serialize(&patient)?;
+    test_json_serialize(&patient)?;
+    Ok(())
+}
+
+fn test_json_serialize(patient: &Patient) -> Result<()> {
+    let str = to_json_pretty(patient)?;
+    info!("Patient Formatter: {}", str);
+    Ok(())
+}
+
+fn test_xml_serialize(patient: &Patient) -> Result<()> {
+    let str = to_xml_pretty(patient)?;
+    info!("Patient Formatter: {}", str);
+    Ok(())
+}
+```
+
+## Todo
 
 ### Ver 0.0.3
 
@@ -36,7 +72,7 @@ Healthcare Interoperability.
 - [x] from xml  to resource
 - [x] from resource to json
 - [x] from resource to xml
-- 
+
 ## License
 
 CC0

@@ -10,3 +10,4 @@ default-members = [
     "fhir-rs",
     "fhir-derive",
 ]
+resolver = "2"
