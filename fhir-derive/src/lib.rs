@@ -6,7 +6,6 @@ mod backbone;
 mod extension;
 
 use proc_macro::TokenStream;
-use syn;
 
 #[proc_macro_derive(Complex, attributes(fhir))]
 pub fn derive_complex(item: TokenStream) -> TokenStream {
