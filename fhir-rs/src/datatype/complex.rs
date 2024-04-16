@@ -25,29 +25,6 @@ pub struct Coding {
     pub user_selected: Option<BooleanDt>,
 }
 
-// #[derive(Complex, Debug, Clone, Default)]
-// pub struct Element {
-//     /// Unique id for inter-element referencing
-//     #[fhir(name="id", min="0", max="1", summary=false, modifier=false)]
-//     pub id: Option<String>,
-//     /// Additional content defined by implementations
-//     #[fhir(name="extension", min="0", max="*", summary=false, modifier=false)]
-//     pub extension: Option<Vec<Extension>>,
-// }
-
-// #[derive(Complex, Debug, Clone, Default)]
-// pub struct BackboneElement {
-//     /// Unique id for inter-element referencing
-//     #[fhir(name="id", min="0", max="1", summary=false, modifier=false)]
-//     pub id: Option<Id>,
-//     /// Additional content defined by implementations
-//     #[fhir(name="extension", min="0", max="*", summary=false, modifier=false)]
-//     pub extension: Option<Vec<Extension>>,
-//     /// Extensions that cannot be ignored even if unrecognized
-//     #[fhir(name="modifierExtension", min="0", max="*", summary=true, modifier=true)]
-//     pub modifier_extension: Option<Vec<Extension>>,
-// }
-
 #[derive(Complex, Debug, Clone, Default)]
 pub struct Address {
     /// Unique id for inter-element referencing
