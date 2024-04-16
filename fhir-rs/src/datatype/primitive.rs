@@ -1,4 +1,6 @@
-use crate::datatype::*;
+use crate::prelude::*;
+use std::fmt::{Display, Formatter};
+use std::str::FromStr;
 
 #[derive(Primitive, Debug, Clone)]
 pub struct StringDt {
@@ -194,16 +196,6 @@ pub struct DateDt {
     pub value: Option<Date>,
 }
 
-impl Display for DateDt {
-    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-        match &self.value {
-            None => {write!(f, "")}
-            Some(val) => {write!(f, "{}", val)}
-        }
-    }
-}
-
-
 /// 时间类型
 ///
 /// 表示一天内的时间。24小时制，格式为HH::MM:SS。不要指定时区。
@@ -218,15 +210,6 @@ pub struct TimeDt {
     /// Primitive value for time
     #[fhir(name="value", min="0", max="1", summary=false, modifier=false)]
     pub value: Option<Time>,
-}
-
-impl Display for TimeDt {
-    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-        match &self.value {
-            None => {write!(f, "")}
-            Some(val) => {write!(f, "{}", val)}
-        }
-    }
 }
 
 /// 日期与时间
@@ -252,15 +235,6 @@ pub struct DateTimeDt {
     /// Primitive value for dateTime
     #[fhir(name="value", min="0", max="1", summary=false, modifier=false)]
     pub value: Option<DateTime>,
-}
-
-impl Display for DateTimeDt {
-    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-        match &self.value {
-            None => {write!(f, "")}
-            Some(val) => {write!(f, "{}", val)}
-        }
-    }
 }
 
 /// 日期与时间
@@ -289,15 +263,6 @@ pub struct InstantDt {
     /// Primitive value for instant
     #[fhir(name="value", min="0", max="1", summary=false, modifier=false)]
     pub value: Option<Instant>,
-}
-
-impl Display for InstantDt {
-    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-        match &self.value {
-            None => {write!(f, "")}
-            Some(val) => {write!(f, "{}", val)}
-        }
-    }
 }
 
 #[derive(Primitive, Debug, Clone)]
@@ -353,48 +318,47 @@ pub struct XhtmlDt {
     pub value: Option<Xhtml>,
 }
 
-
-macro_rules! primitive_fromstr_impl {
-    ($primitive:ident, $inner:ident) => {
-        impl FromStr for $primitive {
-            type Err = FhirError;
+// macro_rules! primitive_fromstr_impl {
+//     ($primitive:ident, $inner:ident) => {
+//         impl FromStr for $primitive {
+//             type Err = FhirError;
         
-            fn from_str(s: &str) -> std::prelude::v1::Result<Self, Self::Err> {
-                let val = $inner::from_str(s)?;
-                Ok($primitive {
-                    id: None,
-                    extension: None,
-                    value: Some(val),
-                })
-            }
-        }
-    }
-}
+//             fn from_str(s: &str) -> std::prelude::v1::Result<Self, Self::Err> {
+//                 let val = $inner::from_str(s)?;
+//                 Ok($primitive {
+//                     id: None,
+//                     extension: None,
+//                     value: Some(val),
+//                 })
+//             }
+//         }
+//     }
+// }
 
-primitive_fromstr_impl!(StringDt, String);
-primitive_fromstr_impl!(IdDt, Id);
-primitive_fromstr_impl!(Base64BinaryDt, Base64Binary);
-primitive_fromstr_impl!(MarkdownDt, Markdown);
-primitive_fromstr_impl!(UriDt, Uri);
-primitive_fromstr_impl!(UrlDt, Url);
-primitive_fromstr_impl!(OidDt, Oid);
-primitive_fromstr_impl!(CanonicalDt, Canonical);
-primitive_fromstr_impl!(CodeDt, Code);
-primitive_fromstr_impl!(UuidDt, Uuid);
-primitive_fromstr_impl!(XhtmlDt, Xhtml);
+// primitive_fromstr_impl!(StringDt, String);
+// primitive_fromstr_impl!(IdDt, Id);
+// primitive_fromstr_impl!(Base64BinaryDt, Base64Binary);
+// primitive_fromstr_impl!(MarkdownDt, Markdown);
+// primitive_fromstr_impl!(UriDt, Uri);
+// primitive_fromstr_impl!(UrlDt, Url);
+// primitive_fromstr_impl!(OidDt, Oid);
+// primitive_fromstr_impl!(CanonicalDt, Canonical);
+// primitive_fromstr_impl!(CodeDt, Code);
+// primitive_fromstr_impl!(UuidDt, Uuid);
+// primitive_fromstr_impl!(XhtmlDt, Xhtml);
 
-primitive_fromstr_impl!(BooleanDt, Boolean);
+// primitive_fromstr_impl!(BooleanDt, Boolean);
 
-primitive_fromstr_impl!(UnsignedIntDt, UnsignedInt);
-primitive_fromstr_impl!(DecimalDt, Decimal);
-primitive_fromstr_impl!(IntegerDt, Integer);
-primitive_fromstr_impl!(Integer64Dt, Integer64);
-primitive_fromstr_impl!(PositiveIntDt, PositiveInt);
+// primitive_fromstr_impl!(UnsignedIntDt, UnsignedInt);
+// primitive_fromstr_impl!(DecimalDt, Decimal);
+// primitive_fromstr_impl!(IntegerDt, Integer);
+// primitive_fromstr_impl!(Integer64Dt, Integer64);
+// primitive_fromstr_impl!(PositiveIntDt, PositiveInt);
 
-primitive_fromstr_impl!(InstantDt, Instant);
-primitive_fromstr_impl!(DateTimeDt, DateTime);
-primitive_fromstr_impl!(DateDt, Date);
-primitive_fromstr_impl!(TimeDt, Time);
+// primitive_fromstr_impl!(InstantDt, Instant);
+// primitive_fromstr_impl!(DateTimeDt, DateTime);
+// primitive_fromstr_impl!(DateDt, Date);
+// primitive_fromstr_impl!(TimeDt, Time);
 
 macro_rules! primitive_from_impl {
     ($primitive:ident) => {

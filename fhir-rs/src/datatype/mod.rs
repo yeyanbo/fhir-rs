@@ -5,7 +5,7 @@ pub use primitive::*;
 pub use complex::*;
 use crate::prelude::*;
 
-use std::fmt::{Display, Formatter};
+use std::fmt::{Display, Debug, Formatter};
 use std::str::FromStr;
 pub type Id = String;
 pub type Code = String;
@@ -38,7 +38,7 @@ pub trait Element {
 /// FHIR简单类型的特性
 /// FHIR简单类型是RUST简单数据类型的包装器
 ///
-pub trait Primitive {
+pub trait Primitive: Display + FromStr {
     type T;
     fn new<A: Into<Self::T>>(v: A) -> Self;
     fn value(&self) -> &Option<Self::T>;
@@ -46,6 +46,7 @@ pub trait Primitive {
 }
 
 pub trait Resource {
+    fn resource_name(&self) -> String;
     fn id(&self) -> &Option<Id>;
     fn set_id<T: Into<Id>>(self, id: T) -> Self;
     fn meta(&self) -> &Option<Meta>;
@@ -250,6 +251,39 @@ impl Extension {
     }
 }
 
+impl Executor for Extension {
+    fn path(&self, paths: &mut FhirPaths) -> Result<Collection> {
+        match paths.next() {
+            Some(func) => {
+                match func.definition.function_name() {
+                    FunctionName::Element => {
+                        match func.params {
+                            FunctionParam::String(name) => {
+                                match name.as_str() {
+                                    "extension" => {
+                                        self.extension.path(paths)
+                                    },
+                                    "value" => {
+                                        self.value.path(paths)
+                                    },
+                                    other => Err(FhirError::Message(format!("无效的路径名:[{}]", other)))
+                                }
+                            },
+                            _ => unreachable!(),
+                        }
+                    },
+                    _ => Err(FhirError::Message(format!("HumanName: 无效的函数名:{:?}", &func))),
+                }
+            },
+            None => Ok(self.as_collection()),
+        }
+    }
+
+    fn as_collection(&self) -> Collection {
+        Collection(vec![Box::new(self.clone())])
+    }
+}
+
 impl Serialize for Extension {
     fn serialize<Ser>(&self, serializer: Ser) -> Result<()> where Ser: Serializer {
         let mut extension  = serializer.serialize_extension()?;
@@ -393,6 +427,7 @@ impl<'de> Deserialize<'de> for Extension {
 
 #[derive(Clone, Debug)]
 pub enum AnyType {
+    // 原始类型
     String(StringDt),
     Id(IdDt),
     Base64Binary(Base64BinaryDt),
@@ -413,7 +448,7 @@ pub enum AnyType {
     Integer(IntegerDt),
     Integer64(Integer64Dt),
     Decimal(DecimalDt),
-    
+    // 复合类型
     Address(Address),
     Age(Age),
     Annotation(Annotation),
