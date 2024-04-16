@@ -9,12 +9,14 @@ pub(crate) fn expand_derive_complex(st: &syn::DeriveInput) -> syn::Result<proc_m
     let complex_impl = impl_complex(struct_name_ident, &fields)?;
     let serialize_impl = impl_serialize(struct_name_ident, &fields)?;
     let deserialize_impl = impl_deserialize(struct_name_ident, &fields)?;
+    let fhirpath_impl = impl_fhirpath(struct_name_ident, &fields)?;
 
     let ret = quote::quote!(
         #element_impl
         #complex_impl
         #serialize_impl
         #deserialize_impl
+        #fhirpath_impl
     );
     Ok(ret)
 }
@@ -150,6 +152,55 @@ fn impl_deserialize(struct_name_ident: &syn::Ident, struct_fields: &Vec<Field>) 
                 }
 
                 deserializer.deserialize_struct("", #visitor)
+            }
+        }
+    );
+    Ok(ret)
+}
+
+pub fn impl_fhirpath_map(struct_fields: &Vec<Field>) -> syn::Result<Vec<proc_macro2::TokenStream>> {
+    let mut maps = Vec::with_capacity(32);
+
+    struct_fields.iter()
+        .for_each(|field| {
+            let ident = field.name.clone();
+            let ident_literal = field.original.clone();
+            maps.push(quote::quote!( #ident_literal => { self.#ident.path(paths) }, ));
+        });
+
+    Ok(maps)
+}
+
+pub fn impl_fhirpath(struct_name_ident: &syn::Ident, struct_fields: &Vec<Field>) -> syn::Result<proc_macro2::TokenStream> {
+
+    let maps = impl_fhirpath_map(struct_fields)?;
+
+    let ret = quote::quote!(
+        impl Executor for #struct_name_ident {
+            fn path(&self, paths: &mut FhirPaths) -> Result<Collection> {
+                match paths.next() {
+                    Some(func) => {
+                        match func.definition.function_name() {
+                            FunctionName::Element => {
+                                match func.params {
+                                    FunctionParam::String(name) => {
+                                        match name.as_str() {
+                                            #( #maps )*
+                                            other => Err(FhirError::Message(format!("无效的路径名:[{}]", other)))
+                                        }
+                                    },
+                                    _ => unreachable!(),
+                                }
+                            },
+                            _ => Err(FhirError::Message(format!("Patient: 无效的函数名:{:?}", &func))),
+                        }
+                    },
+                    None => Ok(self.as_collection()),
+                }
+            }
+
+            fn as_collection(&self) -> Collection {
+                Collection(vec![Box::new(self.clone())])
             }
         }
     );

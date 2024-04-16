@@ -19,6 +19,7 @@ license-file = "LICENSE"
 full = ["server", "client", "validate"]
 server = ["dep:axum"]
 client = ["dep:reqwest"]
+fhirpath = []
 validate = []
 
 [dependencies]
