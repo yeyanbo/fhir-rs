@@ -101,6 +101,7 @@ impl FunctionDefinition {
     pub const CHILD: FunctionDefinition = FunctionDefinition(FunctionName::Child, 1, FunctionResponse::Collection);
     pub const EMPTY: FunctionDefinition = FunctionDefinition(FunctionName::Empty, 0, FunctionResponse::Bool);
     pub const COUNT: FunctionDefinition = FunctionDefinition(FunctionName::Count, 0, FunctionResponse::Integer);
+    pub const ALLTRUE: FunctionDefinition = FunctionDefinition(FunctionName::AllTrue, 0, FunctionResponse::Bool);
 }
 
 #[derive(Debug, Clone, PartialEq, Eq)]
@@ -113,6 +114,7 @@ pub enum FunctionName {
     Single,
     Where,
     Other,
+    AllTrue,
 }
 
 impl TryFrom<String> for FunctionDefinition {
@@ -124,6 +126,7 @@ impl TryFrom<String> for FunctionDefinition {
             "element" => Ok(FunctionDefinition::ELEMENT),
             "empty" => Ok(FunctionDefinition::EMPTY),
             "count" => Ok(FunctionDefinition::COUNT),
+            "allTrue" => Ok(FunctionDefinition::ALLTRUE),
             other => Err(InvalidFunction(format!("无效的或者不支持的函数名称:[{}]", other))),
         }
     }

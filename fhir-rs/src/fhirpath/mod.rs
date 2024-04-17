@@ -42,6 +42,13 @@ impl Collection {
         self.count() > 0
     }
 
+    pub fn all_true(&self) -> Result<bool> {
+        for part in &self.0 {
+            if !part.as_bool()? { return Ok(false)}
+        }
+        Ok(true)
+    }
+
     pub fn element(self, func: &Function, paths: &mut FhirPaths) -> Result<Collection> {
         let mut vv = Collection::new();
         for part in self.0 {
@@ -74,6 +81,7 @@ impl Collection {
             FunctionName::Count => Ok(PathResponse::Integer(self.count() as isize)),
             FunctionName::Empty => Ok(PathResponse::Bool(self.empty())),
             FunctionName::Exist => Ok(PathResponse::Bool(self.exists())),
+            FunctionName::AllTrue => Ok(PathResponse::Bool(self.all_true()?)),
             FunctionName::Other => Err(FhirError::error("无效的函数名")),
         }
     }
@@ -186,6 +194,18 @@ pub trait Executor: Debug {
         PathResponse::Collection(self.as_collection())
     }
 
+    fn as_bool(&self) -> Result<bool> {
+        Err(FhirError::error("该元素不是布尔类型"))
+    }
+
+    fn to_bool(&self) -> Result<bool> {
+        Err(FhirError::error("该元素不能转换为布尔类型"))
+    }
+
+    fn converts_to_bool(&self) -> Result<bool> {
+        Err(FhirError::error("该元素不能转换为布尔类型"))
+    }
+
     fn exec(&self, func: &Function, paths: &mut FhirPaths) -> Result<PathResponse> {
         Err(FhirError::Message(format!("String: 基础类型不支持的函数:{:?}", func)))
     }
@@ -244,6 +264,18 @@ impl Executor for i64 {
 impl Executor for bool {
     fn exec(&self, _func: &Function, _paths: &mut FhirPaths) -> Result<PathResponse> {
         Ok(self.as_collection2())
+    }
+
+    fn as_bool(&self) -> Result<bool> {
+        Ok(self.clone())
+    }
+
+    fn to_bool(&self) -> Result<bool> {
+        Ok(self.clone())
+    }
+
+    fn converts_to_bool(&self) -> Result<bool> {
+        Ok(self.clone())
     }
 
     fn as_collection(&self) -> Collection {

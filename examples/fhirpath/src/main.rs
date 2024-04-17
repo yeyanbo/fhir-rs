@@ -53,7 +53,7 @@ fn main() -> Result<()> {
 }
 
 fn test_fhirpath_2(patient: &Patient) -> Result<()> {
-    let rs = patient.eval("Patient.name.given.empty()".to_string())?;
+    let rs = patient.assert("Patient.name.given.allTrue()".to_string())?;
     
     println!("Eval Result : {}", rs);
 
