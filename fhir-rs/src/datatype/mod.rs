@@ -33,6 +33,7 @@ pub trait Element {
     fn extension(&self) -> &Option<Vec<Extension>>;
     fn set_extension(self, ext: Vec<Extension>) -> Self;
     fn add_extension(self, ext: Extension) -> Self;
+    fn is_empty(&self) -> bool;
 }
 
 /// FHIR简单类型的特性

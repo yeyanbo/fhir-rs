@@ -5,7 +5,7 @@ pub(crate) fn expand_derive_complex(st: &syn::DeriveInput) -> syn::Result<proc_m
     let struct_name_ident = &st.ident;
 
     let fields = helper::get_struct_fields(&st)?;
-    let element_impl = helper::impl_element(struct_name_ident)?;
+    let element_impl = impl_element(struct_name_ident, &fields)?;
     let complex_impl = impl_complex(struct_name_ident, &fields)?;
     let serialize_impl = impl_serialize(struct_name_ident, &fields)?;
     let deserialize_impl = impl_deserialize(struct_name_ident, &fields)?;
@@ -19,6 +19,68 @@ pub(crate) fn expand_derive_complex(st: &syn::DeriveInput) -> syn::Result<proc_m
         #fhirpath_impl
     );
     Ok(ret)
+}
+
+pub(crate) fn impl_element(struct_name_ident: &syn::Ident, struct_fields: &Vec<Field>) -> syn::Result<proc_macro2::TokenStream> {
+    let exp = impl_element_fields(struct_fields)?;
+
+    let ret = quote::quote!(
+        impl Element for #struct_name_ident {
+            fn has_id(&self) -> bool {
+                self.id.is_some()
+            }
+            fn id(&self) -> &Option<String> {
+                &self.id
+            }
+
+            fn set_id<T: Into<String>>(mut self, id: T) -> Self {
+                self.id = Some(id.into());
+                self
+            }
+
+            fn has_extension(&self) -> bool {
+                self.extension.is_some()
+            }
+
+            fn extension(&self) -> &Option<Vec<Extension>> {
+                &self.extension
+            }
+
+            fn set_extension(mut self, ext: Vec<Extension>) -> Self {
+                self.extension = Some(ext);
+                self
+            }
+
+            fn add_extension(mut self, ext: Extension) -> Self {
+                match self.extension {
+                    Some(ref mut exts) => {
+                        exts.push(ext);
+                    },
+                    None => {
+                        self.extension = Some(vec![ext])
+                    },
+                }
+                self
+            }
+
+            fn is_empty(&self) -> bool {
+                self.extension.is_none()
+                #( #exp )*
+            }
+        }
+    );
+    Ok(ret)
+}
+
+fn impl_element_fields(struct_fields: &Vec<Field>) -> syn::Result<Vec<proc_macro2::TokenStream>> {
+    let mut fields = Vec::with_capacity(32);
+    struct_fields.iter()
+        .skip(2)
+        .for_each(|f| {
+            let ident = &f.name;
+            fields.push(quote::quote!(& self.#ident.is_none()));
+        });
+    Ok(fields)
 }
 
 fn impl_complex(struct_name_ident: &syn::Ident, struct_fields: &Vec<Field>) -> syn::Result<proc_macro2::TokenStream> {

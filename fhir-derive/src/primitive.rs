@@ -3,7 +3,7 @@ use crate::helper;
 pub(crate) fn expand_derive_primitive(st: &syn::DeriveInput) -> syn::Result<proc_macro2::TokenStream> {
     let struct_name_ident = &st.ident;
 
-    let element_impl = helper::impl_element(struct_name_ident)?;
+    let element_impl = impl_element(struct_name_ident)?;
     let primitive_impl = impl_primitive(struct_name_ident)?;
     let serialize_impl = impl_serialize(struct_name_ident)?;
     let deserialize_impl = impl_deserialize(struct_name_ident)?;
@@ -15,6 +15,55 @@ pub(crate) fn expand_derive_primitive(st: &syn::DeriveInput) -> syn::Result<proc
         #serialize_impl
         #deserialize_impl
         #fhirpath_impl
+    );
+    Ok(ret)
+}
+
+pub fn impl_element(struct_name_ident: &syn::Ident) -> syn::Result<proc_macro2::TokenStream> {
+
+    let ret = quote::quote!(
+        impl Element for #struct_name_ident {
+            fn has_id(&self) -> bool {
+                self.id.is_some()
+            }
+            fn id(&self) -> &Option<String> {
+                &self.id
+            }
+
+            fn set_id<T: Into<String>>(mut self, id: T) -> Self {
+                self.id = Some(id.into());
+                self
+            }
+
+            fn has_extension(&self) -> bool {
+                self.extension.is_some()
+            }
+
+            fn extension(&self) -> &Option<Vec<Extension>> {
+                &self.extension
+            }
+
+            fn set_extension(mut self, ext: Vec<Extension>) -> Self {
+                self.extension = Some(ext);
+                self
+            }
+
+            fn add_extension(mut self, ext: Extension) -> Self {
+                match self.extension {
+                    Some(ref mut exts) => {
+                        exts.push(ext);
+                    },
+                    None => {
+                        self.extension = Some(vec![ext])
+                    },
+                }
+                self
+            }
+
+            fn is_empty(&self) -> bool {
+                self.value.is_none() & self.extension.is_none()
+            }
+        }
     );
     Ok(ret)
 }

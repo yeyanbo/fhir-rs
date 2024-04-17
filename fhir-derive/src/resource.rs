@@ -289,7 +289,7 @@ pub fn impl_fhirpath(struct_name_ident: &syn::Ident, struct_fields: &Vec<Field>)
     let ret = quote::quote!(
 
         impl #struct_name_ident {
-            pub fn eval(&self, path: String) -> Result<bool> {
+            pub fn assert(&self, path: String) -> Result<bool> {
                 let mut paths = FhirPaths::parse(path)?;
 
                 match paths.response() {
