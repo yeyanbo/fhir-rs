@@ -141,36 +141,6 @@ fn impl_fhirpath(struct_name_ident: &syn::Ident) -> syn::Result<proc_macro2::Tok
 
     let ret = quote::quote!(
         impl Executor for #struct_name_ident {
-            fn path(&self, paths: &mut FhirPaths) -> Result<Collection> {
-                match paths.next() {
-                    Some(func) => {
-                        match func.definition.function_name() {
-                            FunctionName::Element => {
-                                match func.params {
-                                    FunctionParam::String(name) => {
-                                        match name.as_str() {
-                                            "id" => {
-                                                self.id.path(paths)
-                                            },
-                                            "extension" => {
-                                                self.extension.path(paths)
-                                            }
-                                            "value" => {
-                                                self.value.path(paths)
-                                            }
-                                            other => Err(FhirError::Message(format!("无效的路径名:[{}]", other)))
-                                        }
-                                    },
-                                    _ => unreachable!(),
-                                }
-                            },
-                            _ => Err(FhirError::Message(format!("Patient: 无效的函数名:{:?}", &func))),
-                        }
-                    },
-                    None => Ok(self.as_collection()),
-                }
-            }
-
             fn exec(&self, func: &Function, paths: &mut FhirPaths) -> Result<PathResponse> {
                 println!("enter into primitive exec");
 

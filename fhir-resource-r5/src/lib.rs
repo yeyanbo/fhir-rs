@@ -17,10 +17,10 @@ macro_rules! any_resources {
         }
 
         impl Executor for AnyResource {
-            fn path(&self, paths: &mut FhirPaths) -> Result<Collection> {
+            fn exec(&self, func: &Function, paths: &mut FhirPaths) -> Result<PathResponse> {
                 match self {
                     $(
-                    AnyResource::$resource(resource) => resource.path(paths),
+                    AnyResource::$resource(resource) => resource.exec(func, paths),
                     )+
                     
                 }

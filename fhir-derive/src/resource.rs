@@ -277,20 +277,6 @@ pub fn impl_fhirpath_map(struct_fields: &Vec<Field>) -> syn::Result<Vec<proc_mac
         .for_each(|field| {
             let ident = field.name.clone();
             let ident_literal = field.original.clone();
-            maps.push(quote::quote!( #ident_literal => { self.#ident.path(paths) }, ));
-        });
-
-    Ok(maps)
-}
-
-
-pub fn impl_fhirpath_map2(struct_fields: &Vec<Field>) -> syn::Result<Vec<proc_macro2::TokenStream>> {
-    let mut maps = Vec::with_capacity(32);
-
-    struct_fields.iter()
-        .for_each(|field| {
-            let ident = field.name.clone();
-            let ident_literal = field.original.clone();
             maps.push(quote::quote!( #ident_literal => { self.#ident.exec(&func, paths) }, ));
         });
 
@@ -298,14 +284,14 @@ pub fn impl_fhirpath_map2(struct_fields: &Vec<Field>) -> syn::Result<Vec<proc_ma
 }
 
 pub fn impl_fhirpath(struct_name_ident: &syn::Ident, struct_fields: &Vec<Field>) -> syn::Result<proc_macro2::TokenStream> {
-
     let maps = impl_fhirpath_map(struct_fields)?;
-    let maps2 = impl_fhirpath_map2(struct_fields)?;
 
     let ret = quote::quote!(
 
         impl #struct_name_ident {
-            pub fn eval(&self, paths: &mut FhirPaths) -> Result<bool> {
+            pub fn eval(&self, path: String) -> Result<bool> {
+                let mut paths = FhirPaths::parse(path)?;
+
                 match paths.response() {
                     Some(response) => {
                         if response != &FunctionResponse::Bool {
@@ -315,16 +301,25 @@ pub fn impl_fhirpath(struct_name_ident: &syn::Ident, struct_fields: &Vec<Field>)
                     None => return Err(FhirError::error("该表达式不是一个有效的路径表达式，最后返回值不是Boolean")),
                 }
 
-                let b_func = paths.remove_last();
-                let collection = self.path(paths)?;
+                if let Some(first) = paths.next() {
+                    if !first.match_resource_type_name(&self.resource_name()) {
+                        return Err(FhirError::Message(format!("路径中首个组成与当前资源类型[{}]不符", self.resource_name())))
+                    }
+                }
 
-                match b_func.definition.function_name() {
-                    FunctionName::Empty => Ok(collection.empty()),
-                    ff => Err(FhirError::error_string(format!("不支持的函数:[{:?}]", ff))),
+                let mut vv = self.as_collection2();
+                while let Some(func) = paths.next() {
+                    vv = vv.exec(&func, &mut paths)?;
+                    println!("Response: {:?}", &vv)
+                }
+
+                match vv {
+                    PathResponse::Bool(value) => Ok(value),
+                    _ => unreachable!()
                 }
             }
 
-            pub fn path2(&self, path: String) -> Result<Option<Collection>> {
+            pub fn path(&self, path: String) -> Result<Option<Collection>> {
                 let mut paths = FhirPaths::parse(path)?;
 
                 match paths.response() {
@@ -356,49 +351,13 @@ pub fn impl_fhirpath(struct_name_ident: &syn::Ident, struct_fields: &Vec<Field>)
         }
 
         impl Executor for #struct_name_ident {
-            fn path(&self, paths: &mut FhirPaths) -> Result<Collection> {
-
-                match paths.response() {
-                    Some(response) => {
-                        if response != &FunctionResponse::Collection {
-                            return Err(FhirError::error("该表达式不是一个有效的路径表达式，最后返回值不是Collection"));
-                        }
-                    },
-                    None => return Ok(self.as_collection()),
-                }
-
-                match paths.next() {
-                    Some(func) => {
-                        match func.definition.function_name() {
-                            FunctionName::Element => {
-                                match func.params {
-                                    FunctionParam::String(name) => {
-                                        if name == self.resource_name() {
-                                            self.path(paths)
-                                        } else {
-                                            match name.as_str() {
-                                                #( #maps )*
-                                                other => Err(FhirError::Message(format!("无效的路径名:[{}]", other)))
-                                            }
-                                        }
-                                    },
-                                    _ => unreachable!(),
-                                }
-                            },
-                            _ => Err(FhirError::Message(format!("Patient: 无效的函数名:{:?}", &func))),
-                        }
-                    },
-                    None => Ok(self.as_collection()),
-                }
-            }
-
             fn exec(&self, func: &Function, paths: &mut FhirPaths) -> Result<PathResponse> {
                 match func.definition.function_name() {
                     FunctionName::Element => {
                         match &func.params {
                             FunctionParam::String(name) => {
                                 match name.as_str() {
-                                    #( #maps2 )*
+                                    #( #maps )*
                                     other => Err(FhirError::Message(format!("无效的路径名:[{}]", other)))
                                 }
                             },

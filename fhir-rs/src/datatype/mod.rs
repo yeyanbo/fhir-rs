@@ -252,33 +252,6 @@ impl Extension {
 }
 
 impl Executor for Extension {
-    fn path(&self, paths: &mut FhirPaths) -> Result<Collection> {
-        match paths.next() {
-            Some(func) => {
-                match func.definition.function_name() {
-                    FunctionName::Element => {
-                        match func.params {
-                            FunctionParam::String(name) => {
-                                match name.as_str() {
-                                    "extension" => {
-                                        self.extension.path(paths)
-                                    },
-                                    "value" => {
-                                        self.value.path(paths)
-                                    },
-                                    other => Err(FhirError::Message(format!("无效的路径名:[{}]", other)))
-                                }
-                            },
-                            _ => unreachable!(),
-                        }
-                    },
-                    _ => Err(FhirError::Message(format!("HumanName: 无效的函数名:{:?}", &func))),
-                }
-            },
-            None => Ok(self.as_collection()),
-        }
-    }
-
     fn as_collection(&self) -> Collection {
         Collection(vec![Box::new(self.clone())])
     }

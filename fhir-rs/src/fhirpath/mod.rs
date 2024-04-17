@@ -181,7 +181,6 @@ impl Iterator for FhirPaths {
 }
 
 pub trait Executor: Debug {
-    fn path(&self, paths: &mut FhirPaths) -> Result<Collection>;
     fn as_collection(&self) -> Collection;
     fn as_collection2(&self) -> PathResponse {
         PathResponse::Collection(self.as_collection())
@@ -193,13 +192,6 @@ pub trait Executor: Debug {
 }
 
 impl Executor for String {
-    fn path(&self, paths: &mut FhirPaths) -> Result<Collection> {
-        match paths.next() {
-            Some(func) => Err(FhirError::Message(format!("String: 基础类型不支持的函数:{:?}", &func))),
-            None => Ok(self.as_collection()),
-        }
-    }
-
     fn exec(&self, _func: &Function, _paths: &mut FhirPaths) -> Result<PathResponse> {
         Ok(self.as_collection2())
     }
@@ -210,11 +202,8 @@ impl Executor for String {
 }
 
 impl Executor for usize {
-    fn path(&self, paths: &mut FhirPaths) -> Result<Collection> {
-        match paths.next() {
-            Some(func) => Err(FhirError::Message(format!("String: 基础类型不支持的函数:{:?}", &func))),
-            None => Ok(self.as_collection()),
-        }
+    fn exec(&self, _func: &Function, _paths: &mut FhirPaths) -> Result<PathResponse> {
+        Ok(self.as_collection2())
     }
 
     fn as_collection(&self) -> Collection {
@@ -223,11 +212,8 @@ impl Executor for usize {
 }
 
 impl Executor for isize {
-    fn path(&self, paths: &mut FhirPaths) -> Result<Collection> {
-        match paths.next() {
-            Some(func) => Err(FhirError::Message(format!("String: 基础类型不支持的函数:{:?}", &func))),
-            None => Ok(self.as_collection()),
-        }
+    fn exec(&self, _func: &Function, _paths: &mut FhirPaths) -> Result<PathResponse> {
+        Ok(self.as_collection2())
     }
 
     fn as_collection(&self) -> Collection {
@@ -236,11 +222,8 @@ impl Executor for isize {
 }
 
 impl Executor for f64 {
-    fn path(&self, paths: &mut FhirPaths) -> Result<Collection> {
-        match paths.next() {
-            Some(func) => Err(FhirError::Message(format!("String: 基础类型不支持的函数:{:?}", &func))),
-            None => Ok(self.as_collection()),
-        }
+    fn exec(&self, _func: &Function, _paths: &mut FhirPaths) -> Result<PathResponse> {
+        Ok(self.as_collection2())
     }
 
     fn as_collection(&self) -> Collection {
@@ -249,11 +232,8 @@ impl Executor for f64 {
 }
 
 impl Executor for i64 {
-    fn path(&self, paths: &mut FhirPaths) -> Result<Collection> {
-        match paths.next() {
-            Some(func) => Err(FhirError::Message(format!("String: 基础类型不支持的函数:{:?}", &func))),
-            None => Ok(self.as_collection()),
-        }
+    fn exec(&self, _func: &Function, _paths: &mut FhirPaths) -> Result<PathResponse> {
+        Ok(self.as_collection2())
     }
 
     fn as_collection(&self) -> Collection {
@@ -262,11 +242,8 @@ impl Executor for i64 {
 }
 
 impl Executor for bool {
-    fn path(&self, paths: &mut FhirPaths) -> Result<Collection> {
-        match paths.next() {
-            Some(func) => Err(FhirError::Message(format!("String: 基础类型不支持的函数:{:?}", &func))),
-            None => Ok(self.as_collection()),
-        }
+    fn exec(&self, _func: &Function, _paths: &mut FhirPaths) -> Result<PathResponse> {
+        Ok(self.as_collection2())
     }
 
     fn as_collection(&self) -> Collection {
@@ -275,11 +252,8 @@ impl Executor for bool {
 }
 
 impl Executor for Instant {
-    fn path(&self, paths: &mut FhirPaths) -> Result<Collection> {
-        match paths.next() {
-            Some(func) => Err(FhirError::Message(format!("String: 基础类型不支持的函数:{:?}", &func))),
-            None => Ok(self.as_collection()),
-        }
+    fn exec(&self, _func: &Function, _paths: &mut FhirPaths) -> Result<PathResponse> {
+        Ok(self.as_collection2())
     }
 
     fn as_collection(&self) -> Collection {
@@ -288,11 +262,8 @@ impl Executor for Instant {
 }
 
 impl Executor for DateTime {
-    fn path(&self, paths: &mut FhirPaths) -> Result<Collection> {
-        match paths.next() {
-            Some(func) => Err(FhirError::Message(format!("String: 基础类型不支持的函数:{:?}", &func))),
-            None => Ok(self.as_collection()),
-        }
+    fn exec(&self, _func: &Function, _paths: &mut FhirPaths) -> Result<PathResponse> {
+        Ok(self.as_collection2())
     }
 
     fn as_collection(&self) -> Collection {
@@ -301,11 +272,8 @@ impl Executor for DateTime {
 }
 
 impl Executor for Time {
-    fn path(&self, paths: &mut FhirPaths) -> Result<Collection> {
-        match paths.next() {
-            Some(func) => Err(FhirError::Message(format!("String: 基础类型不支持的函数:{:?}", &func))),
-            None => Ok(self.as_collection()),
-        }
+    fn exec(&self, _func: &Function, _paths: &mut FhirPaths) -> Result<PathResponse> {
+        Ok(self.as_collection2())
     }
 
     fn as_collection(&self) -> Collection {
@@ -314,11 +282,8 @@ impl Executor for Time {
 }
 
 impl Executor for Date {
-    fn path(&self, paths: &mut FhirPaths) -> Result<Collection> {
-        match paths.next() {
-            Some(func) => Err(FhirError::Message(format!("String: 基础类型不支持的函数:{:?}", &func))),
-            None => Ok(self.as_collection()),
-        }
+    fn exec(&self, _func: &Function, _paths: &mut FhirPaths) -> Result<PathResponse> {
+        Ok(self.as_collection2())
     }
 
     fn as_collection(&self) -> Collection {
@@ -327,22 +292,12 @@ impl Executor for Date {
 }
 
 impl<T: Executor> Executor for Box<T> {
-    fn path(&self, paths: &mut FhirPaths) -> Result<Collection> {
-            self.as_ref().path(paths)
-    }
-
     fn as_collection(&self) -> Collection {
         self.as_ref().as_collection()
     }
 }
 
 impl<T: Executor> Executor for Option<T> {
-    fn path(&self, paths: &mut FhirPaths) -> Result<Collection> {
-        match self {
-            Some(value) => value.path(paths),
-            None => Ok(Collection::new()),
-        }
-    }
 
     fn exec(&self, func: &Function, paths: &mut FhirPaths) -> Result<PathResponse> {
         info!("enter into option exec");
@@ -361,39 +316,6 @@ impl<T: Executor> Executor for Option<T> {
 }
 
 impl<T: Executor> Executor for Vec<T> {
-    fn path(&self, paths: &mut FhirPaths) -> Result<Collection> {
-
-        match paths.next() {
-            Some(func) => {
-                match func.definition.function_name() {
-                    FunctionName::Child => {
-                        match func.params {
-                            FunctionParam::Integer(index) => {
-                                let item : Option<&T> = self.get(index as usize);
-                                match item {
-                                    Some(val) => val.path(paths),
-                                    None => todo!(),
-                                }
-                            },
-                            _ => unreachable!(),
-                        }
-                    },
-                    FunctionName::Element => {
-                        paths.prev();
-                        let mut vv = Collection::new();
-                        for item in self {
-                            let rs = item.path(&mut paths.clone())?;
-                            vv.combine(rs);
-                        }
-                        Ok(vv)
-                    },
-                    _ => todo!(),
-                }
-            },
-            None => Ok(self.as_collection()),
-        }
-    }
-
     fn exec(&self, _func: &Function, paths: &mut FhirPaths) -> Result<PathResponse> {
         info!("enter vec exec");
 
@@ -430,170 +352,62 @@ impl<T: Executor> Executor for Vec<T> {
 
 
 impl Executor for AnyType {
-    fn path(&self, paths: &mut FhirPaths) -> Result<Collection> {
+    fn exec(&self, func: &Function, paths: &mut FhirPaths) -> Result<PathResponse> {
         match self {
-            AnyType::PositiveInt(value) => {
-                value.path(paths)
-            }
-            AnyType::String(value) => {
-                value.path(paths)
-            }
-            AnyType::Coding(value) => {
-                value.path(paths)
-            }
-            AnyType::DateTime(value) => {
-                value.path(paths)
-            }
-            AnyType::Base64Binary(value) => {
-                value.path(paths)
-            }
-            AnyType::Boolean(value) => {
-                value.path(paths)
-            }
-            AnyType::Code(value) => {
-                value.path(paths)
-            }
-            AnyType::Id(value) => {
-                value.path(paths)
-            }
-            AnyType::Markdown(value) => {
-                value.path(paths)
-            }
-            AnyType::Uri(value) => {
-                value.path(paths)
-            }
-            AnyType::Url(value) => {
-                value.path(paths)
-            }
-            AnyType::Uuid(value) => {
-                value.path(paths)
-            }
-            AnyType::Oid(value) => {
-                value.path(paths)
-            }
-            AnyType::Canonical(value) => {
-                value.path(paths)
-            }
-            AnyType::Date(value) => {
-                value.path(paths)
-            }
-            AnyType::Time(value) => {
-                value.path(paths)
-            }
-            AnyType::Instant(value) => {
-                value.path(paths)
-            }
-            AnyType::UnsignedInt(value) => {
-                value.path(paths)
-            }
-            AnyType::Integer(value) => {
-                value.path(paths)
-            }
-            AnyType::Integer64(value) => {
-                value.path(paths)
-            }
-            AnyType::Decimal(value) => {
-                value.path(paths)
-            }
-            AnyType::Address(value) => {
-                value.path(paths)
-            }
-            AnyType::Age(value) => {
-                value.path(paths)
-            }
-            AnyType::Annotation(value) => {
-                value.path(paths)
-            }
-            AnyType::Attachment(value) => {
-                value.path(paths)
-            }
-            AnyType::CodeableConcept(value) => {
-                value.path(paths)
-            }
-            AnyType::CodeableReference(value) => {
-                value.path(paths)
-            }
-            AnyType::ContactPoint(value) => {
-                value.path(paths)
-            }
-            AnyType::Count(value) => {
-                value.path(paths)
-            }
-            AnyType::Distance(value) => {
-                value.path(paths)
-            }
-            AnyType::Duration(value) => {
-                value.path(paths)
-            }
-            AnyType::HumanName(value) => {
-                value.path(paths)
-            }
-            AnyType::Identifier(value) => {
-                value.path(paths)
-            }
-            AnyType::Money(value) => {
-                value.path(paths)
-            }
-            AnyType::Period(value) => {
-                value.path(paths)
-            }
-            AnyType::Quantity(value) => {
-                value.path(paths)
-            }
-            AnyType::Range(value) => {
-                value.path(paths)
-            }
-            AnyType::Ratio(value) => {
-                value.path(paths)
-            }
-            AnyType::RatioRange(value) => {
-                value.path(paths)
-            }
-            AnyType::Reference(value) => {
-                value.path(paths)
-            }
-            AnyType::SampledData(value) => {
-                value.path(paths)
-            }
-            AnyType::Signature(value) => {
-                value.path(paths)
-            }
-            AnyType::Timing(value) => {
-                value.path(paths)
-            }
-            AnyType::ContactDetail(value) => {
-                value.path(paths)
-            }
-            AnyType::DataRequirement(value) => {
-                value.path(paths)
-            }
-            AnyType::Expression(value) => {
-                value.path(paths)
-            }
-            AnyType::ParameterDefinition(value) => {
-                value.path(paths)
-            }
-            AnyType::RelatedArtifact(value) => {
-                value.path(paths)
-            }
-            AnyType::TriggerDefinition(value) => {
-                value.path(paths)
-            }
-            AnyType::UsageContext(value) => {
-                value.path(paths)
-            }
-            AnyType::Availability(value) => {
-                value.path(paths)
-            }
-            AnyType::ExtendedContactDetail(value) => {
-                value.path(paths)
-            }
-            AnyType::Dosage(value) => {
-                value.path(paths)
-            }
-            AnyType::Meta(value) => {
-                value.path(paths)
-            }
+            AnyType::PositiveInt(value) => value.exec(func, paths),
+            AnyType::String(value) => value.exec(func, paths),
+            AnyType::Coding(value) => value.exec(func, paths),
+            AnyType::DateTime(value) => value.exec(func, paths),
+            AnyType::Base64Binary(value) => value.exec(func, paths),
+            AnyType::Boolean(value) => value.exec(func, paths),
+            AnyType::Code(value) => value.exec(func, paths),
+            AnyType::Id(value) => value.exec(func, paths),
+            AnyType::Markdown(value) => value.exec(func, paths),
+            AnyType::Uri(value) => value.exec(func, paths),
+            AnyType::Url(value) => value.exec(func, paths),
+            AnyType::Uuid(value) => value.exec(func, paths),
+            AnyType::Oid(value) => value.exec(func, paths),
+            AnyType::Canonical(value) => value.exec(func, paths),
+            AnyType::Date(value) => value.exec(func, paths),
+            AnyType::Time(value) => value.exec(func, paths),
+            AnyType::Instant(value) => value.exec(func, paths),
+            AnyType::UnsignedInt(value) => value.exec(func, paths),
+            AnyType::Integer(value) => value.exec(func, paths),
+            AnyType::Integer64(value) => value.exec(func, paths),
+            AnyType::Decimal(value) => value.exec(func, paths),
+            AnyType::Address(value) => value.exec(func, paths),
+            AnyType::Age(value) => value.exec(func, paths),
+            AnyType::Annotation(value) => value.exec(func, paths),
+            AnyType::Attachment(value) => value.exec(func, paths),
+            AnyType::CodeableConcept(value) => value.exec(func, paths),
+            AnyType::CodeableReference(value) => value.exec(func, paths),
+            AnyType::ContactPoint(value) => value.exec(func, paths),
+            AnyType::Count(value) => value.exec(func, paths),
+            AnyType::Distance(value) => value.exec(func, paths),
+            AnyType::Duration(value) => value.exec(func, paths),
+            AnyType::HumanName(value) => value.exec(func, paths),
+            AnyType::Identifier(value) => value.exec(func, paths),
+            AnyType::Money(value) => value.exec(func, paths),
+            AnyType::Period(value) => value.exec(func, paths),
+            AnyType::Quantity(value) => value.exec(func, paths),
+            AnyType::Range(value) => value.exec(func, paths),
+            AnyType::Ratio(value) => value.exec(func, paths),
+            AnyType::RatioRange(value) => value.exec(func, paths),
+            AnyType::Reference(value) => value.exec(func, paths),
+            AnyType::SampledData(value) => value.exec(func, paths),
+            AnyType::Signature(value) => value.exec(func, paths),
+            AnyType::Timing(value) => value.exec(func, paths),
+            AnyType::ContactDetail(value) => value.exec(func, paths),
+            AnyType::DataRequirement(value) => value.exec(func, paths),
+            AnyType::Expression(value) => value.exec(func, paths),
+            AnyType::ParameterDefinition(value) => value.exec(func, paths),
+            AnyType::RelatedArtifact(value) => value.exec(func, paths),
+            AnyType::TriggerDefinition(value) => value.exec(func, paths),
+            AnyType::UsageContext(value) => value.exec(func, paths),
+            AnyType::Availability(value) => value.exec(func, paths),
+            AnyType::ExtendedContactDetail(value) => value.exec(func, paths),
+            AnyType::Dosage(value) => value.exec(func, paths),
+            AnyType::Meta(value) => value.exec(func, paths),
         }
     }
 
