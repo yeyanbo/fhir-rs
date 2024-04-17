@@ -2,13 +2,14 @@ mod tokenizer;
 mod parser;
 mod function;
 
-
 use crate::prelude::*;
 use std::fmt::Debug;
 pub use tokenizer::{Token, TokenType, Tokenizer};
 pub use function::*;
 pub use parser::Parser;
+use tracing::info;
 
+#[derive(Debug)]
 pub struct Collection(pub Vec<Box<dyn Executor>>);
 
 impl Collection {
@@ -32,25 +33,119 @@ impl Collection {
     pub fn push(&mut self, value: Box<dyn Executor>) {
         self.0.push(value)
     }
+
+    pub fn empty(&self) -> bool {
+        self.count() == 0
+    }
+    
+    pub fn exists(&self) -> bool {
+        self.count() > 0
+    }
+
+    pub fn element(self, func: &Function, paths: &mut FhirPaths) -> Result<Collection> {
+        let mut vv = Collection::new();
+        for part in self.0 {
+            match part.exec(func, paths)? {
+                PathResponse::Collection(collection) => vv.combine(collection),
+                _ => unreachable!(),
+            }
+        }
+
+        Ok(vv)
+    }
+
+    pub fn single(self) -> Result<Self> {
+        if self.count() > 1 {
+            return Err(FhirError::error("执行single函数时集合内超过一个元素"))
+        }
+
+        Ok(self)
+    }
+
+    pub fn exec(self, func: &Function, paths: &mut FhirPaths) -> Result<PathResponse> {
+        match func.definition.function_name() {
+            FunctionName::Element => Ok(PathResponse::Collection(self.element(func, paths)?)),
+            FunctionName::Single => Ok(PathResponse::Collection(self.single()?)),
+            FunctionName::Child => {
+                info!("{}", paths.current());
+                Err(FhirError::error("不应该到这里"))
+            },
+            FunctionName::Where => todo!(),
+            FunctionName::Count => Ok(PathResponse::Integer(self.count() as isize)),
+            FunctionName::Empty => Ok(PathResponse::Bool(self.empty())),
+            FunctionName::Exist => Ok(PathResponse::Bool(self.exists())),
+            FunctionName::Other => Err(FhirError::error("无效的函数名")),
+        }
+    }
+}
+
+#[derive(Debug)]
+
+pub enum PathResponse {
+    Collection(Collection),
+    Integer(isize),
+    String(String),
+    Bool(bool)
+}
+
+impl PathResponse {
+
+    pub fn exec(self, func: &Function, paths: &mut FhirPaths) -> Result<PathResponse> {
+        match self {
+            PathResponse::Collection(collection) => collection.exec(func, paths),
+            PathResponse::Integer(value) => value.exec(func, paths),
+            PathResponse::String(value) => value.exec(func, paths),
+            PathResponse::Bool(value) =>  value.exec(func, paths),
+        }
+    }
 }
 
 #[derive(Debug, Clone)]
 pub struct FhirPaths {
     parts: Vec<Function>,
     current: usize,
+    branch: usize,
 }
 
 impl FhirPaths {
     pub fn parse(input: String) -> Result<Self> {
         let mut tokenizer = Tokenizer::new(&input);
         let tokens = tokenizer.tokenize()?;
-        let parts = Parser::parse_path(tokens)?;
+        let mut parts = Parser::parse_path(tokens)?;
 
-        Ok(Self{parts, current: 0})
+        match parts.first() {
+            Some(func) => {
+                if !func.is_resource_type_element() {
+                    parts.insert(0, Function::create_self_element())
+                }
+            },
+            None => return Err(FhirError::error("路径表达式不能为空")),
+        }
+
+        Ok(Self{parts, current: 0, branch: 0})
     }
 
     pub fn prev(&mut self) {
         self.current -= 1;
+    }
+
+    pub fn current(&self) -> usize {
+        self.current
+    }
+
+    pub fn peek_index(&mut self) -> Option<&Function> {
+        if self.current < self.parts.len() {
+            let func = &self.parts[self.current];
+            match func.definition.function_name() {
+                FunctionName::Child => {
+                    self.branch += 1;
+                    Some(func)
+                },
+                _ => None,
+            }
+        } else {
+            None
+        }
     }
 
     pub fn response(&self) -> Option<&FunctionResponse> {
@@ -59,12 +154,22 @@ impl FhirPaths {
             None => None,
         }
     }
+
+    pub fn remove_last(&mut self) -> Function {
+        let count = self.parts.len();
+        self.parts.remove(count-1)
+    }
 }
 
 impl Iterator for FhirPaths {
     type Item = Function;
 
     fn next(&mut self) -> Option<Self::Item> {
+        if self.branch > 0 {
+            self.current += self.branch;
+            self.branch = 0;
+        }
+
         if self.current < self.parts.len() {
             let value = self.parts[self.current].clone();
             self.current += 1;
@@ -78,6 +183,13 @@ impl Iterator for FhirPaths {
 pub trait Executor: Debug {
     fn path(&self, paths: &mut FhirPaths) -> Result<Collection>;
     fn as_collection(&self) -> Collection;
+    fn as_collection2(&self) -> PathResponse {
+        PathResponse::Collection(self.as_collection())
+    }
+
+    fn exec(&self, func: &Function, paths: &mut FhirPaths) -> Result<PathResponse> {
+        Err(FhirError::Message(format!("String: 基础类型不支持的函数:{:?}", func)))
+    }
 }
 
 impl Executor for String {
@@ -86,6 +198,10 @@ impl Executor for String {
             Some(func) => Err(FhirError::Message(format!("String: 基础类型不支持的函数:{:?}", &func))),
             None => Ok(self.as_collection()),
         }
+    }
+
+    fn exec(&self, _func: &Function, _paths: &mut FhirPaths) -> Result<PathResponse> {
+        Ok(self.as_collection2())
     }
 
     fn as_collection(&self) -> Collection {
@@ -228,6 +344,14 @@ impl<T: Executor> Executor for Option<T> {
         }
     }
 
+    fn exec(&self, func: &Function, paths: &mut FhirPaths) -> Result<PathResponse> {
+        info!("enter into option exec");
+        match self {
+            Some(value) => value.exec(func, paths),
+            None => Ok(PathResponse::Collection(Collection::new())),
+        }
+    }
+
     fn as_collection(&self) -> Collection {
         match self {
             Some(value) => value.as_collection(),
@@ -270,6 +394,31 @@ impl<T: Executor> Executor for Vec<T> {
         }
     }
 
+    fn exec(&self, _func: &Function, paths: &mut FhirPaths) -> Result<PathResponse> {
+        info!("enter vec exec");
+
+        match paths.peek_index() {
+            Some(func) => {
+                match func.definition.function_name() {
+                    FunctionName::Child => {
+                        match func.params {
+                            FunctionParam::Integer(index) => {
+                                let item : Option<&T> = self.get(index as usize);
+                                match item {
+                                    Some(val) => Ok(val.as_collection2()),
+                                    None => Ok(PathResponse::Collection(Collection::new())),
+                                }
+                            },
+                            _ => unreachable!(),
+                        }
+                    }
+                    _ => Ok(self.as_collection2()),
+                }
+            },
+            None => Ok(self.as_collection2()),
+        }
+    }
+
     fn as_collection(&self) -> Collection {
         let mut vv = Collection::new();
         for item in self {
@@ -278,6 +427,7 @@ impl<T: Executor> Executor for Vec<T> {
         vv
     }
 }
+
 
 impl Executor for AnyType {
     fn path(&self, paths: &mut FhirPaths) -> Result<Collection> {

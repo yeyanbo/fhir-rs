@@ -227,4 +227,3 @@ pub struct AccountDiagnosisBackboneElement {
     #[fhir(name="packageCode", min="0", max="*", summary=false, modifier=false)]
     pub package_code: Option<Vec<CodeableConcept>>,
 }
-

@@ -170,7 +170,34 @@ fn impl_fhirpath(struct_name_ident: &syn::Ident) -> syn::Result<proc_macro2::Tok
                     None => Ok(self.as_collection()),
                 }
             }
-            
+
+            fn exec(&self, func: &Function, paths: &mut FhirPaths) -> Result<PathResponse> {
+                println!("enter into primitive exec");
+
+                match func.definition.function_name() {
+                    FunctionName::Element => {
+                        match &func.params {
+                            FunctionParam::String(name) => {
+                                match name.as_str() {
+                                    "id" => {
+                                        self.id.exec(&func, paths)
+                                    },
+                                    "extension" => {
+                                        self.extension.exec(&func, paths)
+                                    }
+                                    "value" => {
+                                        self.value.exec(&func, paths)
+                                    }
+                                    other => Err(FhirError::Message(format!("无效的路径名:[{}]", other)))
+                                }
+                            },
+                            _ => unreachable!(),
+                        }
+                    },
+                    _ => Err(FhirError::Message(format!("Patient: 无效的函数名:{:?}", &func))),
+                }
+            } 
+
             fn as_collection(&self) -> Collection {
                 Collection(vec![Box::new(self.clone())])
             }

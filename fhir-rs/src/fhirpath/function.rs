@@ -35,6 +35,7 @@ pub struct Function {
 }
 
 impl Function {
+
     pub fn from_string(token: String, params: FunctionParam) -> std::result::Result<Self, InvalidFunction> {
         let definition = token.try_into()?; 
         Ok(Function{definition, params})
@@ -42,6 +43,40 @@ impl Function {
 
     pub fn from_definition(definition: FunctionDefinition, params: FunctionParam) -> Self {
         Function{definition, params}
+    }
+
+    pub fn create_self_element() -> Self {
+        Self::from_definition(FunctionDefinition::ELEMENT, FunctionParam::String("Self".to_string()))
+    }
+
+    pub fn match_resource_type_name(&self, type_name: &String) -> bool {
+        let self_name = "Self".to_string();
+
+        match self.definition.function_name() {
+            FunctionName::Element => {
+                match &self.params {
+                    FunctionParam::String(name) if (type_name == name) | (type_name == &self_name) => true,
+                    _ => false,
+                }
+            },
+            _ => false,
+        }
+    }
+
+    pub fn is_resource_type_element(&self) -> bool {
+        match self.definition.function_name() {
+            FunctionName::Element => {
+                match &self.params {
+                    FunctionParam::String(name) if Self::is_first_char_upper_case(name) => true,
+                    _ => false,
+                }
+            },
+            _ => false,
+        }
+    }
+
+    fn is_first_char_upper_case(input: &String) -> bool {
+        input.chars().next().map_or(false, |c| c.is_uppercase())
     }
 }
 

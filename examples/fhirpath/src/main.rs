@@ -44,6 +44,16 @@ fn main() -> Result<()> {
         Ok(_) => println!("执行完成"),
         Err(err) => println!("出错了：{}", err),
     }
+
+    match test_fhirpath_2(&patient) {
+        Ok(_) => println!("评估执行完成"),
+        Err(err) => println!("评估出错了：{}", err),
+    }
+
+    match test_fhirpath_3(&patient) {
+        Ok(_) => println!("评估执行完成"),
+        Err(err) => println!("评估出错了：{}", err),
+    }
     Ok(())
 }
 
@@ -61,3 +71,30 @@ fn test_fhirpath_1(patient: &Patient) -> Result<()> {
     Ok(())
 }
 
+fn test_fhirpath_2(patient: &Patient) -> Result<()> {
+
+    let mut paths = FhirPaths::parse("Patient.name.given.empty()".to_string())?;
+    let rs = patient.eval(&mut paths)?;
+    
+    println!("Eval Result : {}", rs);
+
+    Ok(())
+}
+
+fn test_fhirpath_3(patient: &Patient) -> Result<()> {
+
+    let collection = patient.path2("Patient.name[1].given.value".to_string())?;
+    
+    match collection {
+        Some(coll) => {
+            println!("Result count: {}", coll.count());
+
+            for item in coll.0 {
+                println!("Item: {:?}", item);
+            }
+        },
+        None => println!("Result Empty"),
+    }
+    
+    Ok(())
+}

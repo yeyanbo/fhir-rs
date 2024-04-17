@@ -77,10 +77,6 @@ impl Parser {
     
         Err(FhirError::error("未发现代表结束的方括号"))
     }
-    
-    fn is_first_char_upper_case(input: &String) -> bool {
-        input.chars().next().map_or(false, |c| c.is_uppercase())
-    }
 }
 
 
