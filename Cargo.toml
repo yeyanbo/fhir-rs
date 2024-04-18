@@ -1,12 +1,10 @@
 [workspace]
 members = [
-    "fhir-resource-r5",
     "fhir-rs",
     "fhir-derive",
     "examples/*"
 ]
 default-members = [
-    "fhir-resource-r5",
     "fhir-rs",
     "fhir-derive",
 ]

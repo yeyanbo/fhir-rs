@@ -1,6 +1,5 @@
 use tracing::{info, Level};
 use tracing_subscriber::FmtSubscriber;
-use fhir_resource_r5::{Patient, TestScript};
 use fhir_rs::prelude::*;
 use core::str::FromStr;
 
