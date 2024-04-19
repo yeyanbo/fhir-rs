@@ -16,11 +16,13 @@ license-file = "LICENSE"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 [features]
-full = ["server", "client", "validate"]
+default = ["fhirpath", "r5"]
+full = ["server", "client", "validate", "r5"]
 server = ["dep:axum"]
 client = ["dep:reqwest"]
 fhirpath = []
 validate = []
+r5 = []
 
 [dependencies]
 fhir-derive = { version = "0.0.3", path = "../fhir-derive"}

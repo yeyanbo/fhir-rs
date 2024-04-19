@@ -3,6 +3,7 @@ mod complex;
 mod helper;
 mod resource;
 mod backbone;
+mod element;
 mod extension;
 
 use proc_macro::TokenStream;
@@ -39,6 +40,15 @@ pub fn derive_backbone_element(item: TokenStream) -> TokenStream {
     let st = syn::parse_macro_input!(item as syn::DeriveInput);
 
     backbone::expand_derive_backbone(&st)
+        .unwrap_or_else(syn::Error::into_compile_error)
+        .into()
+}
+
+#[proc_macro_derive(Element, attributes(fhir))]
+pub fn derive_element(item: TokenStream) -> TokenStream {
+    let st = syn::parse_macro_input!(item as syn::DeriveInput);
+
+    element::expand_derive_element(&st)
         .unwrap_or_else(syn::Error::into_compile_error)
         .into()
 }

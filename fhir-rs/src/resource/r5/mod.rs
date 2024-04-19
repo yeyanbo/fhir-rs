@@ -523,6 +523,8 @@ any_resources!{
     VisionPrescription,
 }
 
+impl Base for AnyResource {}
+
 impl<'de> Deserialize<'de> for AnyResource {
     fn deserialize<De>(deserializer: De) -> Result<Self> where De: Deserializer<'de> {
 

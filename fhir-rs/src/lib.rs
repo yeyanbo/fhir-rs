@@ -12,11 +12,11 @@ pub mod de;
 pub mod ser;
 pub mod resource;
 
-#[cfg(features = "server")]
+// #[cfg(features = "server")]
 mod server;
-#[cfg(features = "client")]
+// #[cfg(features = "client")]
 mod client;
-#[cfg(features = "validate")]
+// #[cfg(features = "validate")]
 mod validate;
 // #[cfg(features = "fhirpath")]
 pub mod fhirpath;

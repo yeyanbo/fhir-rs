@@ -26,9 +26,6 @@ impl Field {
     }
 }
 
-
-/// #[fhir(name="implicitRules", min="0", max="1", summary=true, modifier=false)]
-//  pub implicit_rules: Option<UriDt>,
 impl From<&syn::Field> for Field {
     fn from(value: &syn::Field) -> Self {
         let mut field = Field::new(value.ident.clone().unwrap(), value.ty.clone());

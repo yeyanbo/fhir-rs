@@ -25,6 +25,27 @@ pub type Decimal = f64;
 pub type Integer = isize;
 pub type Integer64 = i64;
 
+pub trait Base {
+    fn is_empty(&self) -> bool {
+        false
+    }
+}
+
+impl Base for String {}
+impl Base for Boolean {}
+impl Base for PositiveInt {}
+impl Base for Decimal {}
+impl Base for Integer {}
+impl Base for Integer64 {}
+impl Base for DateTime {}
+impl Base for Date {}
+impl Base for Time {}
+impl Base for Instant {}
+impl<T> Base for Option<T> {}
+impl<T> Base for Vec<T> {}
+impl<T> Base for Box<T> {}
+impl Base for AnyType {}
+
 pub trait Element {
     fn has_id(&self) -> bool;
     fn id(&self) -> &Option<String>;
@@ -33,7 +54,6 @@ pub trait Element {
     fn extension(&self) -> &Option<Vec<Extension>>;
     fn set_extension(self, ext: Vec<Extension>) -> Self;
     fn add_extension(self, ext: Extension) -> Self;
-    fn is_empty(&self) -> bool;
 }
 
 /// FHIR简单类型的特性
@@ -52,6 +72,8 @@ pub trait Resource {
     fn set_id<T: Into<Id>>(self, id: T) -> Self;
     fn meta(&self) -> &Option<Meta>;
     fn set_meta(self, meta: Meta) -> Self;
+    fn assert(&self, path: String) -> Result<bool>;
+    fn path(&self, path: String) -> Result<Collection>;
 }
 
 pub trait DomainResource: Resource {

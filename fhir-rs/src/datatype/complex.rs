@@ -1,3 +1,5 @@
+use fhir_derive::Element;
+
 use crate::prelude::*;
 
 #[derive(Complex, Debug, Clone, Default)]
@@ -669,9 +671,9 @@ pub struct ElementDefinition {
     /// Value must have at least these property values
     #[fhir(name="pattern", min="0", max="1", summary=true, modifier=false)]
     pub pattern: Option<Meta>,
-    // Example value (as defined for type)
-    // #[fhir(name="example", min="0", max="*", summary=true, modifier=false)]
-    // pub example: Option<Vec<ElementDefinitionExampleElement>>,
+    /// Example value (as defined for type)
+    #[fhir(name="example", min="0", max="*", summary=true, modifier=false)]
+    pub example: Option<Vec<ElementDefinitionExampleElement>>,
     /// Minimum Allowed Value (for some types)
     #[fhir(name="minValue", min="0", max="1", summary=true, modifier=false)]
     pub min_value: Option<Quantity>,
@@ -684,9 +686,9 @@ pub struct ElementDefinition {
     /// Reference to invariant about presence
     #[fhir(name="condition", min="0", max="*", summary=true, modifier=false)]
     pub condition: Option<Vec<IdDt>>,
-    // Condition that must evaluate to true
-    // #[fhir(name="constraint", min="0", max="*", summary=true, modifier=false)]
-    // pub constraint: Option<Vec<ElementDefinitionConstraintElement>>,
+    /// Condition that must evaluate to true
+    #[fhir(name="constraint", min="0", max="*", summary=true, modifier=false)]
+    pub constraint: Option<Vec<ElementDefinitionConstraintElement>>,
     /// For primitives, that a value must be present - not replaced by an extension
     #[fhir(name="mustHaveValue", min="0", max="1", summary=true, modifier=false)]
     pub must_have_value: Option<BooleanDt>,
@@ -705,72 +707,72 @@ pub struct ElementDefinition {
     /// Include when _summary = true?
     #[fhir(name="isSummary", min="0", max="1", summary=true, modifier=false)]
     pub is_summary: Option<BooleanDt>,
-    // ValueSet details if this is coded
-    // #[fhir(name="binding", min="0", max="1", summary=true, modifier=false)]
-    // pub binding: Option<ElementDefinitionBindingElement>,
-    // Map element to another set of definitions
+    /// ValueSet details if this is coded
+    #[fhir(name="binding", min="0", max="1", summary=true, modifier=false)]
+    pub binding: Option<ElementDefinitionBindingElement>,
+    // /// Map element to another set of definitions
     // #[fhir(name="mapping", min="0", max="*", summary=true, modifier=false)]
     // pub mapping: Option<Vec<ElementDefinitionMappingElement>>,
 }
-//
-// #[derive(Complex, Debug, Clone, Default)]
-// pub struct ElementDefinitionBaseElement {
-//     /// Unique id for inter-element referencing
-//     #[fhir(name="id", min="0", max="1", summary=false, modifier=false)]
-//     pub id: Option<String>,
-//     /// Additional content defined by implementations
-//     #[fhir(name="extension", min="0", max="*", summary=false, modifier=false)]
-//     pub extension: Option<Vec<Extension>>,
-//     /// Path that identifies the base element
-//     #[fhir(name="path", min="1", max="1", summary=true, modifier=false)]
-//     pub path: Option<StringDt>,
-//     /// Min cardinality of the base element
-//     #[fhir(name="min", min="1", max="1", summary=true, modifier=false)]
-//     pub min: Option<UnsignedIntDt>,
-//     /// Max cardinality of the base element
-//     #[fhir(name="max", min="1", max="1", summary=true, modifier=false)]
-//     pub max: Option<StringDt>,
-// }
-//
-// #[derive(Complex, Debug, Clone, Default)]
-// pub struct ElementDefinitionSlicingElement {
-//     /// Unique id for inter-element referencing
-//     #[fhir(name="id", min="0", max="1", summary=false, modifier=false)]
-//     pub id: Option<String>,
-//     /// Additional content defined by implementations
-//     #[fhir(name="extension", min="0", max="*", summary=false, modifier=false)]
-//     pub extension: Option<Vec<Extension>>,
-//     /// Element values that are used to distinguish the slices
-//     #[fhir(name="discriminator", min="0", max="*", summary=true, modifier=false)]
-//     pub discriminator: Option<Vec<ElementDefinitionSlicingDiscriminatorElement>>,
-//     /// Text description of how slicing works (or not)
-//     #[fhir(name="description", min="0", max="1", summary=true, modifier=false)]
-//     pub description: Option<StringDt>,
-//     /// If elements must be in same order as slices
-//     #[fhir(name="ordered", min="0", max="1", summary=true, modifier=false)]
-//     pub ordered: Option<BooleanDt>,
-//     /// closed | open | openAtEnd
-//     #[fhir(name="rules", min="1", max="1", summary=true, modifier=false)]
-//     pub rules: Option<CodeDt>,
-// }
-//
-// #[derive(Complex, Debug, Clone, Default)]
-// pub struct ElementDefinitionSlicingDiscriminatorElement {
-//     /// Unique id for inter-element referencing
-//     #[fhir(name="id", min="0", max="1", summary=false, modifier=false)]
-//     pub id: Option<String>,
-//     /// Additional content defined by implementations
-//     #[fhir(name="extension", min="0", max="*", summary=false, modifier=false)]
-//     pub extension: Option<Vec<Extension>>,
-//     /// value | exists | type | profile | position
-//     #[fhir(name="type", min="1", max="1", summary=true, modifier=false)]
-//     pub type_: Option<CodeDt>,
-//     /// Path to element value
-//     #[fhir(name="path", min="1", max="1", summary=true, modifier=false)]
-//     pub path: Option<StringDt>,
-// }
-//
-// #[derive(Complex, Debug, Clone, Default)]
+
+#[derive(Element, Debug, Clone, Default)]
+pub struct ElementDefinitionBaseElement {
+    /// Unique id for inter-element referencing
+    #[fhir(name="id", min="0", max="1", summary=false, modifier=false)]
+    pub id: Option<String>,
+    /// Additional content defined by implementations
+    #[fhir(name="extension", min="0", max="*", summary=false, modifier=false)]
+    pub extension: Option<Vec<Extension>>,
+    /// Path that identifies the base element
+    #[fhir(name="path", min="1", max="1", summary=true, modifier=false)]
+    pub path: Option<StringDt>,
+    /// Min cardinality of the base element
+    #[fhir(name="min", min="1", max="1", summary=true, modifier=false)]
+    pub min: Option<UnsignedIntDt>,
+    /// Max cardinality of the base element
+    #[fhir(name="max", min="1", max="1", summary=true, modifier=false)]
+    pub max: Option<StringDt>,
+}
+
+#[derive(Element, Debug, Clone, Default)]
+pub struct ElementDefinitionSlicingElement {
+    /// Unique id for inter-element referencing
+    #[fhir(name="id", min="0", max="1", summary=false, modifier=false)]
+    pub id: Option<String>,
+    /// Additional content defined by implementations
+    #[fhir(name="extension", min="0", max="*", summary=false, modifier=false)]
+    pub extension: Option<Vec<Extension>>,
+    /// Element values that are used to distinguish the slices
+    #[fhir(name="discriminator", min="0", max="*", summary=true, modifier=false)]
+    pub discriminator: Option<Vec<ElementDefinitionSlicingDiscriminatorElement>>,
+    /// Text description of how slicing works (or not)
+    #[fhir(name="description", min="0", max="1", summary=true, modifier=false)]
+    pub description: Option<StringDt>,
+    /// If elements must be in same order as slices
+    #[fhir(name="ordered", min="0", max="1", summary=true, modifier=false)]
+    pub ordered: Option<BooleanDt>,
+    /// closed | open | openAtEnd
+    #[fhir(name="rules", min="1", max="1", summary=true, modifier=false)]
+    pub rules: Option<CodeDt>,
+}
+
+#[derive(Element, Debug, Clone, Default)]
+pub struct ElementDefinitionSlicingDiscriminatorElement {
+    /// Unique id for inter-element referencing
+    #[fhir(name="id", min="0", max="1", summary=false, modifier=false)]
+    pub id: Option<String>,
+    /// Additional content defined by implementations
+    #[fhir(name="extension", min="0", max="*", summary=false, modifier=false)]
+    pub extension: Option<Vec<Extension>>,
+    /// value | exists | type | profile | position
+    #[fhir(name="type", min="1", max="1", summary=true, modifier=false)]
+    pub type_: Option<CodeDt>,
+    /// Path to element value
+    #[fhir(name="path", min="1", max="1", summary=true, modifier=false)]
+    pub path: Option<StringDt>,
+}
+
+// #[derive(Element, Debug, Clone, Default)]
 // pub struct ElementDefinitionMappingElement {
 //     /// Unique id for inter-element referencing
 //     #[fhir(name="id", min="0", max="1", summary=false, modifier=false)]
@@ -791,128 +793,128 @@ pub struct ElementDefinition {
 //     #[fhir(name="comment", min="0", max="1", summary=true, modifier=false)]
 //     pub comment: Option<MarkdownDt>,
 // }
-//
-// #[derive(Complex, Debug, Clone, Default)]
-// pub struct ElementDefinitionTypeElement {
-//     /// Unique id for inter-element referencing
-//     #[fhir(name="id", min="0", max="1", summary=false, modifier=false)]
-//     pub id: Option<String>,
-//     /// Additional content defined by implementations
-//     #[fhir(name="extension", min="0", max="*", summary=false, modifier=false)]
-//     pub extension: Option<Vec<Extension>>,
-//     /// Data type or Resource (reference to definition)
-//     #[fhir(name="code", min="1", max="1", summary=true, modifier=false)]
-//     pub code: Option<UriDt>,
-//     /// Profiles (StructureDefinition or IG) - one must apply
-//     #[fhir(name="profile", min="0", max="*", summary=true, modifier=false)]
-//     pub profile: Option<Vec<CanonicalDt>>,
-//     /// Profile (StructureDefinition or IG) on the Reference/canonical target - one must apply
-//     #[fhir(name="targetProfile", min="0", max="*", summary=true, modifier=false)]
-//     pub target_profile: Option<Vec<CanonicalDt>>,
-//     /// contained | referenced | bundled - how aggregated
-//     #[fhir(name="aggregation", min="0", max="*", summary=true, modifier=false)]
-//     pub aggregation: Option<Vec<CodeDt>>,
-//     /// either | independent | specific
-//     #[fhir(name="versioning", min="0", max="1", summary=true, modifier=false)]
-//     pub versioning: Option<CodeDt>,
-// }
-//
-// #[derive(Complex, Debug, Clone, Default)]
-// pub struct ElementDefinitionBindingElement {
-//     /// Unique id for inter-element referencing
-//     #[fhir(name="id", min="0", max="1", summary=false, modifier=false)]
-//     pub id: Option<String>,
-//     /// Additional content defined by implementations
-//     #[fhir(name="extension", min="0", max="*", summary=false, modifier=false)]
-//     pub extension: Option<Vec<Extension>>,
-//     /// required | extensible | preferred | example
-//     #[fhir(name="strength", min="1", max="1", summary=true, modifier=false)]
-//     pub strength: Option<CodeDt>,
-//     /// Intended use of codes in the bound value set
-//     #[fhir(name="description", min="0", max="1", summary=true, modifier=false)]
-//     pub description: Option<MarkdownDt>,
-//     /// Source of value set
-//     #[fhir(name="valueSet", min="0", max="1", summary=true, modifier=false)]
-//     pub value_set: Option<CanonicalDt>,
-//     /// Additional Bindings - more rules about the binding
-//     #[fhir(name="additional", min="0", max="*", summary=true, modifier=false)]
-//     pub additional: Option<Vec<ElementDefinitionBindingAdditionalElement>>,
-// }
-//
-// #[derive(Complex, Debug, Clone, Default)]
-// pub struct ElementDefinitionBindingAdditionalElement {
-//     /// Unique id for inter-element referencing
-//     #[fhir(name="id", min="0", max="1", summary=false, modifier=false)]
-//     pub id: Option<String>,
-//     /// Additional content defined by implementations
-//     #[fhir(name="extension", min="0", max="*", summary=false, modifier=false)]
-//     pub extension: Option<Vec<Extension>>,
-//     /// maximum | minimum | required | extensible | candidate | current | preferred | ui | starter | component
-//     #[fhir(name="purpose", min="1", max="1", summary=true, modifier=false)]
-//     pub purpose: Option<CodeDt>,
-//     /// The value set for the additional binding
-//     #[fhir(name="valueSet", min="1", max="1", summary=true, modifier=false)]
-//     pub value_set: Option<CanonicalDt>,
-//     /// Documentation of the purpose of use of the binding
-//     #[fhir(name="documentation", min="0", max="1", summary=true, modifier=false)]
-//     pub documentation: Option<MarkdownDt>,
-//     /// Concise documentation - for summary tables
-//     #[fhir(name="shortDoco", min="0", max="1", summary=true, modifier=false)]
-//     pub short_doco: Option<StringDt>,
-//     /// Qualifies the usage - jurisdiction, gender, workflow status etc.
-//     #[fhir(name="usage", min="0", max="*", summary=true, modifier=false)]
-//     pub usage: Option<Vec<UsageContext>>,
-//     /// Whether binding can applies to all repeats, or just one
-//     #[fhir(name="any", min="0", max="1", summary=true, modifier=false)]
-//     pub any: Option<BooleanDt>,
-// }
-//
-// #[derive(Complex, Debug, Clone, Default)]
-// pub struct ElementDefinitionExampleElement {
-//     /// Unique id for inter-element referencing
-//     #[fhir(name="id", min="0", max="1", summary=false, modifier=false)]
-//     pub id: Option<String>,
-//     /// Additional content defined by implementations
-//     #[fhir(name="extension", min="0", max="*", summary=false, modifier=false)]
-//     pub extension: Option<Vec<Extension>>,
-//     /// Describes the purpose of this example
-//     #[fhir(name="label", min="1", max="1", summary=true, modifier=false)]
-//     pub label: Option<StringDt>,
-//     /// Value of Example (one of allowed types)
-//     #[fhir(name="value", min="1", max="1", summary=true, modifier=false)]
-//     pub value: Option<Meta>,
-// }
-//
-// #[derive(Complex, Debug, Clone, Default)]
-// pub struct ElementDefinitionConstraintElement {
-//     /// Unique id for inter-element referencing
-//     #[fhir(name="id", min="0", max="1", summary=false, modifier=false)]
-//     pub id: Option<String>,
-//     /// Additional content defined by implementations
-//     #[fhir(name="extension", min="0", max="*", summary=false, modifier=false)]
-//     pub extension: Option<Vec<Extension>>,
-//     /// Target of 'condition' reference above
-//     #[fhir(name="key", min="1", max="1", summary=true, modifier=false)]
-//     pub key: Option<IdDt>,
-//     /// Why this constraint is necessary or appropriate
-//     #[fhir(name="requirements", min="0", max="1", summary=true, modifier=false)]
-//     pub requirements: Option<MarkdownDt>,
-//     /// error | warning
-//     #[fhir(name="severity", min="1", max="1", summary=true, modifier=false)]
-//     pub severity: Option<CodeDt>,
-//     /// Suppress warning or hint in profile
-//     #[fhir(name="suppress", min="0", max="1", summary=true, modifier=false)]
-//     pub suppress: Option<BooleanDt>,
-//     /// Human description of constraint
-//     #[fhir(name="human", min="1", max="1", summary=true, modifier=false)]
-//     pub human: Option<StringDt>,
-//     /// FHIRPath expression of constraint
-//     #[fhir(name="expression", min="0", max="1", summary=true, modifier=false)]
-//     pub expression: Option<StringDt>,
-//     /// Reference to original source of constraint
-//     #[fhir(name="source", min="0", max="1", summary=true, modifier=false)]
-//     pub source: Option<CanonicalDt>,
-// }
+
+#[derive(Element, Debug, Clone, Default)]
+pub struct ElementDefinitionTypeElement {
+    /// Unique id for inter-element referencing
+    #[fhir(name="id", min="0", max="1", summary=false, modifier=false)]
+    pub id: Option<String>,
+    /// Additional content defined by implementations
+    #[fhir(name="extension", min="0", max="*", summary=false, modifier=false)]
+    pub extension: Option<Vec<Extension>>,
+    /// Data type or Resource (reference to definition)
+    #[fhir(name="code", min="1", max="1", summary=true, modifier=false)]
+    pub code: Option<UriDt>,
+    /// Profiles (StructureDefinition or IG) - one must apply
+    #[fhir(name="profile", min="0", max="*", summary=true, modifier=false)]
+    pub profile: Option<Vec<CanonicalDt>>,
+    /// Profile (StructureDefinition or IG) on the Reference/canonical target - one must apply
+    #[fhir(name="targetProfile", min="0", max="*", summary=true, modifier=false)]
+    pub target_profile: Option<Vec<CanonicalDt>>,
+    /// contained | referenced | bundled - how aggregated
+    #[fhir(name="aggregation", min="0", max="*", summary=true, modifier=false)]
+    pub aggregation: Option<Vec<CodeDt>>,
+    /// either | independent | specific
+    #[fhir(name="versioning", min="0", max="1", summary=true, modifier=false)]
+    pub versioning: Option<CodeDt>,
+}
+
+#[derive(Element, Debug, Clone, Default)]
+pub struct ElementDefinitionBindingElement {
+    /// Unique id for inter-element referencing
+    #[fhir(name="id", min="0", max="1", summary=false, modifier=false)]
+    pub id: Option<String>,
+    /// Additional content defined by implementations
+    #[fhir(name="extension", min="0", max="*", summary=false, modifier=false)]
+    pub extension: Option<Vec<Extension>>,
+    /// required | extensible | preferred | example
+    #[fhir(name="strength", min="1", max="1", summary=true, modifier=false)]
+    pub strength: Option<CodeDt>,
+    /// Intended use of codes in the bound value set
+    #[fhir(name="description", min="0", max="1", summary=true, modifier=false)]
+    pub description: Option<MarkdownDt>,
+    /// Source of value set
+    #[fhir(name="valueSet", min="0", max="1", summary=true, modifier=false)]
+    pub value_set: Option<CanonicalDt>,
+    /// Additional Bindings - more rules about the binding
+    #[fhir(name="additional", min="0", max="*", summary=true, modifier=false)]
+    pub additional: Option<Vec<ElementDefinitionBindingAdditionalElement>>,
+}
+
+#[derive(Element, Debug, Clone, Default)]
+pub struct ElementDefinitionBindingAdditionalElement {
+    /// Unique id for inter-element referencing
+    #[fhir(name="id", min="0", max="1", summary=false, modifier=false)]
+    pub id: Option<String>,
+    /// Additional content defined by implementations
+    #[fhir(name="extension", min="0", max="*", summary=false, modifier=false)]
+    pub extension: Option<Vec<Extension>>,
+    /// maximum | minimum | required | extensible | candidate | current | preferred | ui | starter | component
+    #[fhir(name="purpose", min="1", max="1", summary=true, modifier=false)]
+    pub purpose: Option<CodeDt>,
+    /// The value set for the additional binding
+    #[fhir(name="valueSet", min="1", max="1", summary=true, modifier=false)]
+    pub value_set: Option<CanonicalDt>,
+    /// Documentation of the purpose of use of the binding
+    #[fhir(name="documentation", min="0", max="1", summary=true, modifier=false)]
+    pub documentation: Option<MarkdownDt>,
+    /// Concise documentation - for summary tables
+    #[fhir(name="shortDoco", min="0", max="1", summary=true, modifier=false)]
+    pub short_doco: Option<StringDt>,
+    /// Qualifies the usage - jurisdiction, gender, workflow status etc.
+    #[fhir(name="usage", min="0", max="*", summary=true, modifier=false)]
+    pub usage: Option<Vec<UsageContext>>,
+    /// Whether binding can applies to all repeats, or just one
+    #[fhir(name="any", min="0", max="1", summary=true, modifier=false)]
+    pub any: Option<BooleanDt>,
+}
+
+#[derive(Element, Debug, Clone, Default)]
+pub struct ElementDefinitionExampleElement {
+    /// Unique id for inter-element referencing
+    #[fhir(name="id", min="0", max="1", summary=false, modifier=false)]
+    pub id: Option<String>,
+    /// Additional content defined by implementations
+    #[fhir(name="extension", min="0", max="*", summary=false, modifier=false)]
+    pub extension: Option<Vec<Extension>>,
+    /// Describes the purpose of this example
+    #[fhir(name="label", min="1", max="1", summary=true, modifier=false)]
+    pub label: Option<StringDt>,
+    /// Value of Example (one of allowed types)
+    #[fhir(name="value", min="1", max="1", summary=true, modifier=false)]
+    pub value: Option<Meta>,
+}
+
+#[derive(Element, Debug, Clone, Default)]
+pub struct ElementDefinitionConstraintElement {
+    /// Unique id for inter-element referencing
+    #[fhir(name="id", min="0", max="1", summary=false, modifier=false)]
+    pub id: Option<String>,
+    /// Additional content defined by implementations
+    #[fhir(name="extension", min="0", max="*", summary=false, modifier=false)]
+    pub extension: Option<Vec<Extension>>,
+    /// Target of 'condition' reference above
+    #[fhir(name="key", min="1", max="1", summary=true, modifier=false)]
+    pub key: Option<IdDt>,
+    /// Why this constraint is necessary or appropriate
+    #[fhir(name="requirements", min="0", max="1", summary=true, modifier=false)]
+    pub requirements: Option<MarkdownDt>,
+    /// error | warning
+    #[fhir(name="severity", min="1", max="1", summary=true, modifier=false)]
+    pub severity: Option<CodeDt>,
+    /// Suppress warning or hint in profile
+    #[fhir(name="suppress", min="0", max="1", summary=true, modifier=false)]
+    pub suppress: Option<BooleanDt>,
+    /// Human description of constraint
+    #[fhir(name="human", min="1", max="1", summary=true, modifier=false)]
+    pub human: Option<StringDt>,
+    /// FHIRPath expression of constraint
+    #[fhir(name="expression", min="0", max="1", summary=true, modifier=false)]
+    pub expression: Option<StringDt>,
+    /// Reference to original source of constraint
+    #[fhir(name="source", min="0", max="1", summary=true, modifier=false)]
+    pub source: Option<CanonicalDt>,
+}
 
 #[derive(Complex, Debug, Clone, Default)]
 pub struct Expression {

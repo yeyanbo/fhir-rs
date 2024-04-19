@@ -50,7 +50,9 @@ pub fn impl_element(struct_name_ident: &syn::Ident) -> syn::Result<proc_macro2::
                 }
                 self
             }
+        }
 
+        impl Base for #struct_name_ident {
             fn is_empty(&self) -> bool {
                 self.url.is_none() & self.value.is_none() 
             }

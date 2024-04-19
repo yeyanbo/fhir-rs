@@ -188,7 +188,7 @@ impl Iterator for FhirPaths {
     }
 }
 
-pub trait Executor: Debug {
+pub trait Executor: Debug + Base {
     fn as_collection(&self) -> Collection;
     fn as_collection2(&self) -> PathResponse {
         PathResponse::Collection(self.as_collection())
