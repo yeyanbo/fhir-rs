@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Encounter xmlns="http://hl7.org/fhir">
+  <meta>
+    <profile value="http://hl7.org.cn/fhir/StructureDefinition/core-outpatient-encounter"/>
+  </meta>
+  <identifier>
+    <system value="urn:uuid:2.16.156.10011.1.10"/>
+  </identifier>
+  <status value="completed"/>
+  <class>
+    <coding>
+      <system value="http://terminology.hl7.org/CodeSystem/v3-ActCode"/>
+      <code value="AMB"/>
+      <display value="门诊"/>
+    </coding>
+  </class>
+  <serviceType>
+    <concept>
+      <coding>
+        <system value="http://terminology.hl7.org/CodeSystem/service-type"/>
+        <code value="218"/>
+        <display value="骨科"/>
+      </coding>
+    </concept>
+  </serviceType>
+  <subject>
+    <reference value="Patient/PatientExample01"/>
+    <display value="刘康"/>
+  </subject>
+  <serviceProvider>
+    <reference value="Organization/HospitalExample01"/>
+    <display value="北大人民医院"/>
+  </serviceProvider>
+  <participant>
+    <type>
+      <coding>
+        <system value="http://hl7.org/fhir/CodeSystem/encounter-participant-type"/>
+        <code value="AUT"/>
+      </coding>
+    </type>
+    <actor>
+      <reference value="Practitioner/PractitionerExample01"/>
+      <display value="赵勇"/>
+    </actor>
+  </participant>
+  <actualPeriod>
+    <start value="2021-05-07T12:30:02+08:00"/>
+    <end value="2002-08-20T16:45:50+08:00"/>
+  </actualPeriod>
+  <reason>
+    <use>
+      <coding>
+        <system value="http://hl7.org/fhir/encounter-reason-use"/>
+        <code value="HC"/>
+        <display value="Health Concern"/>
+      </coding>
+    </use>
+    <value>
+      <reference>
+        <reference value="Observation/VitalSignBPExample01"/>
+      </reference>
+    </value>
+  </reason>
+  <reason>
+    <use>
+      <coding>
+        <system value="http://hl7.org/fhir/encounter-reason-use"/>
+        <code value="HC"/>
+        <display value="Health Concern"/>
+      </coding>
+    </use>
+    <value>
+      <reference>
+        <reference value="Observation/VitalSignWeightExample01"/>
+      </reference>
+    </value>
+  </reason>
+  <reason>
+    <use>
+      <coding>
+        <system value="http://hl7.org/fhir/encounter-reason-use"/>
+        <code value="RV"/>
+        <display value="Reason for Visit"/>
+      </coding>
+    </use>
+    <value>
+      <reference>
+        <reference value="Condition/ConditionExample02"/>
+      </reference>
+    </value>
+  </reason>
+  <reason>
+    <use>
+      <coding>
+        <system value="http://hl7.org/fhir/encounter-reason-use"/>
+        <code value="RV"/>
+        <display value="Reason for Visit"/>
+      </coding>
+    </use>
+    <value>
+      <reference>
+        <reference value="Condition/ConditionExample01"/>
+      </reference>
+    </value>
+  </reason>
+  <diagnosis>
+    <condition>
+      <reference>
+        <reference value="Condition/DiagnosisExample02"/>
+        <display value="膝关节退行性病变"/>
+      </reference>
+    </condition>
+  </diagnosis>
+</Encounter>
