@@ -152,21 +152,21 @@ fn impl_deserialize(struct_name_ident: &syn::Ident) -> syn::Result<proc_macro2::
                         #struct_name_ident::from_str(v)
                     }
 
-                    fn visit_map<M>(self, mut map: M) -> Result<Self::Value> where M: MapAccess<'de> {
+                    fn visit_map<M>(self, mut mapp: M) -> Result<Self::Value> where M: MapAccess<'de> {
                         let mut id: Option<String> = None;
                         let mut extension: Option<Vec<Extension>> = None;
                         let mut value: Option<#interal> = None;
 
-                        while let Some(key) = map.next_key()? {
+                        while let Some(key) = mapp.next_key()? {
                             match key.as_str() {
                                 "id" => {
-                                    id = Some(map.next_value()?);
+                                    id = Some(mapp.next_value()?);
                                 },
                                 "extension" => {
-                                    extension = Some(map.next_value()?);
+                                    extension = Some(mapp.next_value()?);
                                 }
                                 "value" => {
-                                    value = Some(map.next_value()?);
+                                    value = Some(mapp.next_value()?);
                                 }
                                 _ => {return Err(FhirError::error("读到不存在的key了"));},
                             }

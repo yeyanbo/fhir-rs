@@ -10,6 +10,7 @@ pub(crate) struct Field {
     pub max: String,
     pub summary: bool,
     pub modifier: bool,
+    pub choice: bool,
 }
 
 impl Field {
@@ -22,6 +23,7 @@ impl Field {
             max: "".to_string(),
             summary: false,
             modifier: false,
+            choice: false,
         }
     }
 }
@@ -57,6 +59,10 @@ impl From<&syn::Field> for Field {
                     let value = meta.value()?;
                     let str: LitBool = value.parse()?;
                     field.modifier = str.value();
+                } else if meta.path.is_ident("choice") {
+                    let value = meta.value()?;
+                    let str: LitBool = value.parse()?;
+                    field.choice = str.value();
                 }
                 Ok(())
             }).expect("Field From Trait Impl Failure");
@@ -212,7 +218,7 @@ pub(crate) fn impl_deserialize_map(struct_fields: &Vec<Field>) -> syn::Result<Ve
         .for_each(|field| {
             let ident = field.name.clone();
             let ident_literal = field.original.clone();
-            maps.push(quote::quote!( #ident_literal => { #ident = Some(map.next_value()?);}, ));
+            maps.push(quote::quote!( #ident_literal => { #ident = Some(mapp.next_value()?);}, ));
         });
 
     Ok(maps)
