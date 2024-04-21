@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <Encounter xmlns="http://hl7.org/fhir">
+  <id value="encounter-example-02"/>
   <meta>
     <profile value="http://hl7.org.cn/fhir/StructureDefinition/core-outpatient-encounter"/>
   </meta>
   <identifier>
     <system value="urn:uuid:2.16.156.10011.1.10"/>
+    <value value="12345"/>
   </identifier>
   <status value="completed"/>
   <class>

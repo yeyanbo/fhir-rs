@@ -1,6 +1,8 @@
 use std::cell::Cell;
 use std::collections::HashMap;
 
+use xml::EmitterConfig;
+
 use super::result::{ValidateResult, ValidateResultItem};
 use crate::prelude::*;
 
@@ -176,7 +178,17 @@ impl Validator {
                                 match slicing.typ {
                                     SlicingType::TYP => todo!(),
                                     SlicingType::VAL => {
-                                        self.lookup_by_path(&root, &slicing.path);
+                                        match self.lookup_by_path(&root, &slicing.path) {
+                                            Some(element) => {
+                                                match &element.pattern {
+                                                    Some(pattern) => {
+
+                                                    },
+                                                    None => return Err(FhirError::error("在定义中没有找到限定值pattern元素")),
+                                                }
+                                            },
+                                            None => return Err(FhirError::error("找不到SliceName的限定条件")),
+                                        }
                                     },
                                     SlicingType::OTH => todo!(),
                                 }
@@ -186,15 +198,9 @@ impl Validator {
  
 
                     },
+                    // 所有的切片元素，都应该由递归函数处理，理论上不会到达这里
                     None => unreachable!(),
-                }
-                
-                
-                if let Some(slice_name) = &element.slice_name {
-                    
-
-                    context.slices.insert(path.clone(), Slice{ typ: todo!(), root: todo!(), min: None, max:None });
-                }                
+                }          
                 
                 let collection = resource.path(path.clone())?;
 
