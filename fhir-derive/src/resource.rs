@@ -296,11 +296,25 @@ fn impl_serialize_fields(struct_fields: &Vec<Field>) -> syn::Result<Vec<proc_mac
     Ok(fields)
 }
 
+pub fn impl_deserialize_define(struct_fields: &Vec<Field>) -> syn::Result<Vec<proc_macro2::TokenStream>> {
+    let mut defines = Vec::with_capacity(32);
+
+    struct_fields.iter()
+        .skip(1)
+        .for_each(|f| {
+            let ident = &f.name;
+            let typ = &f.ty;
+            defines.push(quote::quote!( let mut #ident: #typ = None; ));
+        });
+
+    Ok(defines)
+}
+
 fn impl_deserialize(struct_name_ident: &syn::Ident, struct_fields: &Vec<Field>) -> syn::Result<proc_macro2::TokenStream> {
     let visitor = helper::visitor(struct_name_ident)?;
 
     let fields = helper::impl_deserialize_fields(struct_fields)?;
-    let defs = helper::impl_deserialize_define(struct_fields)?;
+    let defs = impl_deserialize_define(struct_fields)?;
     let maps = helper::impl_deserialize_map(struct_fields)?;
 
     let ret = quote::quote!(
@@ -311,6 +325,7 @@ fn impl_deserialize(struct_name_ident: &syn::Ident, struct_fields: &Vec<Field>) 
                     type Value = #struct_name_ident;
 
                     fn visit_map<M>(self, mut map: M) -> Result<Self::Value> where M: MapAccess<'de> {
+                        let mut id: Option<StringDt> = None;
                         #( #defs )*
 
                         while let Some(keys) = map.next_key()? {
@@ -319,6 +334,16 @@ fn impl_deserialize(struct_name_ident: &syn::Ident, struct_fields: &Vec<Field>) 
                                 _ => {return Err(FhirError::error_string(format!("读到不存在的键:{}", keys)));},
                             }
                         }
+
+                        let id = match id {
+                            Some(id) => {
+                                match id.value {
+                                    Some(value) => Some(value),
+                                    None => None,
+                                }
+                            },
+                            None => None,
+                        };
 
                         Ok(#struct_name_ident {
                             #( #fields )*
