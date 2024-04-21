@@ -5,104 +5,104 @@ use std::str::FromStr;
 #[derive(Primitive, Debug, Clone)]
 pub struct StringDt {
     /// xml:id (or equivalent in JSON)
-    #[fhir(name="id", min="0", max="1", summary=false, modifier=false)]
+    #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice=false)]
     pub id: Option<String>,
     /// Additional content defined by implementations
-    #[fhir(name="extension", min="0", max="*", summary=false, modifier=false)]
+    #[fhir(name="extension", min="0", max="*", summary=false, modifier=false, choice=false)]
     pub extension: Option<Vec<Extension>>,
     /// Primitive value for string
-    #[fhir(name="value", min="0", max="1", summary=false, modifier=false)]
+    #[fhir(name="value", min="0", max="1", summary=false, modifier=false, choice=false)]
     pub value: Option<String>,
 }
 
 #[derive(Primitive, Debug, Clone)]
 pub struct IdDt {
     /// xml:id (or equivalent in JSON)
-    #[fhir(name="id", min="0", max="1", summary=false, modifier=false)]
+    #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice=false)]
     pub id: Option<String>,
     /// Additional content defined by implementations
-    #[fhir(name="extension", min="0", max="*", summary=false, modifier=false)]
+    #[fhir(name="extension", min="0", max="*", summary=false, modifier=false, choice=false)]
     pub extension: Option<Vec<Extension>>,
     /// Primitive value for id
-    #[fhir(name="value", min="0", max="1", summary=false, modifier=false)]
+    #[fhir(name="value", min="0", max="1", summary=false, modifier=false, choice=false)]
     pub value: Option<Id>,
 }
 
 #[derive(Primitive, Debug, Clone)]
 pub struct Base64BinaryDt {
     /// xml:id (or equivalent in JSON)
-    #[fhir(name="id", min="0", max="1", summary=false, modifier=false)]
+    #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice=false)]
     pub id: Option<String>,
     /// Additional content defined by implementations
-    #[fhir(name="extension", min="0", max="*", summary=false, modifier=false)]
+    #[fhir(name="extension", min="0", max="*", summary=false, modifier=false, choice=false)]
     pub extension: Option<Vec<Extension>>,
     /// Primitive value for base64Binary
-    #[fhir(name="value", min="0", max="1", summary=false, modifier=false)]
+    #[fhir(name="value", min="0", max="1", summary=false, modifier=false, choice=false)]
     pub value: Option<Base64Binary>,
 }
 
 #[derive(Primitive, Debug, Clone)]
 pub struct MarkdownDt {
     /// xml:id (or equivalent in JSON)
-    #[fhir(name="id", min="0", max="1", summary=false, modifier=false)]
+    #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice=false)]
     pub id: Option<String>,
     /// Additional content defined by implementations
-    #[fhir(name="extension", min="0", max="*", summary=false, modifier=false)]
+    #[fhir(name="extension", min="0", max="*", summary=false, modifier=false, choice=false)]
     pub extension: Option<Vec<Extension>>,
     /// Primitive value for markdown
-    #[fhir(name="value", min="0", max="1", summary=false, modifier=false)]
+    #[fhir(name="value", min="0", max="1", summary=false, modifier=false, choice=false)]
     pub value: Option<Markdown>,
 }
 
 #[derive(Primitive, Debug, Clone)]
 pub struct UriDt {
     /// xml:id (or equivalent in JSON)
-    #[fhir(name="id", min="0", max="1", summary=false, modifier=false)]
+    #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice=false)]
     pub id: Option<String>,
     /// Additional content defined by implementations
-    #[fhir(name="extension", min="0", max="*", summary=false, modifier=false)]
+    #[fhir(name="extension", min="0", max="*", summary=false, modifier=false, choice=false)]
     pub extension: Option<Vec<Extension>>,
     /// Primitive value for uri
-    #[fhir(name="value", min="0", max="1", summary=false, modifier=false)]
+    #[fhir(name="value", min="0", max="1", summary=false, modifier=false, choice=false)]
     pub value: Option<Uri>,
 }
 
 #[derive(Primitive, Debug, Clone)]
 pub struct OidDt {
     /// xml:id (or equivalent in JSON)
-    #[fhir(name="id", min="0", max="1", summary=false, modifier=false)]
+    #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice=false)]
     pub id: Option<String>,
     /// Additional content defined by implementations
-    #[fhir(name="extension", min="0", max="*", summary=false, modifier=false)]
+    #[fhir(name="extension", min="0", max="*", summary=false, modifier=false, choice=false)]
     pub extension: Option<Vec<Extension>>,
     /// Primitive value for oid
-    #[fhir(name="value", min="0", max="1", summary=false, modifier=false)]
+    #[fhir(name="value", min="0", max="1", summary=false, modifier=false, choice=false)]
     pub value: Option<Oid>,
 }
 
 #[derive(Primitive, Debug, Clone)]
 pub struct CanonicalDt {
     /// xml:id (or equivalent in JSON)
-    #[fhir(name="id", min="0", max="1", summary=false, modifier=false)]
+    #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice=false)]
     pub id: Option<String>,
     /// Additional content defined by implementations
-    #[fhir(name="extension", min="0", max="*", summary=false, modifier=false)]
+    #[fhir(name="extension", min="0", max="*", summary=false, modifier=false, choice=false)]
     pub extension: Option<Vec<Extension>>,
     /// Primitive value for canonical
-    #[fhir(name="value", min="0", max="1", summary=false, modifier=false)]
+    #[fhir(name="value", min="0", max="1", summary=false, modifier=false, choice=false)]
     pub value: Option<Canonical>,
 }
 
 #[derive(Primitive, Debug, Clone)]
 pub struct CodeDt {
     /// xml:id (or equivalent in JSON)
-    #[fhir(name="id", min="0", max="1", summary=false, modifier=false)]
+    #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice=false)]
     pub id: Option<String>,
     /// Additional content defined by implementations
-    #[fhir(name="extension", min="0", max="*", summary=false, modifier=false)]
+    #[fhir(name="extension", min="0", max="*", summary=false, modifier=false, choice=false)]
     pub extension: Option<Vec<Extension>>,
     /// Primitive value for code
-    #[fhir(name="value", min="0", max="1", summary=false, modifier=false)]
+    #[fhir(name="value", min="0", max="1", summary=false, modifier=false, choice=false)]
     pub value: Option<Code>,
 }
 
@@ -112,13 +112,13 @@ pub struct CodeDt {
 #[derive(Primitive, Clone, Debug)]
 pub struct BooleanDt {
     /// xml:id (or equivalent in JSON)
-    #[fhir(name="id", min="0", max="1", summary=false, modifier=false)]
+    #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice=false)]
     pub id: Option<String>,
     /// Additional content defined by implementations
-    #[fhir(name="extension", min="0", max="*", summary=false, modifier=false)]
+    #[fhir(name="extension", min="0", max="*", summary=false, modifier=false, choice=false)]
     pub extension: Option<Vec<Extension>>,
     /// Primitive value for boolean
-    #[fhir(name="value", min="0", max="1", summary=false, modifier=false)]
+    #[fhir(name="value", min="0", max="1", summary=false, modifier=false, choice=false)]
     pub value: Option<Boolean>,
 }
 
@@ -128,13 +128,13 @@ pub struct BooleanDt {
 #[derive(Primitive, Debug, Clone)]
 pub struct PositiveIntDt {
     /// xml:id (or equivalent in JSON)
-    #[fhir(name="id", min="0", max="1", summary=false, modifier=false)]
+    #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice=false)]
     pub id: Option<String>,
     /// Additional content defined by implementations
-    #[fhir(name="extension", min="0", max="*", summary=false, modifier=false)]
+    #[fhir(name="extension", min="0", max="*", summary=false, modifier=false, choice=false)]
     pub extension: Option<Vec<Extension>>,
     /// Primitive value for positiveInt
-    #[fhir(name="value", min="0", max="1", summary=false, modifier=false)]
+    #[fhir(name="value", min="0", max="1", summary=false, modifier=false, choice=false)]
     pub value: Option<PositiveInt>,
 }
 
@@ -142,13 +142,13 @@ pub struct PositiveIntDt {
 #[derive(Primitive, Clone, Debug)]
 pub struct IntegerDt {
     /// xml:id (or equivalent in JSON)
-    #[fhir(name="id", min="0", max="1", summary=false, modifier=false)]
+    #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice=false)]
     pub id: Option<String>,
     /// Additional content defined by implementations
-    #[fhir(name="extension", min="0", max="*", summary=false, modifier=false)]
+    #[fhir(name="extension", min="0", max="*", summary=false, modifier=false, choice=false)]
     pub extension: Option<Vec<Extension>>,
     /// Primitive value for integer
-    #[fhir(name="value", min="0", max="1", summary=false, modifier=false)]
+    #[fhir(name="value", min="0", max="1", summary=false, modifier=false, choice=false)]
     pub value: Option<Integer>,
 }
 
@@ -157,26 +157,26 @@ pub struct IntegerDt {
 #[derive(Primitive, Debug, Clone)]
 pub struct Integer64Dt {
     /// xml:id (or equivalent in JSON)
-    #[fhir(name="id", min="0", max="1", summary=false, modifier=false)]
+    #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice=false)]
     pub id: Option<String>,
     /// Additional content defined by implementations
-    #[fhir(name="extension", min="0", max="*", summary=false, modifier=false)]
+    #[fhir(name="extension", min="0", max="*", summary=false, modifier=false, choice=false)]
     pub extension: Option<Vec<Extension>>,
     /// Primitive value for integer64
-    #[fhir(name="value", min="0", max="1", summary=false, modifier=false)]
+    #[fhir(name="value", min="0", max="1", summary=false, modifier=false, choice=false)]
     pub value: Option<Integer64>,
 }
 
 #[derive(Primitive, Debug, Clone)]
 pub struct DecimalDt {
     /// xml:id (or equivalent in JSON)
-    #[fhir(name="id", min="0", max="1", summary=false, modifier=false)]
+    #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice=false)]
     pub id: Option<String>,
     /// Additional content defined by implementations
-    #[fhir(name="extension", min="0", max="*", summary=false, modifier=false)]
+    #[fhir(name="extension", min="0", max="*", summary=false, modifier=false, choice=false)]
     pub extension: Option<Vec<Extension>>,
     /// Primitive value for decimal
-    #[fhir(name="value", min="0", max="1", summary=false, modifier=false)]
+    #[fhir(name="value", min="0", max="1", summary=false, modifier=false, choice=false)]
     pub value: Option<Decimal>,
 }
 
@@ -186,13 +186,13 @@ pub struct DecimalDt {
 #[derive(Primitive, Debug, Clone)]
 pub struct DateDt {
     /// xml:id (or equivalent in JSON)
-    #[fhir(name="id", min="0", max="1", summary=false, modifier=false)]
+    #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice=false)]
     pub id: Option<String>,
     /// Additional content defined by implementations
-    #[fhir(name="extension", min="0", max="*", summary=false, modifier=false)]
+    #[fhir(name="extension", min="0", max="*", summary=false, modifier=false, choice=false)]
     pub extension: Option<Vec<Extension>>,
     /// Primitive value for date
-    #[fhir(name="value", min="0", max="1", summary=false, modifier=false)]
+    #[fhir(name="value", min="0", max="1", summary=false, modifier=false, choice=false)]
     pub value: Option<Date>,
 }
 
@@ -202,13 +202,13 @@ pub struct DateDt {
 #[derive(Primitive, Clone, Debug)]
 pub struct TimeDt {
     /// xml:id (or equivalent in JSON)
-    #[fhir(name="id", min="0", max="1", summary=false, modifier=false)]
+    #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice=false)]
     pub id: Option<String>,
     /// Additional content defined by implementations
-    #[fhir(name="extension", min="0", max="*", summary=false, modifier=false)]
+    #[fhir(name="extension", min="0", max="*", summary=false, modifier=false, choice=false)]
     pub extension: Option<Vec<Extension>>,
     /// Primitive value for time
-    #[fhir(name="value", min="0", max="1", summary=false, modifier=false)]
+    #[fhir(name="value", min="0", max="1", summary=false, modifier=false, choice=false)]
     pub value: Option<Time>,
 }
 
@@ -227,13 +227,13 @@ pub struct TimeDt {
 #[derive(Primitive, Debug, Clone)]
 pub struct DateTimeDt {
     /// xml:id (or equivalent in JSON)
-    #[fhir(name="id", min="0", max="1", summary=false, modifier=false)]
+    #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice=false)]
     pub id: Option<String>,
     /// Additional content defined by implementations
-    #[fhir(name="extension", min="0", max="*", summary=false, modifier=false)]
+    #[fhir(name="extension", min="0", max="*", summary=false, modifier=false, choice=false)]
     pub extension: Option<Vec<Extension>>,
     /// Primitive value for dateTime
-    #[fhir(name="value", min="0", max="1", summary=false, modifier=false)]
+    #[fhir(name="value", min="0", max="1", summary=false, modifier=false, choice=false)]
     pub value: Option<DateTime>,
 }
 
@@ -255,52 +255,52 @@ pub struct DateTimeDt {
 #[derive(Primitive, Debug, Clone)]
 pub struct InstantDt {
     /// xml:id (or equivalent in JSON)
-    #[fhir(name="id", min="0", max="1", summary=false, modifier=false)]
+    #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice=false)]
     pub id: Option<String>,
     /// Additional content defined by implementations
-    #[fhir(name="extension", min="0", max="*", summary=false, modifier=false)]
+    #[fhir(name="extension", min="0", max="*", summary=false, modifier=false, choice=false)]
     pub extension: Option<Vec<Extension>>,
     /// Primitive value for instant
-    #[fhir(name="value", min="0", max="1", summary=false, modifier=false)]
+    #[fhir(name="value", min="0", max="1", summary=false, modifier=false, choice=false)]
     pub value: Option<Instant>,
 }
 
 #[derive(Primitive, Debug, Clone)]
 pub struct UnsignedIntDt {
     /// xml:id (or equivalent in JSON)
-    #[fhir(name="id", min="0", max="1", summary=false, modifier=false)]
+    #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice=false)]
     pub id: Option<String>,
     /// Additional content defined by implementations
-    #[fhir(name="extension", min="0", max="*", summary=false, modifier=false)]
+    #[fhir(name="extension", min="0", max="*", summary=false, modifier=false, choice=false)]
     pub extension: Option<Vec<Extension>>,
     /// Primitive value for unsignedInt
-    #[fhir(name="value", min="0", max="1", summary=false, modifier=false)]
+    #[fhir(name="value", min="0", max="1", summary=false, modifier=false, choice=false)]
     pub value: Option<UnsignedInt>,
 }
 
 #[derive(Primitive, Debug, Clone)]
 pub struct UrlDt {
     /// xml:id (or equivalent in JSON)
-    #[fhir(name="id", min="0", max="1", summary=false, modifier=false)]
+    #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice=false)]
     pub id: Option<String>,
     /// Additional content defined by implementations
-    #[fhir(name="extension", min="0", max="*", summary=false, modifier=false)]
+    #[fhir(name="extension", min="0", max="*", summary=false, modifier=false, choice=false)]
     pub extension: Option<Vec<Extension>>,
     /// Primitive value for url
-    #[fhir(name="value", min="0", max="1", summary=false, modifier=false)]
+    #[fhir(name="value", min="0", max="1", summary=false, modifier=false, choice=false)]
     pub value: Option<Url>,
 }
 
 #[derive(Primitive, Debug, Clone)]
 pub struct UuidDt {
     /// xml:id (or equivalent in JSON)
-    #[fhir(name="id", min="0", max="1", summary=false, modifier=false)]
+    #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice=false)]
     pub id: Option<String>,
     /// Additional content defined by implementations
-    #[fhir(name="extension", min="0", max="*", summary=false, modifier=false)]
+    #[fhir(name="extension", min="0", max="*", summary=false, modifier=false, choice=false)]
     pub extension: Option<Vec<Extension>>,
     /// Primitive value for uuid
-    #[fhir(name="value", min="0", max="1", summary=false, modifier=false)]
+    #[fhir(name="value", min="0", max="1", summary=false, modifier=false, choice=false)]
     pub value: Option<Uuid>,
 }
 
@@ -308,13 +308,13 @@ pub struct UuidDt {
 #[derive(Primitive, Debug, Clone)]
 pub struct XhtmlDt {
     /// xml:id (or equivalent in JSON)
-    #[fhir(name="id", min="0", max="1", summary=false, modifier=false)]
+    #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice=false)]
     pub id: Option<String>,
     /// Additional content defined by implementations
-    #[fhir(name="extension", min="0", max="0", summary=false, modifier=false)]
+    #[fhir(name="extension", min="0", max="0", summary=false, modifier=false, choice=false)]
     pub extension: Option<Vec<Extension>>,
     /// Actual xhtml
-    #[fhir(name="value", min="1", max="1", summary=false, modifier=false)]
+    #[fhir(name="value", min="1", max="1", summary=false, modifier=false, choice=false)]
     pub value: Option<Xhtml>,
 }
 
