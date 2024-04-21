@@ -623,9 +623,9 @@ pub struct ElementDefinition {
     /// Corresponding codes in terminologies
     #[fhir(name="code", min="0", max="*", summary=true, modifier=false)]
     pub code: Option<Vec<Coding>>,
-    // This element is sliced - slices follow
-    // #[fhir(name="slicing", min="0", max="1", summary=true, modifier=false)]
-    // pub slicing: Option<ElementDefinitionSlicingElement>,
+    /// This element is sliced - slices follow
+    #[fhir(name="slicing", min="0", max="1", summary=true, modifier=false)]
+    pub slicing: Option<ElementDefinitionSlicingElement>,
     /// Concise definition for space-constrained presentation
     #[fhir(name="short", min="0", max="1", summary=true, modifier=false)]
     pub short: Option<StringDt>,
@@ -648,14 +648,14 @@ pub struct ElementDefinition {
     #[fhir(name="max", min="0", max="1", summary=true, modifier=false)]
     pub max: Option<StringDt>,
     // Base definition information for tools
-    // #[fhir(name="base", min="0", max="1", summary=true, modifier=false)]
-    // pub base: Option<ElementDefinitionBaseElement>,
+    #[fhir(name="base", min="0", max="1", summary=true, modifier=false)]
+    pub base: Option<ElementDefinitionBaseElement>,
     /// Reference to definition of content for the element
     #[fhir(name="contentReference", min="0", max="1", summary=true, modifier=false)]
     pub content_reference: Option<UriDt>,
     // Data type and Profile for this element
-    // #[fhir(name="type", min="0", max="*", summary=true, modifier=false)]
-    // pub type_: Option<Vec<ElementDefinitionTypeElement>>,
+    #[fhir(name="type", min="0", max="*", summary=true, modifier=false)]
+    pub type_: Option<Vec<ElementDefinitionTypeElement>>,
     /// Specified value if missing from instance
     #[fhir(name="defaultValue", min="0", max="1", summary=true, modifier=false)]
     pub default_value: Option<Meta>,
