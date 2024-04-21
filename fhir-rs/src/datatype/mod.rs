@@ -352,14 +352,22 @@ impl<'de> Deserialize<'de> for Extension {
                         // valueInstant: instant
                         // valueInteger: integer
                         // valueInteger64: integer64
-                        // valueMarkdown: markdown
+                        "valueMarkdown" => {
+                            let temp: MarkdownDt = map.next_value()?;
+                            value = Some(AnyType::Markdown(temp));
+                            tracing::debug!("读取到值: {:?}", &value);
+                        }
                         // valueOid: oid
                         // valuePositiveInt: positiveInt
                         // valueString
                         // valueTime
                         // valueUnsignedInt
                         // valueUri
-                        // valueUrl
+                        "valueUrl" => {
+                            let temp: UrlDt = map.next_value()?;
+                            value = Some(AnyType::Url(temp));
+                            tracing::debug!("读取到值: {:?}", &value);
+                        }
                         // valueUuid: uuid
                         // valueAddress: Address
                         // valueAge: Age
@@ -404,7 +412,7 @@ impl<'de> Deserialize<'de> for Extension {
                             value = Some(AnyType::PositiveInt(temp));
                             tracing::debug!("读取到值: {:?}", &value);
                         }
-                        _ => {return Err(FhirError::error("Extension读到不存在的key了"));},
+                        other => {return Err(FhirError::Message(format!("Extension读到不存在的[{other}]了")));},
                     }
                 }
 
