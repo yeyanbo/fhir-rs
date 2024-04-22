@@ -45,6 +45,10 @@ pub trait MapAccess<'de> {
     fn next_key(&mut self) -> Result<Option<String>>;
 
     fn next_value<De>(&mut self) -> Result<De> where De: Deserialize<'de>;
+
+    fn next_any_value<De>(&mut self, _key: &str) -> Result<De> where De: Deserialize<'de> {
+        unreachable!()
+    }
 }
 
 pub trait VecAccess<'de> {

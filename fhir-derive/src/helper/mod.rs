@@ -1,4 +1,4 @@
-use syn::{LitBool, LitStr};
+use syn::{Ident, LitBool, LitStr};
 
 // pub(crate) type StructFields = syn::punctuated::Punctuated<syn::Field, syn::Token!(,)>;
 
@@ -10,7 +10,7 @@ pub(crate) struct Field {
     pub max: String,
     pub summary: bool,
     pub modifier: bool,
-    pub choice: bool,
+    pub choice: String,
 }
 
 impl Field {
@@ -23,7 +23,7 @@ impl Field {
             max: "".to_string(),
             summary: false,
             modifier: false,
-            choice: false,
+            choice: "".to_string(),
         }
     }
 }
@@ -61,7 +61,7 @@ impl From<&syn::Field> for Field {
                     field.modifier = str.value();
                 } else if meta.path.is_ident("choice") {
                     let value = meta.value()?;
-                    let str: LitBool = value.parse()?;
+                    let str: LitStr = value.parse()?;
                     field.choice = str.value();
                 }
                 Ok(())
@@ -218,7 +218,28 @@ pub(crate) fn impl_deserialize_map(struct_fields: &Vec<Field>) -> syn::Result<Ve
         .for_each(|field| {
             let ident = field.name.clone();
             let ident_literal = field.original.clone();
-            maps.push(quote::quote!( #ident_literal => { #ident = Some(mapp.next_value()?);}, ));
+
+            if field.choice.len() > 0 {
+                let mut any_type_maps = Vec::with_capacity(32);
+
+                field.choice.split("|")
+                    .for_each(|ty| {
+                        let dd = syn::Ident::new(ty, ident.span().clone());
+                        any_type_maps.push(quote::quote!(#ty => Some(AnyType::#dd(mapp.next_value()?)),));
+                    });
+
+                maps.push(quote::quote!( 
+                    k_value if k_value.starts_with(#ident_literal) => { 
+                        let ttt = k_value.replace(#ident_literal, "");
+                        #ident = match ttt.as_str() {
+                            #( #any_type_maps )*
+                            _ => return Err(FhirError::Message(format!("{}不在可选类型范围之内", &k_value))),
+                        }
+                    }, )
+                );
+            } else {
+                maps.push(quote::quote!( #ident_literal => { #ident = Some(mapp.next_value()?);}, ));
+            }
         });
 
     Ok(maps)

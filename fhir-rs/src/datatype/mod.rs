@@ -241,16 +241,16 @@ impl FromStr for Instant {
 #[derive(Extension, Debug, Clone, Default)]
 pub struct Extension {
     /// Unique id for inter-element referencing
-    #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice=false)]
+    #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
     pub id: Option<Id>,
     /// Additional content defined by implementations
-    #[fhir(name="extension", min="0", max="*", summary=false, modifier=false, choice=false)]
+    #[fhir(name="extension", min="0", max="*", summary=false, modifier=false, choice="")]
     pub extension: Option<Vec<Extension>>,
     /// identifies the meaning of the extension
-    #[fhir(name="url", min="1", max="1", summary=false, modifier=false, choice=false)]
+    #[fhir(name="url", min="1", max="1", summary=false, modifier=false, choice="")]
     pub url: Option<Uri>,
     /// Value of extension
-    #[fhir(name="value", min="0", max="1", summary=false, modifier=false, choice=false)]
+    #[fhir(name="value", min="0", max="1", summary=false, modifier=false, choice="")]
     pub value: Option<AnyType>,
 }
 
