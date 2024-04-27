@@ -1,6 +1,5 @@
-use crate::error::FhirError;
-
-use super::Result;
+use std::fmt::Display;
+use crate::prelude::{Result, FhirError};
 
 #[derive(Debug, PartialEq, Eq)]
 pub enum Comparator{
@@ -10,6 +9,19 @@ pub enum Comparator{
     Lt,
     Le,
     Ne,
+}
+
+impl Display for Comparator {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Comparator::Eq => write!(f, "="),
+            Comparator::Gt => write!(f, ">="),
+            Comparator::Ge => write!(f, ">"),
+            Comparator::Lt => write!(f, "<="),
+            Comparator::Le => write!(f, "<"),
+            Comparator::Ne => write!(f, "!="),
+        }
+    }
 }
 
 #[derive(Debug, PartialEq, Eq)]
@@ -101,15 +113,15 @@ impl<'l> Tokenizer<'l> {
         }
     }
 
-    fn parse_escape(&self) {
+    // fn parse_escape(&self) {
 
-    }
+    // }
 
-    fn parse_datetime(&mut self, ch: u8) -> Result<Token> {
+    fn parse_datetime(&mut self, _ch: u8) -> Result<Token> {
         Ok(Token{ pos: self.index, token_type: TokenType::Dot })
     }
 
-    fn parse_text(&mut self, ch: u8) -> Result<Token> {
+    fn parse_text(&mut self, _ch: u8) -> Result<Token> {
         let mut scratch = vec![];
 
         loop {

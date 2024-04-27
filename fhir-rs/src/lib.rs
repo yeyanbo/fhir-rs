@@ -11,7 +11,7 @@ pub mod datatype;
 pub mod de;
 pub mod ser;
 pub mod resource;
-
+// pub mod expand;
 // #[cfg(features = "server")]
 mod server;
 // #[cfg(features = "client")]
@@ -28,6 +28,7 @@ pub mod prelude {
     pub use super::datatype::*;
     pub use super::fhirpath::*;
     pub use super::resource::*;
+    pub use super::validate::Validator;
 
     pub use fhir_derive::{Extension, BackboneElement, Complex, Primitive, Resource};
     pub type Result<T> = std::result::Result<T, FhirError>;

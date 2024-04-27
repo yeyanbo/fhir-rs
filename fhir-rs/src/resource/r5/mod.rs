@@ -331,10 +331,10 @@ macro_rules! any_resources {
         }
 
         impl Executor for AnyResource {
-            fn exec(&self, func: &Function, paths: &mut FhirPaths) -> Result<PathResponse> {
+            fn exec(&self, comp: &PathComponent) -> Result<PathResponse> {
                 match self {
                     $(
-                    AnyResource::$resource(resource) => resource.exec(func, paths),
+                    AnyResource::$resource(resource) => resource.exec(comp),
                     )+
                     
                 }
@@ -356,6 +356,14 @@ macro_rules! any_resources {
                     $(
                     AnyResource::$resource(resource) => { serializer.serialize_any("resource", resource) }
                     )+
+                }
+            }
+        }
+
+        impl Base for AnyResource {
+            fn type_name(&self) -> String {
+                match self {
+                    $(AnyResource::$resource(resource) => resource.type_name(),)+
                 }
             }
         }
@@ -523,7 +531,7 @@ any_resources!{
     VisionPrescription,
 }
 
-impl Base for AnyResource {}
+
 
 impl<'de> Deserialize<'de> for AnyResource {
     fn deserialize<De>(deserializer: De) -> Result<Self> where De: Deserializer<'de> {

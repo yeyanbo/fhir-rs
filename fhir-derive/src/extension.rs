@@ -11,7 +11,8 @@ pub(crate) fn expand_derive_extension(st: &syn::DeriveInput) -> syn::Result<proc
 }
 
 pub fn impl_element(struct_name_ident: &syn::Ident) -> syn::Result<proc_macro2::TokenStream> {
-
+    let struct_name_literal = struct_name_ident.to_string();
+    
     let ret = quote::quote!(
         impl Element for #struct_name_ident {
             fn has_id(&self) -> bool {
@@ -55,6 +56,10 @@ pub fn impl_element(struct_name_ident: &syn::Ident) -> syn::Result<proc_macro2::
         impl Base for #struct_name_ident {
             fn is_empty(&self) -> bool {
                 self.url.is_none() & self.value.is_none() 
+            }
+
+            fn type_name(&self) -> String {
+                #struct_name_literal.to_string()
             }
         }
     );

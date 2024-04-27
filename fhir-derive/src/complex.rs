@@ -22,6 +22,7 @@ pub(crate) fn expand_derive_complex(st: &syn::DeriveInput) -> syn::Result<proc_m
 }
 
 pub(crate) fn impl_element(struct_name_ident: &syn::Ident, struct_fields: &Vec<Field>) -> syn::Result<proc_macro2::TokenStream> {
+    let struct_name_literal = struct_name_ident.to_string();
     let exp = impl_element_fields(struct_fields)?;
 
     let ret = quote::quote!(
@@ -68,6 +69,10 @@ pub(crate) fn impl_element(struct_name_ident: &syn::Ident, struct_fields: &Vec<F
             fn is_empty(&self) -> bool {
                 self.extension.is_none()
                 #( #exp )*
+            }
+
+            fn type_name(&self) -> String {
+                #struct_name_literal.to_string()
             }
         }
     );
@@ -229,32 +234,29 @@ pub fn impl_fhirpath_map(struct_fields: &Vec<Field>) -> syn::Result<Vec<proc_mac
         .for_each(|field| {
             let ident = field.name.clone();
             let ident_literal = field.original.clone();
-            maps.push(quote::quote!( #ident_literal => { self.#ident.exec(&func, paths) }, ));
+            maps.push(quote::quote!( #ident_literal => { self.#ident.exec(&comp) }, ));
         });
 
     Ok(maps)
 }
 
 pub fn impl_fhirpath(struct_name_ident: &syn::Ident, struct_fields: &Vec<Field>) -> syn::Result<proc_macro2::TokenStream> {
-
+    let struct_name_literal = struct_name_ident.to_string();
     let maps = impl_fhirpath_map(struct_fields)?;
 
     let ret = quote::quote!(
         impl Executor for #struct_name_ident {
-            fn exec(&self, func: &Function, paths: &mut FhirPaths) -> Result<PathResponse> {
-                match func.definition.function_name() {
-                    FunctionName::Element => {
-                        match &func.params {
-                            FunctionParam::String(name) => {
-                                match name.as_str() {
-                                    #( #maps )*
-                                    other => Err(FhirError::Message(format!("无效的路径名:[{}]", other)))
-                                }
-                            },
-                            _ => unreachable!(),
+            fn exec(&self, comp: &PathComponent) -> Result<PathResponse> {
+                println!("{}: Start Exec Fhirpath...", #struct_name_literal);
+                
+                match comp {
+                    PathComponent::Path(path) => {
+                        match path.symbol.as_str() {
+                            #( #maps )*
+                            other => Err(FhirError::Message(format!("{}: 无效的路径名:[{}]", #struct_name_literal, other)))
                         }
                     },
-                    _ => Err(FhirError::Message(format!("Patient: 无效的函数名:{:?}", &func))),
+                    _ => Err(FhirError::Message(format!("#struct_name_ident: 无效的函数名:{:?}", &comp))),
                 }
             } 
 

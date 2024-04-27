@@ -1,4 +1,4 @@
-use syn::{Ident, LitBool, LitStr};
+use syn::{LitBool, LitStr};
 
 // pub(crate) type StructFields = syn::punctuated::Punctuated<syn::Field, syn::Token!(,)>;
 

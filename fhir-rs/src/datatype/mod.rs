@@ -29,22 +29,52 @@ pub trait Base {
     fn is_empty(&self) -> bool {
         false
     }
+
+    fn type_name(&self) -> String;
 }
 
-impl Base for String {}
-impl Base for Boolean {}
-impl Base for PositiveInt {}
-impl Base for Decimal {}
-impl Base for Integer {}
-impl Base for Integer64 {}
-impl Base for DateTime {}
-impl Base for Date {}
-impl Base for Time {}
-impl Base for Instant {}
-impl<T> Base for Option<T> {}
-impl<T> Base for Vec<T> {}
-impl<T> Base for Box<T> {}
-impl Base for AnyType {}
+macro_rules! base_impl {
+    (
+        $(($ty: ident, $ss: literal),)+
+    ) => {
+        $(
+            impl Base for $ty {
+                fn type_name(&self) -> String {
+                    $ss.to_string()
+                }
+            }
+        )+
+    };
+}
+
+base_impl!{
+    (String, "String"),
+    (Boolean, "Boolean"),
+    (PositiveInt, "PositiveInt"),
+    (Decimal, "Decimal"),
+    (Integer, "Integer"),
+    (Integer64, "Integer64"),
+    (DateTime, "DateTime"),
+    (Date, "Date"),
+    (Time, "Time"),
+    (Instant, "Instant"),
+}
+
+impl<T> Base for Option<T> {
+    fn type_name(&self) -> String{
+        "Option".to_string()
+    }
+}
+impl<T> Base for Vec<T> {
+    fn type_name(&self) -> String{
+        "Vec".to_string()
+    }
+}
+impl<T> Base for Box<T> {
+    fn type_name(&self) -> String{
+        "Box".to_string()
+    }
+}
 
 pub trait Element {
     fn has_id(&self) -> bool;
@@ -67,13 +97,10 @@ pub trait Primitive: Display + FromStr {
 }
 
 pub trait Resource {
-    fn resource_name(&self) -> String;
     fn id(&self) -> &Option<Id>;
     fn set_id<T: Into<Id>>(self, id: T) -> Self;
     fn meta(&self) -> &Option<Meta>;
     fn set_meta(self, meta: Meta) -> Self;
-    fn assert(&self, path: String) -> Result<bool>;
-    fn path(&self, path: String) -> Result<Collection>;
 }
 
 pub trait DomainResource: Resource {
@@ -429,233 +456,102 @@ impl<'de> Deserialize<'de> for Extension {
     }
 }
 
-#[derive(Clone, Debug)]
-pub enum AnyType {
-    // 原始类型
-    String(StringDt),
-    Id(IdDt),
-    Base64Binary(Base64BinaryDt),
-    Markdown(MarkdownDt),
-    Uri(UriDt),
-    Url(UrlDt),
-    Oid(OidDt),
-    Uuid(UuidDt),
-    Canonical(CanonicalDt),
-    Code(CodeDt),
-    Boolean(BooleanDt),
-    DateTime(DateTimeDt),
-    Date(DateDt),
-    Time(TimeDt),
-    Instant(InstantDt),
-    UnsignedInt(UnsignedIntDt),
-    PositiveInt(PositiveIntDt),
-    Integer(IntegerDt),
-    Integer64(Integer64Dt),
-    Decimal(DecimalDt),
-    // 复合类型
-    Address(Address),
-    Age(Age),
-    Annotation(Annotation),
-    Attachment(Attachment),
-    CodeableConcept(CodeableConcept),
-    CodeableReference(CodeableReference),
-    Coding(Coding),
-    ContactPoint(ContactPoint),
-    Count(Count),
-    Distance(Distance),
-    Duration(Duration),
-    HumanName(HumanName),
-    Identifier(Identifier),
-    Money(Money),
-    Period(Period),
-    Quantity(Quantity),
-    Range(Range),
-    Ratio(Ratio),
-    RatioRange(RatioRange),
-    Reference(Reference),
-    SampledData(SampledData),
-    Signature(Signature),
-    Timing(Timing),
-    ContactDetail(ContactDetail),
-    DataRequirement(DataRequirement),
-    Expression(Expression),
-    ParameterDefinition(ParameterDefinition),
-    RelatedArtifact(RelatedArtifact),
-    TriggerDefinition(TriggerDefinition),
-    UsageContext(UsageContext),
-    Availability(Availability),
-    ExtendedContactDetail(ExtendedContactDetail),
-    Dosage(Dosage),
-    Meta(Meta),
-}
+macro_rules! anytype {
+    (
+        $(($id: ident, $ty: ident),)+
+    ) => {
+        #[derive(Clone, Debug)]
+        pub enum AnyType {
+            $($id($ty),)+
+        }
 
-impl Serialize for AnyType {
-    fn serialize<Ser>(&self, serializer: Ser) -> Result<()> where Ser: Serializer {
-        match self {
-            AnyType::PositiveInt(value) => {
-                serializer.serialize_any("valuePositiveInt", value)
-            }
-            AnyType::String(value) => {
-                serializer.serialize_any("valueString", value)
-            }
-            AnyType::Coding(value) => {
-                serializer.serialize_any("valueCoding", value)
-            }
-            AnyType::DateTime(value) => {
-                serializer.serialize_any("valueDateTime", value)
-            }
-            AnyType::Base64Binary(value) => {
-                serializer.serialize_any("valueBase64Binary", value)
-            }
-            AnyType::Boolean(value) => {
-                serializer.serialize_any("valueBool", value)
-            }
-            AnyType::Code(value) => {
-                serializer.serialize_any("valueCode", value)
-            }
-            AnyType::Id(value) => {
-                serializer.serialize_any("valueId", value)
-            }
-            AnyType::Markdown(value) => {
-                serializer.serialize_any("valueMarkdown", value)
-            }
-            AnyType::Uri(value) => {
-                serializer.serialize_any("valueUri", value)
-            }
-            AnyType::Url(value) => {
-                serializer.serialize_any("valueUrl", value)
-            }
-            AnyType::Uuid(value) => {
-                serializer.serialize_any("valueUuid", value)
-            }
-            AnyType::Oid(value) => {
-                serializer.serialize_any("valueOid", value)
-            }
-            AnyType::Canonical(value) => {
-                serializer.serialize_any("valueCanonical", value)
-            }
-            AnyType::Date(value) => {
-                serializer.serialize_any("valueDate", value)
-            }
-            AnyType::Time(value) => {
-                serializer.serialize_any("valueTime", value)
-            }
-            AnyType::Instant(value) => {
-                serializer.serialize_any("valueInstant", value)
-            }
-            AnyType::UnsignedInt(value) => {
-                serializer.serialize_any("valueUnsignedInt", value)
-            }
-            AnyType::Integer(value) => {
-                serializer.serialize_any("valueInteger", value)
-            }
-            AnyType::Integer64(value) => {
-                serializer.serialize_any("valueInteger64", value)
-            }
-            AnyType::Decimal(value) => {
-                serializer.serialize_any("valueDecimal", value)
-            }
-            AnyType::Address(value) => {
-                serializer.serialize_any("valueAddress", value)
-            }
-            AnyType::Age(value) => {
-                serializer.serialize_any("valueAge", value)
-            }
-            AnyType::Annotation(value) => {
-                serializer.serialize_any("valueAnnotation", value)
-            }
-            AnyType::Attachment(value) => {
-                serializer.serialize_any("valueAttachment", value)
-            }
-            AnyType::CodeableConcept(value) => {
-                serializer.serialize_any("valueCodeableConcept", value)
-            }
-            AnyType::CodeableReference(value) => {
-                serializer.serialize_any("valueCodeableReference", value)
-            }
-            AnyType::ContactPoint(value) => {
-                serializer.serialize_any("valueContactPoint", value)
-            }
-            AnyType::Count(value) => {
-                serializer.serialize_any("valueCount", value)
-            }
-            AnyType::Distance(value) => {
-                serializer.serialize_any("valueDistance", value)
-            }
-            AnyType::Duration(value) => {
-                serializer.serialize_any("valueDuration", value)
-            }
-            AnyType::HumanName(value) => {
-                serializer.serialize_any("valueHumanName", value)
-            }
-            AnyType::Identifier(value) => {
-                serializer.serialize_any("valueIdentifier", value)
-            }
-            AnyType::Money(value) => {
-                serializer.serialize_any("valueMoney", value)
-            }
-            AnyType::Period(value) => {
-                serializer.serialize_any("valuePeriod", value)
-            }
-            AnyType::Quantity(value) => {
-                serializer.serialize_any("valueQuantity", value)
-            }
-            AnyType::Range(value) => {
-                serializer.serialize_any("valueRange", value)
-            }
-            AnyType::Ratio(value) => {
-                serializer.serialize_any("valueRatio", value)
-            }
-            AnyType::RatioRange(value) => {
-                serializer.serialize_any("valueRatioRange", value)
-            }
-            AnyType::Reference(value) => {
-                serializer.serialize_any("valueReference", value)
-            }
-            AnyType::SampledData(value) => {
-                serializer.serialize_any("valueSampledData", value)
-            }
-            AnyType::Signature(value) => {
-                serializer.serialize_any("valueSignature", value)
-            }
-            AnyType::Timing(value) => {
-                serializer.serialize_any("valueTiming", value)
-            }
-            AnyType::ContactDetail(value) => {
-                serializer.serialize_any("valueContactDetail", value)
-            }
-            AnyType::DataRequirement(value) => {
-                serializer.serialize_any("valueDataRequirement", value)
-            }
-            AnyType::Expression(value) => {
-                serializer.serialize_any("valueExpression", value)
-            }
-            AnyType::ParameterDefinition(value) => {
-                serializer.serialize_any("valueParameterDefinition", value)
-            }
-            AnyType::RelatedArtifact(value) => {
-                serializer.serialize_any("valueRelatedArtifact", value)
-            }
-            AnyType::TriggerDefinition(value) => {
-                serializer.serialize_any("valueTriggerDefinition", value)
-            }
-            AnyType::UsageContext(value) => {
-                serializer.serialize_any("valueUsageContext", value)
-            }
-            AnyType::Availability(value) => {
-                serializer.serialize_any("valueAvailability", value)
-            }
-            AnyType::ExtendedContactDetail(value) => {
-                serializer.serialize_any("valueExtendedContactDetail", value)
-            }
-            AnyType::Dosage(value) => {
-                serializer.serialize_any("valueDosage", value)
-            }
-            AnyType::Meta(value) => {
-                serializer.serialize_any("valueMeta", value)
+        impl Base for AnyType {
+            fn type_name(&self) -> String {
+                match self {
+                    $(AnyType::$id(vlaue) => vlaue.type_name(),)+
+                }
             }
         }
-    }
+
+        impl Serialize for AnyType {
+            fn serialize<Ser>(&self, serializer: Ser) -> Result<()> where Ser: Serializer {
+                match self {
+                    $(AnyType::$id(value) => serializer.serialize_any("value", value),)+
+                }
+            }
+        }
+
+        impl Executor for AnyType {
+            fn exec(&self, comp: &PathComponent) -> Result<PathResponse> {
+                match self {
+                    $(AnyType::$id(value) => value.exec(comp),)+
+                }
+            }
+        
+            fn as_collection(&self) -> Collection {
+                match self {
+                    $(AnyType::$id(value) => value.as_collection(),)+
+                }
+            }
+        }
+    };
+}
+
+anytype!{
+    (String, StringDt),
+    (Id, IdDt),
+    (Base64Binary, Base64BinaryDt),
+    (Markdown, MarkdownDt),
+    (Uri, UriDt),
+    (Url, UrlDt),
+    (Oid, OidDt),
+    (Uuid, UuidDt),
+    (Canonical, CanonicalDt),
+    (Code, CodeDt),
+    (Boolean, BooleanDt),
+    (DateTime, DateTimeDt),
+    (Date, DateDt),
+    (Time, TimeDt),
+    (Instant, InstantDt),
+    (UnsignedInt, UnsignedIntDt),
+    (PositiveInt, PositiveIntDt),
+    (Integer, IntegerDt),
+    (Integer64, Integer64Dt),
+    (Decimal, DecimalDt),
+    (Address, Address),
+    (Age, Age),
+    (Annotation, Annotation),
+    (Attachment, Attachment),
+    (CodeableConcept, CodeableConcept),
+    (CodeableReference, CodeableReference),
+    (Coding, Coding),
+    (ContactPoint, ContactPoint),
+    (Count, Count),
+    (Distance, Distance),
+    (Duration, Duration),
+    (HumanName, HumanName),
+    (Identifier, Identifier),
+    (Money, Money),
+    (Period, Period),
+    (Quantity, Quantity),
+    (Range, Range),
+    (Ratio, Ratio),
+    (RatioRange, RatioRange),
+    (Reference, Reference),
+    (SampledData, SampledData),
+    (Signature, Signature),
+    (Timing, Timing),
+    (ContactDetail, ContactDetail),
+    (DataRequirement, DataRequirement),
+    (Expression, Expression),
+    (ParameterDefinition, ParameterDefinition),
+    (RelatedArtifact, RelatedArtifact),
+    (TriggerDefinition, TriggerDefinition),
+    (UsageContext, UsageContext),
+    (Availability, Availability),
+    (ExtendedContactDetail, ExtendedContactDetail),
+    (Dosage, Dosage),
+    (Meta, Meta),
 }
 
 impl<'de> Deserialize<'de> for AnyType {
@@ -670,3 +566,5 @@ impl<'de> Deserialize<'de> for AnyType {
         deserializer.deserialize_enum(AnyVisitor)
     }
 }
+
+

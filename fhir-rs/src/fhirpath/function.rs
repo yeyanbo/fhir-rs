@@ -1,3 +1,6 @@
+use std::fmt::Debug;
+
+use crate::prelude::{Result, FhirError};
 use super::*;
 
 #[derive(Debug)]
@@ -14,7 +17,7 @@ pub enum FunctionParam {
     None,
     String(String),
     Integer(isize),
-    Expression,
+    Expression(PathExpression),
     Collection,
     Vec(Vec<FunctionParam>),
 }
@@ -23,91 +26,78 @@ pub enum FunctionParam {
 pub enum FunctionResponse {
     Collection,
     Bool,
-    Integer,
+    Number,
     String,
     DateTime,
 }
 
+/// 每个函数都要实现该特性
+/// 想用每个函数自己来处理表达式的解析
+pub trait Function2: Debug {
+    fn parse(parser: &mut Parser) -> Result<Self> where Self: Sized;
+    fn exec(&self, input: &Collection) -> Result<PathResponse>;
+    fn response(&self) -> FunctionResponse;
+}
+
+#[derive(Debug)]
+pub struct Empty;
+
+impl Function2 for Empty {
+    fn parse(parser: &mut Parser) -> Result<Self>  where Self: Sized {
+        match parser.next() {
+            (Some(first), _) => {
+                match &first.token_type {
+                    TokenType::CloseParen => Ok(Self),
+                    _ => Err(FhirError::error("empty()函数参数应为空")),
+                }
+            },
+            _ => Err(FhirError::error("没有发现函数的结束括号")),
+        }
+    }
+
+    fn exec(&self, input: &Collection) -> Result<PathResponse> {
+        let output = input.empty();
+        Ok(PathResponse::Bool(output))
+    }
+
+    fn response(&self) -> FunctionResponse {
+        FunctionResponse::Bool
+    }
+}
+
+
+
 #[derive(Debug, Clone)]
 pub struct Function {
-    pub definition: FunctionDefinition,
-    pub params: FunctionParam,
+    pub symbol: FunctionName,
+    pub params: PathExpression,
 }
 
 impl Function {
 
-    pub fn from_string(token: String, params: FunctionParam) -> std::result::Result<Self, InvalidFunction> {
-        let definition = token.try_into()?; 
-        Ok(Function{definition, params})
+    pub fn response(&self) -> FunctionResponse {
+        FunctionResponse::Collection
     }
 
-    pub fn from_definition(definition: FunctionDefinition, params: FunctionParam) -> Self {
-        Function{definition, params}
-    }
+    // pub fn is_resource_type_element(&self) -> bool {
+    //     match self.definition.function_name() {
+    //         FunctionName::Element => {
+    //             match &self.params {
+    //                 FunctionParam::String(name) if Self::is_first_char_upper_case(name) => true,
+    //                 _ => false,
+    //             }
+    //         },
+    //         _ => false,
+    //     }
+    // }
 
-    pub fn create_self_element() -> Self {
-        Self::from_definition(FunctionDefinition::ELEMENT, FunctionParam::String("Self".to_string()))
-    }
-
-    pub fn match_resource_type_name(&self, type_name: &String) -> bool {
-        let self_name = "Self".to_string();
-
-        match self.definition.function_name() {
-            FunctionName::Element => {
-                match &self.params {
-                    FunctionParam::String(name) if (type_name == name) | (type_name == &self_name) => true,
-                    _ => false,
-                }
-            },
-            _ => false,
-        }
-    }
-
-    pub fn is_resource_type_element(&self) -> bool {
-        match self.definition.function_name() {
-            FunctionName::Element => {
-                match &self.params {
-                    FunctionParam::String(name) if Self::is_first_char_upper_case(name) => true,
-                    _ => false,
-                }
-            },
-            _ => false,
-        }
-    }
-
-    fn is_first_char_upper_case(input: &String) -> bool {
-        input.chars().next().map_or(false, |c| c.is_uppercase())
-    }
-}
-
-#[derive(Debug, Clone)]
-pub struct FunctionDefinition(FunctionName, u8, FunctionResponse);
-
-impl FunctionDefinition {
-
-    /// 返回函数的返回值类型
-    /// 可以在语法解析阶段判断表达式最后的返回值类型
-    pub fn function_name(&self) -> &FunctionName {
-        &self.0
-    }
-
-    /// 返回函数的返回值类型
-    /// 可以在语法解析阶段判断表达式最后的返回值类型
-    pub fn response(&self) -> &FunctionResponse {
-        &self.2
-    }
-
-    pub const ELEMENT: FunctionDefinition = FunctionDefinition(FunctionName::Element, 1, FunctionResponse::Collection);
-    pub const CHILD: FunctionDefinition = FunctionDefinition(FunctionName::Child, 1, FunctionResponse::Collection);
-    pub const EMPTY: FunctionDefinition = FunctionDefinition(FunctionName::Empty, 0, FunctionResponse::Bool);
-    pub const COUNT: FunctionDefinition = FunctionDefinition(FunctionName::Count, 0, FunctionResponse::Integer);
-    pub const ALLTRUE: FunctionDefinition = FunctionDefinition(FunctionName::AllTrue, 0, FunctionResponse::Bool);
+    // fn is_first_char_upper_case(input: &String) -> bool {
+    //     input.chars().next().map_or(false, |c| c.is_uppercase())
+    // }
 }
 
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub enum FunctionName {
-    Element,
-    Child,
     Exist,
     Count,
     Empty,
@@ -115,18 +105,19 @@ pub enum FunctionName {
     Where,
     Other,
     AllTrue,
+    Eq,
 }
 
-impl TryFrom<String> for FunctionDefinition {
+impl TryFrom<&String> for FunctionName {
     type Error = InvalidFunction;
 
-    fn try_from(value: String) -> std::prelude::v1::Result<Self, Self::Error> {
+    fn try_from(value: &String) -> std::prelude::v1::Result<Self, Self::Error> {
         match value.as_str() {
-            "child" => Ok(FunctionDefinition::CHILD),
-            "element" => Ok(FunctionDefinition::ELEMENT),
-            "empty" => Ok(FunctionDefinition::EMPTY),
-            "count" => Ok(FunctionDefinition::COUNT),
-            "allTrue" => Ok(FunctionDefinition::ALLTRUE),
+            "empty" => Ok(FunctionName::Empty),
+            "exists" => Ok(FunctionName::Exist),
+            "count" => Ok(FunctionName::Count),
+            "allTrue" => Ok(FunctionName::AllTrue),
+            "where" => Ok(FunctionName::Where),
             other => Err(InvalidFunction(format!("无效的或者不支持的函数名称:[{}]", other))),
         }
     }

@@ -20,7 +20,8 @@ pub(crate) fn expand_derive_primitive(st: &syn::DeriveInput) -> syn::Result<proc
 }
 
 pub fn impl_element(struct_name_ident: &syn::Ident) -> syn::Result<proc_macro2::TokenStream> {
-
+    let struct_name_literal = struct_name_ident.to_string();
+    
     let ret = quote::quote!(
         impl Element for #struct_name_ident {
             fn has_id(&self) -> bool {
@@ -64,6 +65,10 @@ pub fn impl_element(struct_name_ident: &syn::Ident) -> syn::Result<proc_macro2::
         impl Base for #struct_name_ident {
             fn is_empty(&self) -> bool {
                 self.value.is_none() & self.extension.is_none()
+            }
+
+            fn type_name(&self) -> String {
+                #struct_name_literal.to_string()
             }
         }
     );
@@ -188,34 +193,30 @@ fn impl_deserialize(struct_name_ident: &syn::Ident) -> syn::Result<proc_macro2::
 }
 
 fn impl_fhirpath(struct_name_ident: &syn::Ident) -> syn::Result<proc_macro2::TokenStream> {
-    let interal = helper::primitive_internal(&struct_name_ident)?;
+    let struct_name_literal = struct_name_ident.to_string();
+    // let interal = helper::primitive_internal(&struct_name_ident)?;
 
     let ret = quote::quote!(
         impl Executor for #struct_name_ident {
-            fn exec(&self, func: &Function, paths: &mut FhirPaths) -> Result<PathResponse> {
-                println!("enter into primitive exec");
+            fn exec(&self, comp: &PathComponent) -> Result<PathResponse> {
+                println!("{}: Start Exec Fhirpath...", #struct_name_literal);
 
-                match func.definition.function_name() {
-                    FunctionName::Element => {
-                        match &func.params {
-                            FunctionParam::String(name) => {
-                                match name.as_str() {
-                                    "id" => {
-                                        self.id.exec(&func, paths)
-                                    },
-                                    "extension" => {
-                                        self.extension.exec(&func, paths)
-                                    }
-                                    "value" => {
-                                        self.value.exec(&func, paths)
-                                    }
-                                    other => Err(FhirError::Message(format!("无效的路径名:[{}]", other)))
-                                }
+                match comp {
+                    PathComponent::Path(path) => {
+                        match path.symbol.as_str() {
+                            "id" => {
+                                self.id.exec(&comp)
                             },
-                            _ => unreachable!(),
+                            "extension" => {
+                                self.extension.exec(&comp)
+                            }
+                            "value" => {
+                                self.value.exec(&comp)
+                            }
+                            other => Err(FhirError::Message(format!("{}: 无效的路径名:[{}]", #struct_name_literal, other)))
                         }
                     },
-                    _ => Err(FhirError::Message(format!("Patient: 无效的函数名:{:?}", &func))),
+                    _ => Err(FhirError::Message(format!("{}: 无效的路径表达式:{:#?}", #struct_name_literal, &comp))),
                 }
             } 
 

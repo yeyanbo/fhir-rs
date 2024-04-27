@@ -37,7 +37,7 @@ fn main() -> Result<()> {
             .set_rank(1))
         .set_gender("male");
     
-    println!("Resource Name: {}", &patient.resource_name());
+    println!("Resource Name: {}", &patient.type_name());
 
     match test_fhirpath_2(&patient) {
         Ok(_) => println!("评估执行完成"),
@@ -52,7 +52,8 @@ fn main() -> Result<()> {
 }
 
 fn test_fhirpath_2(patient: &Patient) -> Result<()> {
-    let rs = patient.assert("Patient.name.given.allTrue()".to_string())?;
+    let mut expr = PathExpression::parse("Patient.name.given.allTrue()".to_string())?;
+    let rs = patient.assert(&mut expr)?;
     
     println!("Eval Result : {}", rs);
 
@@ -60,18 +61,13 @@ fn test_fhirpath_2(patient: &Patient) -> Result<()> {
 }
 
 fn test_fhirpath_3(patient: &Patient) -> Result<()> {
+    let mut expr = PathExpression::parse("Patient.name.given.allTrue()".to_string())?;
+    let collection = patient.path(&mut expr)?;
 
-    let collection = patient.path("Patient.name[1].given.value".to_string())?;
-    
-    match collection {
-        Some(coll) => {
-            println!("Result count: {}", coll.count());
+    println!("Result count: {}", &collection.count());
 
-            for item in coll.0 {
-                println!("Item: {:?}", item);
-            }
-        },
-        None => println!("Result Empty"),
+    for item in collection.0 {
+        println!("Item: {:?}", item);
     }
     
     Ok(())

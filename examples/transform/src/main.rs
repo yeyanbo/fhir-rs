@@ -42,9 +42,9 @@ fn main() -> Result<()> {
                 AnyType::DateTime(DateTimeDt::from_str("1974-12-25T14:35:45-05:00")?))));
 
     test_xml_serialize(&patient)?;
-    // test_json_serialize(&patient)?;
+    test_json_serialize(&patient)?;
 
-    // test_xml_deserialize()?;
+    test_xml_deserialize()?;
     test_xml_file_deserialize()?;
     Ok(())
 }

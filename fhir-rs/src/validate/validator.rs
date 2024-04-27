@@ -1,8 +1,6 @@
 use std::cell::Cell;
 use std::collections::HashMap;
 
-use xml::EmitterConfig;
-
 use super::result::{ValidateResult, ValidateResultItem};
 use crate::prelude::*;
 
@@ -72,11 +70,10 @@ impl Validator {
         }
     }
 
-    pub fn validate(&mut self, resource: &impl Resource) -> Result<OperationOutcome> {
+    pub fn validate<R: Resource + Executor>(&mut self, resource: &R) -> Result<OperationOutcome> {
         let mut validate_result = ValidateResult::new();
         let mut context: Context = Context::default();
 
-        let mut current = 0;
         while let Some(element) = self.next() {
             let rss: Vec<ValidateResultItem> = self.validate_element(resource, element, &mut context)?;
             validate_result.add_result_item(rss);
@@ -85,7 +82,7 @@ impl Validator {
         Ok(validate_result.into())
     }
 
-    fn validate_element<R: Resource>(&self, resource: &R, element: &ElementDefinition, context: &mut Context) -> Result<Vec<ValidateResultItem>> {
+    fn validate_element<R: Resource + Executor>(&self, resource: &R, element: &ElementDefinition, context: &mut Context) -> Result<Vec<ValidateResultItem>> {
         if self.is_slice_element(&element) {
             self.validate_slice_element(resource, element, context)
         } else {
@@ -93,13 +90,14 @@ impl Validator {
         }    
     }
 
-    fn validate_non_slice_element<R: Resource>(&self, resource: &R, element: &ElementDefinition, context: &mut Context) -> Result<Vec<ValidateResultItem>> {
+    fn validate_non_slice_element<R: Resource + Executor>(&self, resource: &R, element: &ElementDefinition, context: &mut Context) -> Result<Vec<ValidateResultItem>> {
         let mut rss = vec![];
 
         match &element.path {
             Some(path) => {
                 let path = path.value.clone().unwrap();
-                let collection = resource.path(path.clone())?;
+                let mut expr = PathExpression::parse(path.clone())?;
+                let collection = resource.path(&mut expr)?;
 
                 if let Some(min) = &element.min {
                     let min = min.value.unwrap();    
@@ -160,14 +158,13 @@ impl Validator {
         }
     }
 
-    fn validate_slice_element<R: Resource>(&self, resource: &R, element: &ElementDefinition, context: &mut Context) -> Result<Vec<ValidateResultItem>> {
+    fn validate_slice_element<R: Resource + Executor>(&self, resource: &R, element: &ElementDefinition, context: &mut Context) -> Result<Vec<ValidateResultItem>> {
         let mut rss = vec![];
 
         match &element.path {
             Some(path) => {
                 let path = path.value.clone().unwrap();
-                
-                // 
+
                 match &element.slice_name {
                     Some(slice_name) => {
                         let slice_name = slice_name.clone().value.unwrap();
@@ -201,8 +198,8 @@ impl Validator {
                     // 所有的切片元素，都应该由递归函数处理，理论上不会到达这里
                     None => unreachable!(),
                 }          
-                
-                let collection = resource.path(path.clone())?;
+                let mut expr = PathExpression::parse(path)?;
+                let collection = resource.path(&mut expr)?;
 
                 if let Some(min) = &element.min {
                     let min = min.value.unwrap();     
