@@ -19,17 +19,18 @@ mod client;
 // #[cfg(features = "validate")]
 mod validate;
 // #[cfg(features = "fhirpath")]
-pub mod fhirpath;
+pub mod fhirpath4;
 
 pub mod prelude {
     pub use super::de::*;
     pub use super::ser::*;
     pub use super::error::*;
     pub use super::datatype::*;
-    pub use super::fhirpath::*;
+    pub use super::fhirpath4::*;
     pub use super::resource::*;
-    pub use super::validate::Validator;
+    pub use super::validate::*;
 
     pub use fhir_derive::{Extension, BackboneElement, Complex, Primitive, Resource};
     pub type Result<T> = std::result::Result<T, FhirError>;
+    pub use tracing::{debug, info, error};
 }

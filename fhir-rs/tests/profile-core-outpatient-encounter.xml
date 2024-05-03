@@ -1233,9 +1233,6 @@
         <description value="Role of participant in encounter."/>
         <valueSet value="http://hl7.org/fhir/ValueSet/encounter-participant-type"/>
       </binding>
-      
-      
-      
     </element>
     <element id="Encounter.participant.period">
       <path value="Encounter.participant.period"/>
