@@ -302,10 +302,13 @@ impl Extension {
 }
 
 impl Executor for Extension {
-    fn as_collection(&self) -> Collection {
-        Collection(vec![Box::new(self.clone())])
+    fn to_collection(&self, _index: &Option<usize>) -> Collection {
+        Collection::new_any(Box::new(self.clone()))
     }
 }
+
+impl Convert for Extension {}
+impl Compare for Extension {}
 
 impl Serialize for Extension {
     fn serialize<Ser>(&self, serializer: Ser) -> Result<()> where Ser: Serializer {
@@ -482,17 +485,25 @@ macro_rules! anytype {
         }
 
         impl Executor for AnyType {
-            fn exec(&self, comp: &PathComponent) -> Result<PathResponse> {
+            fn element(&self, symbol: &String, index: &Option<usize>) -> Result<Collection> {
                 match self {
-                    $(AnyType::$id(value) => value.exec(comp),)+
+                    $(AnyType::$id(value) => value.element(symbol, index),)+
                 }
             }
         
-            fn as_collection(&self) -> Collection {
+            fn to_collection(&self, index: &Option<usize>) -> Collection {
                 match self {
-                    $(AnyType::$id(value) => value.as_collection(),)+
+                    $(AnyType::$id(value) => value.to_collection(index),)+
                 }
             }
+        }
+
+        impl Convert for AnyType {
+
+        }
+
+        impl Compare for AnyType {
+
         }
     };
 }

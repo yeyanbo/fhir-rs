@@ -52,7 +52,7 @@ fn main() -> Result<()> {
 }
 
 fn test_fhirpath_2(patient: &Patient) -> Result<()> {
-    let mut expr = PathExpression::parse("Patient.name.given.allTrue()".to_string())?;
+    let mut expr = Expr::parse("Patient.name.given.allTrue()".to_string())?;
     let rs = patient.assert(&mut expr)?;
     
     println!("Eval Result : {}", rs);
@@ -61,7 +61,7 @@ fn test_fhirpath_2(patient: &Patient) -> Result<()> {
 }
 
 fn test_fhirpath_3(patient: &Patient) -> Result<()> {
-    let mut expr = PathExpression::parse("Patient.name.given.allTrue()".to_string())?;
+    let mut expr = Expr::parse("Patient.name.given.allTrue()".to_string())?;
     let collection = patient.path(&mut expr)?;
 
     println!("Result count: {}", &collection.count());

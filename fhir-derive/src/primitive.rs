@@ -198,30 +198,86 @@ fn impl_fhirpath(struct_name_ident: &syn::Ident) -> syn::Result<proc_macro2::Tok
 
     let ret = quote::quote!(
         impl Executor for #struct_name_ident {
-            fn exec(&self, comp: &PathComponent) -> Result<PathResponse> {
-                println!("{}: Start Exec Fhirpath...", #struct_name_literal);
+            // fn exec(&self, comp: &PathComponent) -> Result<PathResponse> {
+            //     println!("{}: Start Exec Fhirpath...", #struct_name_literal);
+            //
+            //     match comp {
+            //         PathComponent::Path(path) => {
+            //             match path.symbol.as_str() {
+            //                 "id" => {
+            //                     self.id.exec(&comp)
+            //                 },
+            //                 "extension" => {
+            //                     self.extension.exec(&comp)
+            //                 }
+            //                 "value" => {
+            //                     self.value.exec(&comp)
+            //                 }
+            //                 other => Err(FhirError::Message(format!("{}: 无效的路径名:[{}]", #struct_name_literal, other)))
+            //             }
+            //         },
+            //         _ => Err(FhirError::Message(format!("{}: 无效的路径表达式:{:#?}", #struct_name_literal, &comp))),
+            //     }
+            // }
+            fn element(&self, symbol: &String, index: &Option<usize>) -> Result<Collection> {
+                 println!("{}: Element[{}]...", #struct_name_literal, &symbol);
 
-                match comp {
-                    PathComponent::Path(path) => {
-                        match path.symbol.as_str() {
-                            "id" => {
-                                self.id.exec(&comp)
-                            },
-                            "extension" => {
-                                self.extension.exec(&comp)
-                            }
-                            "value" => {
-                                self.value.exec(&comp)
-                            }
-                            other => Err(FhirError::Message(format!("{}: 无效的路径名:[{}]", #struct_name_literal, other)))
-                        }
-                    },
-                    _ => Err(FhirError::Message(format!("{}: 无效的路径表达式:{:#?}", #struct_name_literal, &comp))),
+                match symbol.as_str() {
+                    "id" => Ok(self.id.to_collection(index)),
+                    "extension" => Ok(self.extension.to_collection(index)),
+                    "value" => Ok(self.value.to_collection(index)),
+                    other => Err(FhirError::Message(format!("{}: 无效的路径名:[{}]", #struct_name_literal, other)))
                 }
-            } 
+            }
 
-            fn as_collection(&self) -> Collection {
-                Collection(vec![Box::new(self.clone())])
+            fn to_collection(&self, index: &Option<usize>) -> Collection {
+                Collection::new_any(Box::new(self.clone()))
+            }
+        }
+
+        impl Convert for #struct_name_ident {
+            fn to_integer(&self) -> Result<Integer> {
+                match &self.value {
+                    None => Err(FhirError::error("该数据类型不能转换为数值")),
+                    Some(value) => value.to_integer(),
+                }
+            }
+
+            fn to_decimal(&self) -> Result<Decimal> {
+                match &self.value {
+                    None => Err(FhirError::error("该数据类型不能转换为数值")),
+                    Some(value) => value.to_decimal(),
+                }
+            }
+
+            fn to_strings(&self) -> Result<String> {
+                match &self.value {
+                    None => Err(FhirError::error("该数据类型不能转换为数值")),
+                    Some(value) => value.to_strings(),
+                }
+            }
+
+            fn to_datetime(&self) -> Result<DateTime> {
+                match &self.value {
+                    None => Err(FhirError::error("该数据类型不能转换为数值")),
+                    Some(value) => value.to_datetime(),
+                }
+            }
+
+            fn to_boolean(&self) -> Result<Boolean> {
+                match &self.value {
+                    None => Err(FhirError::error("该数据类型不能转换为数值")),
+                    Some(value) => value.to_boolean(),
+                }
+            }
+        }
+
+        impl Compare for #struct_name_ident {
+            fn eq(&self, right: &dyn Executor) -> Result<bool> {
+                match &self.value {
+                    Some(value) => Compare::eq(value, right),
+                    None => Err(FhirError::error("该类型的value取值为空")),
+                }
             }
         }
     );

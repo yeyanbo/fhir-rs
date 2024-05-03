@@ -152,8 +152,6 @@ pub struct IntegerDt {
     pub value: Option<Integer>,
 }
 
-
-
 #[derive(Primitive, Debug, Clone)]
 pub struct Integer64Dt {
     /// xml:id (or equivalent in JSON)

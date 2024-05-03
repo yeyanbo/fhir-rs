@@ -331,25 +331,26 @@ macro_rules! any_resources {
         }
 
         impl Executor for AnyResource {
-            fn exec(&self, comp: &PathComponent) -> Result<PathResponse> {
+            fn element(&self, symbol: &String, index: &Option<usize>) -> Result<Collection> {
                 match self {
                     $(
-                    AnyResource::$resource(resource) => resource.exec(comp),
+                    AnyResource::$resource(resource) => resource.element(symbol, index),
                     )+
-                    
                 }
             }
 
-            fn as_collection(&self) -> Collection {
+            fn to_collection(&self, index: &Option<usize>) -> Collection {
                 match self {
                     $(
-                    AnyResource::$resource(resource) => Collection(vec![Box::new(resource.clone())]),
+                    AnyResource::$resource(resource) => resource.to_collection(index),
                     )+
-                    
                 }
             }
         }
-        
+
+        impl Convert for AnyResource {}
+        impl Compare for AnyResource {}
+
         impl Serialize for AnyResource {
             fn serialize<Ser>(&self, serializer: Ser) -> Result<()> where Ser: Serializer {
                 match self {

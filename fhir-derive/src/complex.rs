@@ -234,7 +234,7 @@ pub fn impl_fhirpath_map(struct_fields: &Vec<Field>) -> syn::Result<Vec<proc_mac
         .for_each(|field| {
             let ident = field.name.clone();
             let ident_literal = field.original.clone();
-            maps.push(quote::quote!( #ident_literal => { self.#ident.exec(&comp) }, ));
+            maps.push(quote::quote!( #ident_literal => Ok(self.#ident.to_collection(index)), ));
         });
 
     Ok(maps)
@@ -246,24 +246,39 @@ pub fn impl_fhirpath(struct_name_ident: &syn::Ident, struct_fields: &Vec<Field>)
 
     let ret = quote::quote!(
         impl Executor for #struct_name_ident {
-            fn exec(&self, comp: &PathComponent) -> Result<PathResponse> {
-                println!("{}: Start Exec Fhirpath...", #struct_name_literal);
-                
-                match comp {
-                    PathComponent::Path(path) => {
-                        match path.symbol.as_str() {
-                            #( #maps )*
-                            other => Err(FhirError::Message(format!("{}: 无效的路径名:[{}]", #struct_name_literal, other)))
-                        }
-                    },
-                    _ => Err(FhirError::Message(format!("#struct_name_ident: 无效的函数名:{:?}", &comp))),
-                }
-            } 
+            // fn exec(&self, comp: &PathComponent) -> Result<PathResponse> {
+            //     println!("{}: Start Exec Fhirpath...", #struct_name_literal);
+            //
+            //     match comp {
+            //         PathComponent::Path(path) => {
+            //             match path.symbol.as_str() {
+            //                 #( #maps )*
+            //                 other => Err(FhirError::Message(format!("{}: 无效的路径名:[{}]", #struct_name_literal, other)))
+            //             }
+            //         },
+            //         _ => Err(FhirError::Message(format!("#struct_name_ident: 无效的函数名:{:?}", &comp))),
+            //     }
+            // }
+            //
+            // fn as_collection(&self) -> Collection {
+            //     Collection(vec![Box::new(self.clone())])
+            // }
+            fn element(&self, symbol: &String, index: &Option<usize>) -> Result<Collection> {
+                 println!("{}: Element[{}]...", #struct_name_literal, &symbol);
 
-            fn as_collection(&self) -> Collection {
-                Collection(vec![Box::new(self.clone())])
+                match symbol.as_str() {
+                    #( #maps )*
+                    other => Err(FhirError::Message(format!("{}: 无效的路径名:[{}]", #struct_name_literal, other)))
+                }
+            }
+
+            fn to_collection(&self, index: &Option<usize>) -> Collection {
+                Collection::new_any(Box::new(self.clone()))
             }
         }
+
+        impl Convert for #struct_name_ident {}
+        impl Compare for #struct_name_ident {}
     );
     Ok(ret)
 }
