@@ -1,3 +1,4 @@
+use std::cell::Cell;
 use crate::prelude::Result;
 use super::*;
 use tracing::debug;
@@ -80,8 +81,8 @@ pub enum Root {
 #[derive(Debug, Clone)]
 pub struct PathExpression {
     pub component: Vec<PathComponent>,
-    pub current: usize,
-    pub branch: usize,
+    pub current: Cell<usize>,
+    pub branch: Cell<usize>,
     pub root: Root,
 }
 
@@ -96,18 +97,22 @@ impl PathExpression {
 
     /// 获取下一组表达式项
     /// 每次取两个，如果越界，则返回空
-    pub fn next(&mut self) -> (Option<&PathComponent>, Option<&PathComponent>) {
-        if self.branch > 0 {
-            self.current += self.branch;
-            self.branch = 0;
+    pub fn next(&self) -> (Option<&PathComponent>, Option<&PathComponent>) {
+        let mut current = self.current.get();
+        let mut branch = self.branch.get();
+
+        if branch > 0 {
+            current += branch;
+            self.branch.set(0);
         }
 
-        self.current += 1;
-        (self.component.get(self.current-1), self.component.get(self.current))
+        self.current.set(current + 1);
+        (self.component.get(current), self.component.get(current + 1))
     }
 
-    pub fn eat(&mut self) {
-        self.current += 1;
+    pub fn eat(&self) {
+        let current = self.current.get() + 1;
+        self.current.set(current);
     }
 
     /// 返回整个表达式最终的返回值类型

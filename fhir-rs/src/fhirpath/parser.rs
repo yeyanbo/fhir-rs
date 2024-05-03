@@ -1,5 +1,6 @@
 use std::cell::Cell;
 use std::str::FromStr;
+use crate::fhirpath::tokenizer::Comparator;
 
 use crate::prelude::{Result, FhirError};
 use super::*;
@@ -93,6 +94,14 @@ impl Parser {
                             match sec.token_type {
                                 TokenType::WhiteSpace => {
                                     // TODO: 根据不同的运算符生成不同的函数
+                                    match op {
+                                        Comparator::Eq => {}
+                                        Comparator::Gt => {}
+                                        Comparator::Ge => {}
+                                        Comparator::Lt => {}
+                                        Comparator::Le => {}
+                                        Comparator::Ne => {}
+                                    }
                                 },
                                 _ => return Err(FhirError::Message(format!("比较运算符[{op}]右侧应有空白字符作为间隔"))),
                             }
@@ -123,8 +132,8 @@ impl Parser {
 
         Ok(PathExpression{
             component, 
-            current: 0, 
-            branch: 0,
+            current: Cell::new(0),
+            branch: Cell::new(0),
             root,
         })
     }

@@ -56,7 +56,7 @@ impl Collection {
     pub fn filter(self, criteria: &PathExpression) -> Result<Collection> {
         let mut collection = Collection::new();
         self.0.into_iter()
-            .filter(|_| {false})
+            .filter(|item| item.assert(criteria).unwrap())
             .for_each(|item| {
                 collection.push(item);
             });
@@ -73,7 +73,6 @@ impl Collection {
     }
 
     pub fn equal(self) -> bool {
-
         true
     }
 

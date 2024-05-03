@@ -17,7 +17,7 @@ pub trait Executor: Base + Debug {
         Err(FhirError::Message(format!("String: 基础类型不支持的函数:{:?}", comp)))
     }
 
-    fn eval(&self, expr: &mut PathExpression) -> Result<PathResponse> {
+    fn eval(&self, expr: &PathExpression) -> Result<PathResponse> {
         let mut resp = self.as_collection2();
         while let (Some(comp), _) = expr.next() {
             resp = resp.exec(&comp)?;
@@ -27,7 +27,7 @@ pub trait Executor: Base + Debug {
         Ok(resp)
     }
 
-    fn assert(&self, expr: &mut PathExpression) -> Result<bool> {
+    fn assert(&self, expr: &PathExpression) -> Result<bool> {
         if expr.response() != FunctionResponse::Bool {
             return Err(FhirError::error("该表达式不是一个有效的路径表达式，最后返回值不是Bool"));
         }
