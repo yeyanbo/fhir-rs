@@ -1,21 +1,20 @@
 # fhir-rs
 
-## About
+## 简介
 
-FHIR-RS library is an implementation of [HL7 FHIR Specification](http://hl7.org/fhir/) for Rust.
+FHIR-RS是[HL7 FHIR规范](http://hl7.org/fhir/)的Rust实现。
 
-Read this in other languages: 
-* [简体中文](README_zh_CN.md)
+以其它语言阅读:
+* [英文](README.md)
 
-## Versioning
 
-This is still a draft version. The functionality is not yet fully developed and the performance has not been optimized, making it unsuitable for production environments.
+## 版本说明
 
-## Usage
+这仅是一个草稿版。功能尚未开发完成，性能尚未优化，因此不适合生产环境。
 
-Healthcare Interoperability.
+## 使用
 
-### Parse
+健康信息数据交互。
 
 ```rust
 use fhir_rs::prelude::*;
@@ -56,15 +55,16 @@ fn test_xml_serialize(patient: &Patient) -> Result<()> {
 
 ### Fhirpath
 
-At present, the framework for FHIRPath syntax parsing has been completed, but the function support is limited and only a few function methods are supported:
+目前FHIRPath语法解析的框架已经完成，但是，函数支持有限，仅支持有限的几个函数方法：
 * empty()
 * exists()
 
-operator：
+操作符：
 * and
 * =
 
-### Validate
+
+### 基于Profile的验证
 
 ```rust
 use fhir_rs::prelude::*;
@@ -84,11 +84,11 @@ fn main() -> Result<()> {
 }
 ```
 
-## Complete examples
+## 完整示例
 
-* Transform 
-* FhirPath
-* Validate
+* [Transform](examples/transform)
+* [FhirPath](examples/fhirpath)
+* [Validate](examples/validator)
 
 ## Done
 
