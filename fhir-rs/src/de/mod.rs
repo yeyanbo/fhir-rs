@@ -76,6 +76,12 @@ pub trait Visitor<'de>: Sized {
         Err(FhirError::un_implementation("visit_vec"))
     }
 
+    fn visit_enum<De>(self, _name: &str, _deserializer: De) -> Result<Self::Value>
+        where De: Deserializer<'de>
+    {
+        Err(FhirError::un_implementation("visit_enum"))
+    }
+
     fn visit_key<De>(self, _deserializer: &De) -> Result<&'de str>
         where De: Deserializer<'de>
     {

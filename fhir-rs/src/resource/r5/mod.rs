@@ -361,6 +361,29 @@ macro_rules! any_resources {
             }
         }
 
+        impl<'de> Deserialize<'de> for AnyResource {
+            fn deserialize<De>(deserializer: De) -> Result<Self> where De: Deserializer<'de> {
+                pub struct AnyVisitor;
+                impl<'de> Visitor<'de> for AnyVisitor {
+                    type Value = AnyResource;
+
+                    fn visit_enum<De>(self, name: &str, deserializer: De) -> Result<Self::Value>
+                        where De: Deserializer<'de>
+                    {
+                        let any = match name {
+                            $(
+                            stringify!($resource) => AnyResource::$resource($resource::deserialize(deserializer)?),
+                            )+
+                            _ => return Err(FhirError::error("dddfdfdf"))
+                        };
+                        Ok(any)
+                    }
+                }
+
+                deserializer.deserialize_enum(AnyVisitor)
+            }
+        }
+
         impl Base for AnyResource {
             fn type_name(&self) -> String {
                 match self {
@@ -530,19 +553,4 @@ any_resources!{
     ValueSet,
     VerificationResult,
     VisionPrescription,
-}
-
-
-
-impl<'de> Deserialize<'de> for AnyResource {
-    fn deserialize<De>(deserializer: De) -> Result<Self> where De: Deserializer<'de> {
-
-        pub struct AnyVisitor;
-
-        impl<'de> Visitor<'de> for AnyVisitor {
-            type Value = AnyResource;
-        }
-
-        deserializer.deserialize_enum(AnyVisitor)
-    }
 }

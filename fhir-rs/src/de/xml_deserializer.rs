@@ -167,17 +167,6 @@ impl<'a, R> XmlDeserializer <R>
         self.buffer.push_front(event);
     }
 
-    // fn push_element_event(&mut self, name: String, value: String, namespace: Namespace) {
-    //     let event = XmlEvent::StartElement {
-    //         name: OwnedName::local(name.clone()),
-    //         attributes: vec![OwnedAttribute::new(OwnedName::local("value"), value)],
-    //         namespace,
-    //     };
-    //     tracing::debug!("PUSH: {:?}", event);
-    //
-    //     self.buffer.push_back(event);
-    // }
-
     /// 从Element中获取属性值
     /// ## 规则
     /// 属性值只有一个，目前在规范中要么是value，要么是url（在Extension中）
@@ -237,8 +226,18 @@ impl<'de, 'a,  R: BufRead> Deserializer<'de> for &'a mut XmlDeserializer<R> {
         visitor.visit_vec( XmlVecProcessor::new(self))
     }
 
-    fn deserialize_enum<V>(self, _visitor: V) -> Result<V::Value> where V: Visitor<'de> {
-        todo!()
+    fn deserialize_enum<V>(self, visitor: V) -> Result<V::Value> where V: Visitor<'de> {
+        tracing::debug!("开始处理枚举类型");
+        loop {
+            let root = self.peek()?;
+            return match root {
+                XmlEvent::StartElement { name, .. } => {
+                    let value = visitor.visit_enum(name.local_name.clone().as_str(), self)?;
+                    Ok(value)
+                }
+                _ => Err(FhirError::error("未读到XML的根元素"))
+            }
+        };
     }
 
     fn deserialize_struct<V>(self, _name: &str, visitor: V) -> Result<V::Value> where V: Visitor<'de> {
