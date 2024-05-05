@@ -256,6 +256,10 @@ impl<'de, 'a,  R: BufRead> Deserializer<'de> for &'a mut XmlDeserializer<R> {
             };
         }
     }
+
+    fn deserialize_primitive<V>(self, _name: &str, visitor: V) -> Result<V::Value> where V: Visitor<'de> {
+        todo!()
+    }
 }
 
 pub struct XmlProcessor<'a, R: BufRead> {

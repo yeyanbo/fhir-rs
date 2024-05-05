@@ -266,11 +266,13 @@ fn impl_deserialize(struct_name_ident: &syn::Ident, struct_fields: &Vec<Field>) 
 
                     fn visit_map<M>(self, mut mapp: M) -> Result<Self::Value> where M: MapAccess<'de> {
                         let mut id: Option<StringDt> = None;
+                        let mut resource_type: Option<StringDt> = None;
                         #( #defs )*
 
                         while let Some(keys) = mapp.next_key()? {
                             match keys.as_str() {
                                 #( #maps )*
+                                "resourceType" => { resource_type = Some(mapp.next_value()?);},
                                 _ => {return Err(FhirError::error_string(format!("读到不存在的键:{}", keys)));},
                             }
                         }

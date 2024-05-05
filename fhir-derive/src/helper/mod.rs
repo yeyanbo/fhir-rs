@@ -1,4 +1,5 @@
 use syn::{LitBool, LitStr};
+use crate::helper;
 
 // pub(crate) type StructFields = syn::punctuated::Punctuated<syn::Field, syn::Token!(,)>;
 
@@ -218,6 +219,8 @@ pub(crate) fn impl_deserialize_map(struct_fields: &Vec<Field>) -> syn::Result<Ve
         .for_each(|field| {
             let ident = field.name.clone();
             let ident_literal = field.original.clone();
+            let typ = &field.ty;
+            let value_type = helper::option_inner(typ).unwrap();
 
             if field.choice.len() > 0 {
                 let mut any_type_maps = Vec::with_capacity(32);
@@ -238,7 +241,19 @@ pub(crate) fn impl_deserialize_map(struct_fields: &Vec<Field>) -> syn::Result<Ve
                     }, )
                 );
             } else {
-                maps.push(quote::quote!( #ident_literal => { #ident = Some(mapp.next_value()?);}, ));
+                if is_primitive(value_type) {
+                    let ident_literal_underline = format!("_{}", &ident_literal);
+                    maps.push(quote::quote!(
+                        #ident_literal | #ident_literal_underline => {
+                            match #ident {
+                                Some(ref mut val) => val.combine(mapp.next_value()?),
+                                None => #ident = Some(mapp.next_value()?),
+                            }
+                        },
+                    ));
+                } else {
+                    maps.push(quote::quote!( #ident_literal => { #ident = Some(mapp.next_value()?);}, ));
+                }
             }
         });
 

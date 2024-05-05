@@ -89,11 +89,13 @@ pub trait Element {
 /// FHIR简单类型的特性
 /// FHIR简单类型是RUST简单数据类型的包装器
 ///
-pub trait Primitive: Display + FromStr {
+pub trait Primitive: Element + Display + FromStr {
     type T;
     fn new<A: Into<Self::T>>(v: A) -> Self;
+    fn has_value(&self) -> bool;
     fn value(&self) -> &Option<Self::T>;
     fn set_value(self, v: Self::T) -> Self;
+    fn combine(&mut self, other: Self);
 }
 
 pub trait Resource {

@@ -5,7 +5,7 @@ use core::str::FromStr;
 
 fn main() -> Result<()> {
     let subscriber = FmtSubscriber::builder()
-        .with_max_level(Level::INFO)
+        .with_max_level(Level::DEBUG)
         .finish();
 
     tracing::subscriber::set_global_default(subscriber)
@@ -26,7 +26,7 @@ fn main() -> Result<()> {
         .add_identifier(Identifier::default()
             .set_use_("usual")
             .set_system("urn:oid:1.2.36.146.595.217.0.1")
-            .set_value("12345"))       
+            .set_value("12345"))
         .add_name(HumanName::default()
             .set_use_("maiden")
             .set_family("Windsor")
@@ -38,7 +38,7 @@ fn main() -> Result<()> {
         .set_gender("male")
         .set_birth_date(DateDt::from_str("1974-12-25")?
             .add_extension(Extension::new(
-                "http://hl7.org/fhir/StructureDefinition/patient-birthTime", 
+                "http://hl7.org/fhir/StructureDefinition/patient-birthTime",
                 AnyType::DateTime(DateTimeDt::from_str("1974-12-25T14:35:45-05:00")?))));
 
     test_xml_serialize(&patient)?;
@@ -46,6 +46,7 @@ fn main() -> Result<()> {
 
     test_xml_deserialize()?;
     test_xml_file_deserialize()?;
+    test_json_file_deserialize()?;
     Ok(())
 }
 
@@ -74,6 +75,24 @@ fn test_xml_file_deserialize() -> Result<()> {
     }
 
   Ok(())
+}
+
+fn test_json_file_deserialize() -> Result<()> {
+    let script_str = include_str!("../patient.json");
+    let ret: Result<Patient> = from_json(script_str);
+    match ret {
+        Ok(patient) => {
+            tracing::info!("Script Name: {:#?}", patient);
+
+            let str = to_xml_pretty(&patient)?;
+            info!("Patient Formatter: {}", str);
+        }
+        Err(err) => {
+            tracing::error!("{:?}", err);
+        }
+    }
+
+    Ok(())
 }
 
 fn test_xml_deserialize() -> Result<()> {

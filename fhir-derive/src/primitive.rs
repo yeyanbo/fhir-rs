@@ -90,6 +90,10 @@ fn impl_primitive(struct_name_ident: &syn::Ident) -> syn::Result<proc_macro2::To
                 }
             }
 
+            fn has_value(&self) -> bool {
+                self.value.is_some()
+            }
+
             fn value(&self) -> &Option<Self::T> {
                 &self.value
             }
@@ -97,6 +101,18 @@ fn impl_primitive(struct_name_ident: &syn::Ident) -> syn::Result<proc_macro2::To
             fn set_value(mut self, v: Self::T) -> Self {
                 self.value = Some(v);
                 self
+            }
+
+            fn combine(&mut self, other: Self) {
+                if other.has_id() {
+                    self.id = other.id.clone()
+                }
+                if other.has_extension() {
+                    self.extension = other.extension.clone()
+                }
+                if other.has_value() {
+                    self.value = other.value.clone()
+                }
             }
         }
 
@@ -185,7 +201,7 @@ fn impl_deserialize(struct_name_ident: &syn::Ident) -> syn::Result<proc_macro2::
                     }
                 }
 
-                deserializer.deserialize_struct("", #visitor)
+                deserializer.deserialize_primitive("", #visitor)
             }
         }
     );

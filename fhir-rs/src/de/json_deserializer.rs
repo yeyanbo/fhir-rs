@@ -1,3 +1,4 @@
+use std::collections::VecDeque;
 use std::io::{BufRead, Cursor};
 use json_event_parser::{JsonEvent, JsonReader};
 use crate::prelude::*;
@@ -19,9 +20,24 @@ fn from_reader<'de, R, T>(read: R) -> Result<T>
     Ok(t)
 }
 
+#[derive(Debug)]
+pub enum NodeEvent {
+    String(String),
+    Number(String),
+    Boolean(bool),
+    Null,
+    StartArray,
+    EndArray,
+    StartObject,
+    EndObject,
+    ObjectKey(String),
+    Eof,
+}
+
 pub struct JsonDeserializer<R: BufRead>{
     reader: JsonReader<R>,
     buffer: Vec<u8>,
+    event_buffer: VecDeque<NodeEvent>,
 }
 
 impl<'a, R> JsonDeserializer<R>
@@ -31,33 +47,69 @@ impl<'a, R> JsonDeserializer<R>
         JsonDeserializer{
             reader: JsonReader::from_reader(read),
             buffer: Vec::new(),
+            event_buffer: VecDeque::new(),
         }
     }
 
-    pub fn next_key(&'a mut self) -> Result<Option<String>> {
-        let event = self.reader.read_event(&mut self.buffer)?;
+    pub fn next_key(&mut self) -> Result<Option<String>> {
+        let event = self.next()?;
 
         let value=match event {
-            JsonEvent::ObjectKey(key) => {
-                Some(String::from(key))
-            }
-            JsonEvent::EndObject => None,
+            NodeEvent::ObjectKey(key) => Some(key),
+            NodeEvent::EndObject => None,
             _ => {return Err(FhirError::error("在读取key时出现错误"));},
         };
 
         Ok(value)
     }
+
+    fn next(&mut self) -> Result<NodeEvent> {
+        let event = match self.event_buffer.pop_front(){
+            Some(event) => {Ok(event)}
+            None => {
+                self.read_useful_next_from_reader()
+            }
+        };
+
+        debug!("POP: {:?}", &event);
+        event
+    }
+
+    pub fn lookup(&mut self) -> Result<&NodeEvent> {
+        let node = self.read_useful_next_from_reader()?;
+        self.event_buffer.push_back(node);
+
+        let last = self.event_buffer.back().unwrap();
+        Ok(last)
+    }
+
+    pub fn read_useful_next_from_reader(&mut self) -> Result<NodeEvent> {
+        let event = self.reader.read_event(&mut self.buffer)?;
+        let node = match event {
+            JsonEvent::String(s) => NodeEvent::String(String::from(s)),
+            JsonEvent::Number(s) => NodeEvent::Number(String::from(s)),
+            JsonEvent::Boolean(b) => NodeEvent::Boolean(b),
+            JsonEvent::Null => NodeEvent::Null,
+            JsonEvent::StartArray => NodeEvent::StartArray,
+            JsonEvent::EndArray => NodeEvent::EndArray,
+            JsonEvent::StartObject => NodeEvent::StartObject,
+            JsonEvent::EndObject => NodeEvent::EndObject,
+            JsonEvent::ObjectKey(s) => NodeEvent::ObjectKey(String::from(s)),
+            JsonEvent::Eof => NodeEvent::Eof,
+        };
+        Ok(node)
+    }
 }
 
 impl<'a, 'de, R: BufRead> Deserializer<'de> for &'a mut JsonDeserializer<R> {
     fn deserialize_str<V>(self, visitor: V) -> Result<V::Value> where V: Visitor<'de> {
-        let event = self.reader.read_event(&mut self.buffer)?;
+        let event = self.next()?;
 
         match event {
-            JsonEvent::String(s) => {
-                visitor.visit_str(s)
+            NodeEvent::String(s) => {
+                visitor.visit_str(s.as_str())
             },
-            JsonEvent::EndArray => {
+            NodeEvent::EndArray => {
                 Err(FhirError::EndArrayWhileParsingList)
             },
             _ => {Err(FhirError::error("在获取字符串值时出现错误"))},
@@ -65,13 +117,13 @@ impl<'a, 'de, R: BufRead> Deserializer<'de> for &'a mut JsonDeserializer<R> {
     }
 
     fn deserialize_number<V>(self, visitor: V) -> Result<V::Value> where V: Visitor<'de> {
-        let event = self.reader.read_event(&mut self.buffer)?;
+        let event = self.next()?;
 
         match event {
-            JsonEvent::Number(s) => {
-                visitor.visit_str(s)
+            NodeEvent::Number(s) => {
+                visitor.visit_str(s.as_str())
             },
-            JsonEvent::StartObject => {
+            NodeEvent::StartObject => {
                 visitor.visit_map(JsonProcessor::new(self))
             },
             _ => {Err(FhirError::error("在获取数值时出现错误"))},
@@ -85,10 +137,9 @@ impl<'a, 'de, R: BufRead> Deserializer<'de> for &'a mut JsonDeserializer<R> {
     fn deserialize_vec<V>(self, visitor: V) -> Result<V::Value> where V: Visitor<'de> {
         tracing::debug!("开始处理数组了");
 
-        let event = self.reader.read_event(&mut self.buffer)?;
-
+        let event = self.next()?;
         let value = match event {
-            JsonEvent::StartArray => {
+            NodeEvent::StartArray => {
                 tracing::debug!("开始按Vec处理");
                 visitor.visit_vec(JsonProcessor::new(self))?
             }
@@ -97,25 +148,68 @@ impl<'a, 'de, R: BufRead> Deserializer<'de> for &'a mut JsonDeserializer<R> {
             }
         };
         Ok(value)
-        // visitor.visit_vec()
     }
 
-    fn deserialize_enum<V>(self, _visitor: V) -> Result<V::Value> where V: Visitor<'de> {
-        todo!()
+    fn deserialize_enum<V>(self, visitor: V) -> Result<V::Value> where V: Visitor<'de> {
+        let expected = String::from("resourceType");
+
+        loop {
+            let event = self.lookup()?;
+            let value = match event {
+                NodeEvent::ObjectKey(key) if *key == expected => {
+                    let node = self.lookup()?;
+                    match node {
+                        NodeEvent::String(resource_type) => {
+                            let value = visitor.visit_enum(resource_type.clone().as_str(), self)?;
+                            return Ok(value)
+                        }
+                        _ => return Err(FhirError::error("[resourceType]元素类型应为String类型")),
+                    }
+                },
+                NodeEvent::EndObject | NodeEvent::Eof => break,
+                _ => {}
+            };
+        }
+        Err(FhirError::error("未找到代表资源类型的[resourceType]元素"))
+    }
+
+    fn deserialize_primitive<V>(self, _name: &str, visitor: V) -> Result<V::Value>
+        where V: Visitor<'de>
+    {
+        tracing::debug!("开始解析结构体");
+        let event = self.next()?;
+
+        match event {
+            NodeEvent::StartObject => {
+                tracing::debug!("开始按Map处理");
+                visitor.visit_map(JsonProcessor::new(self))
+            },
+            NodeEvent::String(s) => {
+                visitor.visit_str(s.as_str())
+            },
+            NodeEvent::Number(s) => {
+                visitor.visit_str(s.as_str())
+            },
+            NodeEvent::Boolean(b) => {
+                visitor.visit_str(b.to_string().as_str())
+            },
+            NodeEvent::EndArray => Err(FhirError::EndArrayWhileParsingList),
+            _ => Err(FhirError::error("必须以对象字符开头")),
+        }
     }
 
     fn deserialize_struct<V>(self, _name: &str, visitor: V) -> Result<V::Value>
-        where V: Visitor<'de> {
-        tracing::debug!("到这里了");
-
-        let event = self.reader.read_event(&mut self.buffer)?;
+        where V: Visitor<'de>
+    {
+        tracing::debug!("开始解析结构体");
+        let event = self.next()?;
 
         let value = match event {
-            JsonEvent::StartObject => {
+            NodeEvent::StartObject => {
                 tracing::debug!("开始按Map处理");
                 visitor.visit_map(JsonProcessor::new(self))?
             },
-            JsonEvent::EndArray => {
+            NodeEvent::EndArray => {
                 return Err(FhirError::EndArrayWhileParsingList);
             },
             _ => {
@@ -147,8 +241,6 @@ impl<'a, 'de, R: BufRead> MapAccess<'de> for JsonProcessor<'a, R> {
     }
 
     fn next_value<De>(&mut self) -> Result<De> where De: Deserialize<'de> {
-        tracing::debug!("读取value");
-        // let value = self.de.next_value()?;
         De::deserialize(&mut *self.de)
     }
 }

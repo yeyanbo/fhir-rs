@@ -38,6 +38,10 @@ pub trait Deserializer<'de>: Sized {
     fn deserialize_struct<V>(self, name: &str, visitor: V) -> Result<V::Value>
         where
             V: Visitor<'de>;
+
+    fn deserialize_primitive<V>(self, _name: &str, visitor: V) -> Result<V::Value>
+        where
+            V: Visitor<'de>;
 }
 
 pub trait MapAccess<'de> {
@@ -60,6 +64,10 @@ pub trait Visitor<'de>: Sized {
     type Value;
     fn visit_str(self, _v: &str) -> Result<Self::Value>{
         Err(FhirError::un_implementation("visit_str"))
+    }
+
+    fn visit_bool(self, _v: bool) -> Result<Self::Value>{
+        Err(FhirError::un_implementation("visit_bool"))
     }
 
     fn visit_map<M>(self, _map: M) -> Result<Self::Value>
