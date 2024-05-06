@@ -41,12 +41,12 @@ fn main() -> Result<()> {
                 "http://hl7.org/fhir/StructureDefinition/patient-birthTime",
                 AnyType::DateTime(DateTimeDt::from_str("1974-12-25T14:35:45-05:00")?))));
 
-    test_xml_serialize(&patient)?;
-    test_json_serialize(&patient)?;
+    // test_xml_serialize(&patient)?;
+    // test_json_serialize(&patient)?;
 
-    test_xml_deserialize()?;
+    // test_xml_deserialize()?;
     test_xml_file_deserialize()?;
-    test_json_file_deserialize()?;
+    // test_json_file_deserialize()?;
     Ok(())
 }
 
@@ -67,7 +67,7 @@ fn test_xml_file_deserialize() -> Result<()> {
   let ret: Result<TestScript> = from_xml(script_str);
     match ret {
         Ok(script) => {
-            tracing::info!("Script Name: {:?}", script.name);
+            tracing::info!("Script Name: {:#?}", script);
         }
         Err(err) => {
             tracing::error!("{:?}", err);

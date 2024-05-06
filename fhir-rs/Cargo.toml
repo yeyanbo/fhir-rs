@@ -1,6 +1,6 @@
 [package]
 name = "fhir-rs"
-version = "0.0.7"
+version = "0.0.8"
 authors = ["Yanbo Ye <yeyanbo@me.com>"]
 repository = "https://github.com/yeyanbo/fhir-rs.git"
 homepage = "http://app.yeyanbo.cn/fhir-rs"

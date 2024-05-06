@@ -55,9 +55,10 @@ impl<'a, R> XmlDeserializer <R>
                 let key = name.local_name;
 
                 self.push_element_start_event(key.clone(), namespace.clone());
-                // 检测有没有属性值
-                if let Some(kv) = self.read_attribute_from_element(&attributes) {
-                    self.push_text_event(kv.0, kv.1, namespace.clone());
+
+                // 检测有没有属性值，如果存在，将属性转换为元素，存储到缓冲区
+                for attr in &attributes {
+                    self.push_text_event(attr.name.local_name.clone(), attr.value.clone(), namespace.clone());
                 }
 
                 return Ok(Some(key));
@@ -78,9 +79,9 @@ impl<'a, R> XmlDeserializer <R>
             XmlEvent::StartElement { name, attributes, namespace } => {
                 self.push_element_start_event(name.local_name, namespace.clone());
 
-                // 检测有没有属性值
-                if let Some(kv) = self.read_attribute_from_element(&attributes) {
-                    self.push_text_event(kv.0, kv.1, namespace.clone());
+                // 检测有没有属性值，如果存在，将属性转换为元素，存储到缓冲区
+                for attr in &attributes {
+                    self.push_text_event(attr.name.local_name.clone(), attr.value.clone(), namespace.clone());
                 }
 
                 return Ok(Some(self.peek()?));
@@ -147,11 +148,8 @@ impl<'a, R> XmlDeserializer <R>
             name: OwnedName::local(key),
         };
 
-        tracing::debug!("PUSH: {:?}", &start);
         self.buffer.push_back(start);
-        tracing::debug!("PUSH: {:?}", &event);
         self.buffer.push_back(event);
-        tracing::debug!("PUSH: {:?}", &end);
         self.buffer.push_back(end);
     }
 
@@ -161,8 +159,6 @@ impl<'a, R> XmlDeserializer <R>
             attributes: vec![],
             namespace,
         };
-
-        tracing::debug!("PUSH: {:?}", &event);
 
         self.buffer.push_front(event);
     }
@@ -174,6 +170,7 @@ impl<'a, R> XmlDeserializer <R>
     /// ## 返回值
     /// 要么返回None，表示没有属性
     /// 要么返回一个Key-Value对
+    #[deprecated]
     fn read_attribute_from_element(&mut self, attributes: &Vec<OwnedAttribute>) -> Option<(String, String)> {
         match attributes.first() {
             None => {None}
