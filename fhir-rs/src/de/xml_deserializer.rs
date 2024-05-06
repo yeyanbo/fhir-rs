@@ -257,8 +257,8 @@ impl<'de, 'a,  R: BufRead> Deserializer<'de> for &'a mut XmlDeserializer<R> {
         }
     }
 
-    fn deserialize_primitive<V>(self, _name: &str, visitor: V) -> Result<V::Value> where V: Visitor<'de> {
-        todo!()
+    fn deserialize_primitive<V>(self, name: &str, visitor: V) -> Result<V::Value> where V: Visitor<'de> {
+        self.deserialize_struct(name, visitor)
     }
 }
 
