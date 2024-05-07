@@ -60,23 +60,50 @@ impl Into<OperationOutcomeIssueBackboneElement> for ValidateResultItem {
 }
 
 #[derive(Debug, Clone)]
-pub struct ValidateResult(Vec<ValidateResultItem>);
+pub struct ValidateResult{
+    pub fatal_count: usize,
+    pub error_count: usize,
+    pub warn_count: usize,
+    pub info_count: usize,
+    pub skip_count: usize,
+    pub success_count: usize,
+    items: Vec<ValidateResultItem>
+}
 
 impl ValidateResult {
 
     pub fn new() -> Self {
-        ValidateResult(vec![])
+        Self{
+            fatal_count: 0,
+            error_count: 0,
+            warn_count: 0,
+            info_count: 0,
+            skip_count: 0,
+            success_count: 0,
+            items: vec![],
+        }
     }
 
     pub fn add_result_item(&mut self, items: Vec<ValidateResultItem>) {
-        self.0.extend(items)
+        for item in items {
+            match item.status {
+                ValidateStatus::Success => self.success_count += 1,
+                ValidateStatus::Error => self.error_count += 1,
+                ValidateStatus::Warn => self.warn_count += 1,
+                ValidateStatus::Fatal => self.fatal_count += 1,
+                ValidateStatus::Info => self.info_count += 1,
+                ValidateStatus::Skip => self.skip_count += 1,
+            }
+            self.items.push(item)
+        }
     }
 }
+
 impl Into<OperationOutcome> for ValidateResult {
     fn into(self) -> OperationOutcome {
         let mut outcome = OperationOutcome::default();
 
-        for item in self.0 {
+        for item in self.items {
             outcome = outcome.add_issue(item.into());
         }
 
