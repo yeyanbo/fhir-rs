@@ -16,8 +16,10 @@ fn main() -> Result<()> {
     let profile_str = include_str!("profile-core-outpatient-encounter.xml");
     let profile: StructureDefinition = from_xml(profile_str)?;
 
+    let resoruce = AnyResource::Encounter(encounter);
+
     let mut validator = Validator::new(profile);
-    let outcome = validator.validate(&encounter)?;
+    let outcome = validator.validate_any_resource(&resoruce)?;
 
     println!("Validate Outcome: {:#?}", &outcome);
     Ok(())
