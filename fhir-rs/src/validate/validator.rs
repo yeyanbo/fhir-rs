@@ -474,7 +474,7 @@ impl Validator {
 
     /// 是否违反了约束ele-1
     fn constraint_ele_1(&self, collection: &Collection) -> bool {
-        collection.first().is_empty()
+        collection.first().is_none()
     }
 
     fn is_slice_element(&self, element: &ElementDefinition) -> bool {

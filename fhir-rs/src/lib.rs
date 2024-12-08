@@ -6,11 +6,12 @@
 //!
 //! 设计思路参考了Serde的理念。
 //!
-pub mod error;
-pub mod datatype;
-pub mod de;
-pub mod ser;
-pub mod resource;
+
+mod error;
+mod datatype;
+mod de;
+mod ser;
+mod resource;
 // pub mod expand;
 // #[cfg(features = "server")]
 mod server;
@@ -19,7 +20,9 @@ mod client;
 // #[cfg(features = "validate")]
 mod validate;
 // #[cfg(features = "fhirpath")]
-pub mod fhirpath4;
+mod fhirpath4;
+
+pub type Result<T> = std::result::Result<T, error::FhirError>;
 
 pub mod prelude {
     pub use super::de::*;
@@ -29,8 +32,9 @@ pub mod prelude {
     pub use super::fhirpath4::*;
     pub use super::resource::*;
     pub use super::validate::*;
+    pub use super::Result;
 
-    pub use fhir_derive::{Extension, BackboneElement, Complex, Primitive, Resource};
-    pub type Result<T> = std::result::Result<T, FhirError>;
+    pub use fhir_derive::{Element, BackboneElement, Complex, Primitive, Resource};
+
     pub use tracing::{debug, info, error};
 }
