@@ -58,8 +58,8 @@ fn impl_resource_trait(struct_name_ident: &syn::Ident) -> syn::Result<proc_macro
         }
 
         impl Base for #struct_name_ident {
-            fn type_name(&self) -> String {
-                #struct_name_literal.to_string()
+            fn type_name(&self) -> &str {
+                #struct_name_literal
             }
         }
     );
@@ -251,6 +251,7 @@ pub fn impl_deserialize_define(struct_fields: &Vec<Field>) -> syn::Result<Vec<pr
 }
 
 fn impl_deserialize(struct_name_ident: &syn::Ident, struct_fields: &Vec<Field>) -> syn::Result<proc_macro2::TokenStream> {
+    let struct_name_literal = struct_name_ident.to_string();
     let visitor = helper::visitor(struct_name_ident)?;
 
     let fields = helper::impl_deserialize_fields(struct_fields)?;
@@ -273,7 +274,8 @@ fn impl_deserialize(struct_name_ident: &syn::Ident, struct_fields: &Vec<Field>) 
                             match keys.as_str() {
                                 #( #maps )*
                                 "resourceType" => { resource_type = Some(mapp.next_value()?);},
-                                _ => {return Err(FhirError::error_string(format!("读到不存在的键:{}", keys)));},
+                                _ => { /* skip */ },
+                                // _ => {return Err(FhirError::error_string(format!("读到不存在的键:{}", keys)));},
                             }
                         }
 
@@ -293,7 +295,7 @@ fn impl_deserialize(struct_name_ident: &syn::Ident, struct_fields: &Vec<Field>) 
                     }
                 }
 
-                deserializer.deserialize_struct("", #visitor)
+                deserializer.deserialize_resource(#struct_name_literal, #visitor)
             }
         }
     );

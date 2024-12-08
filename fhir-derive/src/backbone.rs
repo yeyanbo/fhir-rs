@@ -6,29 +6,14 @@ pub(crate) fn expand_derive_backbone(st: &syn::DeriveInput) -> syn::Result<proc_
 
     let fields = helper::get_struct_fields(&st)?;
 
-    let element_impl = impl_element(struct_name_ident, &fields)?;
     let serialize_impl = impl_serialize(struct_name_ident, &fields)?;
     let deserialize_impl = impl_deserialize(struct_name_ident, &fields)?;
     let fhirpath_impl = impl_fhirpath(struct_name_ident, &fields)?;
     
     let ret = quote::quote!(
-        #element_impl
         #serialize_impl
         #deserialize_impl
         #fhirpath_impl
-    );
-    Ok(ret)
-}
-
-pub(crate) fn impl_element(struct_name_ident: &syn::Ident, _struct_fields: &Vec<Field>) -> syn::Result<proc_macro2::TokenStream> {
-    let struct_name_literal = struct_name_ident.to_string();
-    
-    let ret = quote::quote!(
-        impl Base for #struct_name_ident {
-            fn type_name(&self) -> String {
-                #struct_name_literal.to_string()
-            }
-        }
     );
     Ok(ret)
 }
@@ -106,22 +91,6 @@ pub fn impl_fhirpath(struct_name_ident: &syn::Ident, struct_fields: &Vec<Field>)
 
     let ret = quote::quote!(
         impl Executor for #struct_name_ident {
-            // fn exec(&self, comp: &PathComponent) -> Result<PathResponse> {
-            //     match comp {
-            //         PathComponent::Path(path) => {
-            //             match path.symbol.as_str() {
-            //                 #( #maps )*
-            //                 other => Err(FhirError::Message(format!("{}: 无效的路径名:[{}]", #struct_name_literal, other)))
-            //             }
-            //         },
-            //         _ => Err(FhirError::Message(format!("#struct_name_ident: 无效的函数名:{:?}", &comp))),
-            //     }
-            // }
-
-            // fn as_collection(&self) -> Collection {
-            //     Collection(vec![Box::new(self.clone())])
-            // }
-
             fn element(&self, symbol: &String, index: &Option<usize>) -> Result<Collection> {
                  println!("{}: Element[{}]...", #struct_name_literal, &symbol);
 
