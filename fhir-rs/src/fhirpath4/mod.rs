@@ -6,6 +6,7 @@ mod executor;
 mod parser;
 mod expression;
 mod collection;
+mod macros;
 
 use std::ops::BitAnd;
 pub use tokenizer::{Token, TokenType, Tokenizer, Operator};

@@ -32,7 +32,7 @@ impl Expr {
             }
             Expr::PathExpr { symbol, index } => {
                 let l_collection = executor.to_collection(&None);
-                if executor.type_name() == *symbol {
+                if executor.type_name() == symbol {
                     Ok(l_collection)
                 } else {
                     l_collection.element(symbol, index)

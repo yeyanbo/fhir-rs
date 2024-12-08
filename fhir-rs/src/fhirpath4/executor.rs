@@ -1,9 +1,8 @@
+use crate::{impl_executor_for_anytype, impl_executor_for_primitive};
 use super::*;
-use crate::prelude::{Result, FhirError, Base, Integer, Decimal, DateTime, Boolean, Instant, Date, Time};
+use crate::prelude::*;
 
-use std::fmt::Debug;
-
-pub trait Executor: Base + Convert + Compare + Debug {
+pub trait Executor: Base + Convert + Compare {
 
     fn child(&self, _index: usize) -> Result<Collection> {
         Err(FhirError::error("该数据类型不支持获取子元素"))
@@ -12,7 +11,6 @@ pub trait Executor: Base + Convert + Compare + Debug {
     fn element(&self, _symbol: &String, _index: &Option<usize>) -> crate::prelude::Result<Collection> {
         Err(FhirError::error("该数据类型不支持获取子路径"))
     }
-
 
     fn to_collection(&self, index: &Option<usize>) -> Collection;
 }
@@ -81,9 +79,7 @@ macro_rules! impl_convert {
         $($ty:ident,)+
     ) => {
         $(
-            impl Convert for $ty {
-
-            }
+            impl Convert for $ty {}
         )+
     }
 }
@@ -93,14 +89,12 @@ macro_rules! impl_compare {
         $($ty:ident,)+
     ) => {
         $(
-            impl Compare for $ty {
-
-            }
+            impl Compare for $ty {}
         )+
     }
 }
 
-impl_executor!(usize, isize, i64, f64, bool, Instant, DateTime, Time, Date, String,);
+impl_executor!(usize, isize, i64, f64, bool, Instant, DateTime, Time, Date, String, Xhtml,);
 impl_convert!(usize, isize, i64, f64, Instant, DateTime, Time, Date,);
 impl_compare!(usize, isize, i64, f64, bool, Instant, DateTime, Time, Date,);
 
@@ -110,6 +104,25 @@ impl Compare for String {
         Ok(*self == rhs)
     }
 }
+impl Convert for String {
+
+    fn to_strings(&self) -> Result<String> {
+        Ok(self.clone())
+    }
+}
+
+impl Compare for Xhtml {
+    fn eq(&self, right: &dyn Executor) -> Result<bool> {
+        let rhs = right.to_strings()?;
+        Ok(*self.0 == rhs)
+    }
+}
+impl Convert for Xhtml {
+
+    fn to_strings(&self) -> Result<String> {
+        Ok(self.0.clone())
+    }
+}
 
 impl Convert for Boolean {
     fn to_boolean(&self) -> Result<Boolean> {
@@ -117,12 +130,6 @@ impl Convert for Boolean {
     }
 }
 
-impl Convert for String {
-
-    fn to_strings(&self) -> Result<String> {
-        Ok(self.clone())
-    }
-}
 
 impl<T: Executor> Executor for Box<T> {
     fn to_collection(&self, index: &Option<usize>) -> Collection {
@@ -168,3 +175,84 @@ impl<T: Executor> Executor for Vec<T> {
 
 impl<T: Executor> Convert for Vec<T> {}
 impl<T: Executor> Compare for Vec<T> {}
+
+impl_executor_for_primitive!{
+    StringDt,
+    IdDt,
+    Base64BinaryDt,
+    MarkdownDt,
+    UriDt,
+    UrlDt,
+    OidDt,
+    UuidDt,
+    CanonicalDt,
+    CodeDt,
+    XhtmlDt,
+    BooleanDt,
+    DateTimeDt,
+    DateDt,
+    TimeDt,
+    InstantDt,
+    UnsignedIntDt,
+    PositiveIntDt,
+    IntegerDt,
+    Integer64Dt,
+    DecimalDt,
+}
+
+impl_executor_for_anytype!{
+    Base64Binary,
+    Boolean,
+    Canonical,
+    Code,
+    DateTime,
+    Date,
+    Decimal,
+    Id,
+    Instant,
+    Integer,
+    Integer64,
+    Markdown,
+    Oid,
+    PositiveInt,
+    String,
+    Time,
+    UnsignedInt,
+    Uri,
+    Url,
+    Uuid,
+    Address,
+    Age,
+    Annotation,
+    Attachment,
+    CodeableConcept,
+    CodeableReference,
+    Coding,
+    ContactPoint,
+    Count,
+    Distance,
+    Duration,
+    HumanName,
+    Identifier,
+    Money,
+    Period,
+    Quantity,
+    Range,
+    Ratio,
+    RatioRange,
+    Reference,
+    SampledData,
+    Signature,
+    Timing,
+    ContactDetail,
+    DataRequirement,
+    Expression,
+    ParameterDefinition,
+    RelatedArtifact,
+    TriggerDefinition,
+    UsageContext,
+    Availability,
+    ExtendedContactDetail,
+    Dosage,
+    Meta,
+}
