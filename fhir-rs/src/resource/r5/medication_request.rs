@@ -128,7 +128,7 @@ pub struct MedicationRequest {
     pub event_history: Option<Vec<Reference>>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct MedicationRequestDispenseRequestBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -168,7 +168,7 @@ pub struct MedicationRequestDispenseRequestBackboneElement {
     pub dose_administration_aid: Option<CodeableConcept>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct MedicationRequestDispenseRequestInitialFillBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -187,7 +187,7 @@ pub struct MedicationRequestDispenseRequestInitialFillBackboneElement {
     pub duration: Option<Duration>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct MedicationRequestSubstitutionBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]

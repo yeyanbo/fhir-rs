@@ -80,7 +80,7 @@ pub struct MeasureReport {
     pub evaluated_resource: Option<Vec<Reference>>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct MeasureReportGroupBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -111,7 +111,7 @@ pub struct MeasureReportGroupBackboneElement {
     pub stratifier: Option<Vec<MeasureReportGroupStratifierBackboneElement>>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct MeasureReportGroupPopulationBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -142,7 +142,7 @@ pub struct MeasureReportGroupPopulationBackboneElement {
     pub subjects: Option<Reference>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct MeasureReportGroupStratifierBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -164,7 +164,7 @@ pub struct MeasureReportGroupStratifierBackboneElement {
     pub stratum: Option<Vec<MeasureReportGroupStratifierStratumBackboneElement>>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct MeasureReportGroupStratifierStratumBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -189,7 +189,7 @@ pub struct MeasureReportGroupStratifierStratumBackboneElement {
     pub measure_score: Option<Duration>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct MeasureReportGroupStratifierStratumPopulationBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -220,7 +220,7 @@ pub struct MeasureReportGroupStratifierStratumPopulationBackboneElement {
     pub subjects: Option<Reference>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct MeasureReportGroupStratifierStratumComponentBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]

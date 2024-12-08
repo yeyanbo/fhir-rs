@@ -119,7 +119,7 @@ pub struct EvidenceVariable {
     pub category: Option<Vec<EvidenceVariableCategoryBackboneElement>>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct EvidenceVariableCharacteristicBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -174,7 +174,7 @@ pub struct EvidenceVariableCharacteristicBackboneElement {
     pub time_from_event: Option<Vec<EvidenceVariableCharacteristicTimeFromEventBackboneElement>>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct EvidenceVariableCharacteristicDefinitionByCombinationBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -196,7 +196,7 @@ pub struct EvidenceVariableCharacteristicDefinitionByCombinationBackboneElement 
     pub characteristic: Option<Vec<EvidenceVariableCharacteristicBackboneElement>>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct EvidenceVariableCharacteristicDefinitionByTypeAndValueBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -224,7 +224,7 @@ pub struct EvidenceVariableCharacteristicDefinitionByTypeAndValueBackboneElement
     pub offset: Option<CodeableConcept>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct EvidenceVariableCharacteristicTimeFromEventBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -252,7 +252,7 @@ pub struct EvidenceVariableCharacteristicTimeFromEventBackboneElement {
     pub range: Option<Range>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct EvidenceVariableCategoryBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]

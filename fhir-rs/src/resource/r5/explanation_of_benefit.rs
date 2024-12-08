@@ -176,7 +176,7 @@ pub struct ExplanationOfBenefit {
     pub benefit_balance: Option<Vec<ExplanationOfBenefitBenefitBalanceBackboneElement>>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct ExplanationOfBenefitInsuranceBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -198,7 +198,7 @@ pub struct ExplanationOfBenefitInsuranceBackboneElement {
     pub pre_auth_ref: Option<Vec<StringDt>>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct ExplanationOfBenefitAccidentBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -220,7 +220,7 @@ pub struct ExplanationOfBenefitAccidentBackboneElement {
     pub location: Option<Reference>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct ExplanationOfBenefitItemBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -317,7 +317,7 @@ pub struct ExplanationOfBenefitItemBackboneElement {
     pub detail: Option<Vec<ExplanationOfBenefitItemDetailBackboneElement>>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct ExplanationOfBenefitItemAdjudicationBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -342,7 +342,7 @@ pub struct ExplanationOfBenefitItemAdjudicationBackboneElement {
     pub quantity: Option<Quantity>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct ExplanationOfBenefitItemDetailBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -412,7 +412,7 @@ pub struct ExplanationOfBenefitItemDetailBackboneElement {
     pub sub_detail: Option<Vec<ExplanationOfBenefitItemDetailSubDetailBackboneElement>>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct ExplanationOfBenefitItemDetailSubDetailBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -479,7 +479,7 @@ pub struct ExplanationOfBenefitItemDetailSubDetailBackboneElement {
     pub adjudication: Option<Vec<ExplanationOfBenefitItemAdjudicationBackboneElement>>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct ExplanationOfBenefitItemReviewOutcomeBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -504,7 +504,7 @@ pub struct ExplanationOfBenefitItemReviewOutcomeBackboneElement {
     pub pre_auth_period: Option<Period>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct ExplanationOfBenefitItemBodySiteBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -523,7 +523,7 @@ pub struct ExplanationOfBenefitItemBodySiteBackboneElement {
     pub sub_site: Option<Vec<CodeableConcept>>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct ExplanationOfBenefitSupportingInfoBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -554,7 +554,7 @@ pub struct ExplanationOfBenefitSupportingInfoBackboneElement {
     pub reason: Option<Coding>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct ExplanationOfBenefitAddItemBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -639,7 +639,7 @@ pub struct ExplanationOfBenefitAddItemBackboneElement {
     pub detail: Option<Vec<ExplanationOfBenefitAddItemDetailBackboneElement>>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct ExplanationOfBenefitAddItemDetailBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -697,7 +697,7 @@ pub struct ExplanationOfBenefitAddItemDetailBackboneElement {
     pub sub_detail: Option<Vec<ExplanationOfBenefitAddItemDetailSubDetailBackboneElement>>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct ExplanationOfBenefitAddItemDetailSubDetailBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -752,7 +752,7 @@ pub struct ExplanationOfBenefitAddItemDetailSubDetailBackboneElement {
     pub adjudication: Option<Vec<ExplanationOfBenefitItemAdjudicationBackboneElement>>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct ExplanationOfBenefitAddItemBodySiteBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -771,7 +771,7 @@ pub struct ExplanationOfBenefitAddItemBodySiteBackboneElement {
     pub sub_site: Option<Vec<CodeableConcept>>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct ExplanationOfBenefitPaymentBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -802,7 +802,7 @@ pub struct ExplanationOfBenefitPaymentBackboneElement {
     pub identifier: Option<Identifier>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct ExplanationOfBenefitEventBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -821,7 +821,7 @@ pub struct ExplanationOfBenefitEventBackboneElement {
     pub when: Option<Period>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct ExplanationOfBenefitPayeeBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -840,7 +840,7 @@ pub struct ExplanationOfBenefitPayeeBackboneElement {
     pub party: Option<Reference>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct ExplanationOfBenefitDiagnosisBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -865,7 +865,7 @@ pub struct ExplanationOfBenefitDiagnosisBackboneElement {
     pub on_admission: Option<CodeableConcept>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct ExplanationOfBenefitTotalBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -884,7 +884,7 @@ pub struct ExplanationOfBenefitTotalBackboneElement {
     pub amount: Option<Money>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct ExplanationOfBenefitProcessNoteBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -909,7 +909,7 @@ pub struct ExplanationOfBenefitProcessNoteBackboneElement {
     pub language: Option<CodeableConcept>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct ExplanationOfBenefitCareTeamBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -937,7 +937,7 @@ pub struct ExplanationOfBenefitCareTeamBackboneElement {
     pub specialty: Option<CodeableConcept>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct ExplanationOfBenefitProcedureBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -965,7 +965,7 @@ pub struct ExplanationOfBenefitProcedureBackboneElement {
     pub udi: Option<Vec<Reference>>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct ExplanationOfBenefitRelatedBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -987,7 +987,7 @@ pub struct ExplanationOfBenefitRelatedBackboneElement {
     pub reference: Option<Identifier>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct ExplanationOfBenefitBenefitBalanceBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -1024,7 +1024,7 @@ pub struct ExplanationOfBenefitBenefitBalanceBackboneElement {
     pub financial: Option<Vec<ExplanationOfBenefitBenefitBalanceFinancialBackboneElement>>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct ExplanationOfBenefitBenefitBalanceFinancialBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]

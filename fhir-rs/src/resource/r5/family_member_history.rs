@@ -86,7 +86,7 @@ pub struct FamilyMemberHistory {
     pub procedure: Option<Vec<FamilyMemberHistoryProcedureBackboneElement>>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct FamilyMemberHistoryParticipantBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -105,7 +105,7 @@ pub struct FamilyMemberHistoryParticipantBackboneElement {
     pub actor: Option<Reference>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct FamilyMemberHistoryConditionBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -133,7 +133,7 @@ pub struct FamilyMemberHistoryConditionBackboneElement {
     pub note: Option<Vec<Annotation>>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct FamilyMemberHistoryProcedureBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]

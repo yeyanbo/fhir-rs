@@ -107,7 +107,7 @@ pub struct DeviceDefinition {
     pub charge_item: Option<Vec<DeviceDefinitionChargeItemBackboneElement>>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct DeviceDefinitionUdiDeviceIdentifierBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -132,7 +132,7 @@ pub struct DeviceDefinitionUdiDeviceIdentifierBackboneElement {
     pub market_distribution: Option<Vec<DeviceDefinitionUdiDeviceIdentifierMarketDistributionBackboneElement>>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct DeviceDefinitionUdiDeviceIdentifierMarketDistributionBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -151,7 +151,7 @@ pub struct DeviceDefinitionUdiDeviceIdentifierMarketDistributionBackboneElement 
     pub sub_jurisdiction: Option<UriDt>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct DeviceDefinitionDeviceNameBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -170,7 +170,7 @@ pub struct DeviceDefinitionDeviceNameBackboneElement {
     pub type_: Option<CodeDt>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct DeviceDefinitionClassificationBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -189,7 +189,7 @@ pub struct DeviceDefinitionClassificationBackboneElement {
     pub justification: Option<Vec<RelatedArtifact>>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct DeviceDefinitionHasPartBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -208,7 +208,7 @@ pub struct DeviceDefinitionHasPartBackboneElement {
     pub count: Option<IntegerDt>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct DeviceDefinitionChargeItemBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -233,7 +233,7 @@ pub struct DeviceDefinitionChargeItemBackboneElement {
     pub use_context: Option<Vec<UsageContext>>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct DeviceDefinitionConformsToBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -258,7 +258,7 @@ pub struct DeviceDefinitionConformsToBackboneElement {
     pub source: Option<Vec<RelatedArtifact>>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct DeviceDefinitionRegulatoryIdentifierBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -283,7 +283,7 @@ pub struct DeviceDefinitionRegulatoryIdentifierBackboneElement {
     pub jurisdiction: Option<UriDt>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct DeviceDefinitionPackagingBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -314,7 +314,7 @@ pub struct DeviceDefinitionPackagingBackboneElement {
     pub packaging: Option<Vec<DeviceDefinitionPackagingBackboneElement>>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct DeviceDefinitionPackagingDistributorBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -333,7 +333,7 @@ pub struct DeviceDefinitionPackagingDistributorBackboneElement {
     pub organization_reference: Option<Vec<Reference>>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct DeviceDefinitionLinkBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -352,7 +352,7 @@ pub struct DeviceDefinitionLinkBackboneElement {
     pub related_device: Option<CodeableReference>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct DeviceDefinitionMaterialBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -374,7 +374,7 @@ pub struct DeviceDefinitionMaterialBackboneElement {
     pub allergenic_indicator: Option<BooleanDt>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct DeviceDefinitionPropertyBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -393,7 +393,7 @@ pub struct DeviceDefinitionPropertyBackboneElement {
     pub value: Option<Attachment>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct DeviceDefinitionVersionBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -415,7 +415,7 @@ pub struct DeviceDefinitionVersionBackboneElement {
     pub value: Option<StringDt>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct DeviceDefinitionGuidelineBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -449,7 +449,7 @@ pub struct DeviceDefinitionGuidelineBackboneElement {
     pub intended_use: Option<StringDt>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct DeviceDefinitionCorrectiveActionBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]

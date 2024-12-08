@@ -71,7 +71,7 @@ pub struct InsurancePlan {
     pub plan: Option<Vec<InsurancePlanPlanBackboneElement>>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct InsurancePlanPlanBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -102,7 +102,7 @@ pub struct InsurancePlanPlanBackboneElement {
     pub specific_cost: Option<Vec<InsurancePlanPlanSpecificCostBackboneElement>>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct InsurancePlanPlanGeneralCostBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -127,7 +127,7 @@ pub struct InsurancePlanPlanGeneralCostBackboneElement {
     pub comment: Option<StringDt>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct InsurancePlanPlanSpecificCostBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -146,7 +146,7 @@ pub struct InsurancePlanPlanSpecificCostBackboneElement {
     pub benefit: Option<Vec<InsurancePlanPlanSpecificCostBenefitBackboneElement>>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct InsurancePlanPlanSpecificCostBenefitBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -165,7 +165,7 @@ pub struct InsurancePlanPlanSpecificCostBenefitBackboneElement {
     pub cost: Option<Vec<InsurancePlanPlanSpecificCostBenefitCostBackboneElement>>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct InsurancePlanPlanSpecificCostBenefitCostBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -190,7 +190,7 @@ pub struct InsurancePlanPlanSpecificCostBenefitCostBackboneElement {
     pub value: Option<Quantity>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct InsurancePlanCoverageBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -212,7 +212,7 @@ pub struct InsurancePlanCoverageBackboneElement {
     pub benefit: Option<Vec<InsurancePlanCoverageBenefitBackboneElement>>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct InsurancePlanCoverageBenefitBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -234,7 +234,7 @@ pub struct InsurancePlanCoverageBenefitBackboneElement {
     pub limit: Option<Vec<InsurancePlanCoverageBenefitLimitBackboneElement>>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct InsurancePlanCoverageBenefitLimitBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]

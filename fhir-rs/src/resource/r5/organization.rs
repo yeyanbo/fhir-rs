@@ -59,7 +59,7 @@ pub struct Organization {
     pub qualification: Option<Vec<OrganizationQualificationBackboneElement>>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct OrganizationQualificationBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]

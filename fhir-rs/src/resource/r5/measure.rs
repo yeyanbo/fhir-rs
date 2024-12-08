@@ -164,7 +164,7 @@ pub struct Measure {
     pub supplemental_data: Option<Vec<MeasureSupplementalDataBackboneElement>>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct MeasureGroupBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -216,7 +216,7 @@ pub struct MeasureGroupBackboneElement {
     pub stratifier: Option<Vec<MeasureGroupStratifierBackboneElement>>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct MeasureGroupPopulationBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -250,7 +250,7 @@ pub struct MeasureGroupPopulationBackboneElement {
     pub aggregate_method: Option<CodeableConcept>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct MeasureGroupStratifierBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -281,7 +281,7 @@ pub struct MeasureGroupStratifierBackboneElement {
     pub component: Option<Vec<MeasureGroupStratifierComponentBackboneElement>>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct MeasureGroupStratifierComponentBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -309,7 +309,7 @@ pub struct MeasureGroupStratifierComponentBackboneElement {
     pub group_definition: Option<Reference>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct MeasureSupplementalDataBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -337,7 +337,7 @@ pub struct MeasureSupplementalDataBackboneElement {
     pub criteria: Option<Expression>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct MeasureTermBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]

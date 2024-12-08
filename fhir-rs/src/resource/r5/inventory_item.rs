@@ -71,7 +71,7 @@ pub struct InventoryItem {
     pub product_reference: Option<Reference>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct InventoryItemNameBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -93,7 +93,7 @@ pub struct InventoryItemNameBackboneElement {
     pub name: Option<StringDt>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct InventoryItemAssociationBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -115,7 +115,7 @@ pub struct InventoryItemAssociationBackboneElement {
     pub quantity: Option<Ratio>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct InventoryItemResponsibleOrganizationBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -134,7 +134,7 @@ pub struct InventoryItemResponsibleOrganizationBackboneElement {
     pub organization: Option<Reference>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct InventoryItemDescriptionBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -153,7 +153,7 @@ pub struct InventoryItemDescriptionBackboneElement {
     pub description: Option<StringDt>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct InventoryItemCharacteristicBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -172,7 +172,7 @@ pub struct InventoryItemCharacteristicBackboneElement {
     pub value: Option<CodeableConcept>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct InventoryItemInstanceBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]

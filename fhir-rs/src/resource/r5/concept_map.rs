@@ -122,7 +122,7 @@ pub struct ConceptMap {
     pub group: Option<Vec<ConceptMapGroupBackboneElement>>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct ConceptMapPropertyBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -150,7 +150,7 @@ pub struct ConceptMapPropertyBackboneElement {
     pub system: Option<CanonicalDt>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct ConceptMapAdditionalAttributeBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -175,7 +175,7 @@ pub struct ConceptMapAdditionalAttributeBackboneElement {
     pub type_: Option<CodeDt>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct ConceptMapGroupBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -200,7 +200,7 @@ pub struct ConceptMapGroupBackboneElement {
     pub unmapped: Option<ConceptMapGroupUnmappedBackboneElement>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct ConceptMapGroupElementBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -228,7 +228,7 @@ pub struct ConceptMapGroupElementBackboneElement {
     pub target: Option<Vec<ConceptMapGroupElementTargetBackboneElement>>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct ConceptMapGroupElementTargetBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -265,7 +265,7 @@ pub struct ConceptMapGroupElementTargetBackboneElement {
     pub product: Option<Vec<ConceptMapGroupElementTargetDependsOnBackboneElement>>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct ConceptMapGroupElementTargetPropertyBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -284,7 +284,7 @@ pub struct ConceptMapGroupElementTargetPropertyBackboneElement {
     pub value: Option<CodeDt>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct ConceptMapGroupElementTargetDependsOnBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -306,7 +306,7 @@ pub struct ConceptMapGroupElementTargetDependsOnBackboneElement {
     pub value_set: Option<CanonicalDt>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct ConceptMapGroupUnmappedBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]

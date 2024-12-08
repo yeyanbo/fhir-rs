@@ -107,7 +107,7 @@ pub struct DeviceRequest {
     pub relevant_history: Option<Vec<Reference>>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct DeviceRequestParameterBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]

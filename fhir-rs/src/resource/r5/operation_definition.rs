@@ -119,7 +119,7 @@ pub struct OperationDefinition {
     pub overload: Option<Vec<OperationDefinitionOverloadBackboneElement>>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct OperationDefinitionParameterBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -171,7 +171,7 @@ pub struct OperationDefinitionParameterBackboneElement {
     pub part: Option<Vec<OperationDefinitionParameterBackboneElement>>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct OperationDefinitionParameterBindingBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -190,7 +190,7 @@ pub struct OperationDefinitionParameterBindingBackboneElement {
     pub value_set: Option<CanonicalDt>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct OperationDefinitionParameterReferencedFromBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -209,7 +209,7 @@ pub struct OperationDefinitionParameterReferencedFromBackboneElement {
     pub source_id: Option<StringDt>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct OperationDefinitionOverloadBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]

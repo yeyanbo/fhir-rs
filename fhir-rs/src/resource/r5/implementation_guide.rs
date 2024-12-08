@@ -101,7 +101,7 @@ pub struct ImplementationGuide {
     pub manifest: Option<ImplementationGuideManifestBackboneElement>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct ImplementationGuideManifestBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -129,7 +129,7 @@ pub struct ImplementationGuideManifestBackboneElement {
     pub other: Option<Vec<StringDt>>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct ImplementationGuideManifestResourceBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -154,7 +154,7 @@ pub struct ImplementationGuideManifestResourceBackboneElement {
     pub relative_path: Option<UrlDt>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct ImplementationGuideManifestPageBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -176,7 +176,7 @@ pub struct ImplementationGuideManifestPageBackboneElement {
     pub anchor: Option<Vec<StringDt>>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct ImplementationGuideDefinitionBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -204,7 +204,7 @@ pub struct ImplementationGuideDefinitionBackboneElement {
     pub template: Option<Vec<ImplementationGuideDefinitionTemplateBackboneElement>>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct ImplementationGuideDefinitionGroupingBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -223,7 +223,7 @@ pub struct ImplementationGuideDefinitionGroupingBackboneElement {
     pub description: Option<MarkdownDt>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct ImplementationGuideDefinitionTemplateBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -245,7 +245,7 @@ pub struct ImplementationGuideDefinitionTemplateBackboneElement {
     pub scope: Option<StringDt>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct ImplementationGuideDefinitionPageBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -273,7 +273,7 @@ pub struct ImplementationGuideDefinitionPageBackboneElement {
     pub page: Option<Vec<ImplementationGuideDefinitionPageBackboneElement>>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct ImplementationGuideDefinitionResourceBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -307,7 +307,7 @@ pub struct ImplementationGuideDefinitionResourceBackboneElement {
     pub grouping_id: Option<IdDt>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct ImplementationGuideDefinitionParameterBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -326,7 +326,7 @@ pub struct ImplementationGuideDefinitionParameterBackboneElement {
     pub value: Option<StringDt>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct ImplementationGuideDependsOnBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -351,7 +351,7 @@ pub struct ImplementationGuideDependsOnBackboneElement {
     pub reason: Option<MarkdownDt>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct ImplementationGuideGlobalBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]

@@ -122,7 +122,7 @@ pub struct Citation {
     pub cited_artifact: Option<CitationCitedArtifactBackboneElement>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct CitationSummaryBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -141,7 +141,7 @@ pub struct CitationSummaryBackboneElement {
     pub text: Option<MarkdownDt>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct CitationStatusDateBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -163,7 +163,7 @@ pub struct CitationStatusDateBackboneElement {
     pub period: Option<Period>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct CitationCitedArtifactBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -221,7 +221,7 @@ pub struct CitationCitedArtifactBackboneElement {
     pub note: Option<Vec<Annotation>>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct CitationCitedArtifactClassificationBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -243,7 +243,7 @@ pub struct CitationCitedArtifactClassificationBackboneElement {
     pub artifact_assessment: Option<Vec<Reference>>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct CitationCitedArtifactWebLocationBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -262,7 +262,7 @@ pub struct CitationCitedArtifactWebLocationBackboneElement {
     pub url: Option<UriDt>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct CitationCitedArtifactPartBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -284,7 +284,7 @@ pub struct CitationCitedArtifactPartBackboneElement {
     pub base_citation: Option<Reference>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct CitationCitedArtifactTitleBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -306,7 +306,7 @@ pub struct CitationCitedArtifactTitleBackboneElement {
     pub text: Option<MarkdownDt>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct CitationCitedArtifactContributorshipBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -328,7 +328,7 @@ pub struct CitationCitedArtifactContributorshipBackboneElement {
     pub summary: Option<Vec<CitationCitedArtifactContributorshipSummaryBackboneElement>>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct CitationCitedArtifactContributorshipEntryBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -365,7 +365,7 @@ pub struct CitationCitedArtifactContributorshipEntryBackboneElement {
     pub ranking_order: Option<PositiveIntDt>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct CitationCitedArtifactContributorshipEntryContributionInstanceBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -384,7 +384,7 @@ pub struct CitationCitedArtifactContributorshipEntryContributionInstanceBackbone
     pub time: Option<DateTimeDt>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct CitationCitedArtifactContributorshipSummaryBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -409,7 +409,7 @@ pub struct CitationCitedArtifactContributorshipSummaryBackboneElement {
     pub value: Option<MarkdownDt>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct CitationCitedArtifactStatusDateBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -431,7 +431,7 @@ pub struct CitationCitedArtifactStatusDateBackboneElement {
     pub period: Option<Period>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct CitationCitedArtifactRelatesToBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -468,7 +468,7 @@ pub struct CitationCitedArtifactRelatesToBackboneElement {
     pub resource_reference: Option<Reference>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct CitationCitedArtifactVersionBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -487,7 +487,7 @@ pub struct CitationCitedArtifactVersionBackboneElement {
     pub base_citation: Option<Reference>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct CitationCitedArtifactAbstractBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -512,7 +512,7 @@ pub struct CitationCitedArtifactAbstractBackboneElement {
     pub copyright: Option<MarkdownDt>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct CitationCitedArtifactPublicationFormBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -570,7 +570,7 @@ pub struct CitationCitedArtifactPublicationFormBackboneElement {
     pub copyright: Option<MarkdownDt>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct CitationCitedArtifactPublicationFormPublishedInBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -598,7 +598,7 @@ pub struct CitationCitedArtifactPublicationFormPublishedInBackboneElement {
     pub publisher_location: Option<StringDt>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct CitationClassificationBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]

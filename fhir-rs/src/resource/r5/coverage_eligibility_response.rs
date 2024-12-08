@@ -77,7 +77,7 @@ pub struct CoverageEligibilityResponse {
     pub error: Option<Vec<CoverageEligibilityResponseErrorBackboneElement>>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct CoverageEligibilityResponseEventBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -96,7 +96,7 @@ pub struct CoverageEligibilityResponseEventBackboneElement {
     pub when: Option<Period>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct CoverageEligibilityResponseInsuranceBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -121,7 +121,7 @@ pub struct CoverageEligibilityResponseInsuranceBackboneElement {
     pub item: Option<Vec<CoverageEligibilityResponseInsuranceItemBackboneElement>>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct CoverageEligibilityResponseInsuranceItemBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -176,7 +176,7 @@ pub struct CoverageEligibilityResponseInsuranceItemBackboneElement {
     pub authorization_url: Option<UriDt>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct CoverageEligibilityResponseInsuranceItemBenefitBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -198,7 +198,7 @@ pub struct CoverageEligibilityResponseInsuranceItemBenefitBackboneElement {
     pub used: Option<Money>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct CoverageEligibilityResponseErrorBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]

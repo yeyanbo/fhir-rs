@@ -98,7 +98,7 @@ pub struct DocumentReference {
     pub content: Option<Vec<DocumentReferenceContentBackboneElement>>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct DocumentReferenceRelatesToBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -117,7 +117,7 @@ pub struct DocumentReferenceRelatesToBackboneElement {
     pub target: Option<Reference>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct DocumentReferenceAttesterBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -139,7 +139,7 @@ pub struct DocumentReferenceAttesterBackboneElement {
     pub party: Option<Reference>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct DocumentReferenceContentBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -158,7 +158,7 @@ pub struct DocumentReferenceContentBackboneElement {
     pub profile: Option<Vec<DocumentReferenceContentProfileBackboneElement>>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct DocumentReferenceContentProfileBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]

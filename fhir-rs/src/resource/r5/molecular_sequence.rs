@@ -59,7 +59,7 @@ pub struct MolecularSequence {
     pub relative: Option<Vec<MolecularSequenceRelativeBackboneElement>>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct MolecularSequenceRelativeBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -87,7 +87,7 @@ pub struct MolecularSequenceRelativeBackboneElement {
     pub edit: Option<Vec<MolecularSequenceRelativeEditBackboneElement>>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct MolecularSequenceRelativeEditBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -112,7 +112,7 @@ pub struct MolecularSequenceRelativeEditBackboneElement {
     pub replaced_sequence: Option<StringDt>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct MolecularSequenceRelativeStartingSequenceBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]

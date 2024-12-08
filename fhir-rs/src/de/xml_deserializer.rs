@@ -1,16 +1,11 @@
 use std::collections::VecDeque;
 use std::io::{BufRead, Cursor};
-
 use xml::{
     ParserConfig,
-    reader::{EventReader, XmlEvent},
-    name::OwnedName,
-    attribute::OwnedAttribute,
-    namespace::Namespace,
+    reader::{EventReader, XmlEvent}
 };
 
-use crate::prelude::*;
-
+use super::*;
 
 pub fn from_str<'a, T>(s: &'a str) -> Result<T>
     where
@@ -24,234 +19,285 @@ fn from_reader<'de, R, T>(read: R) -> Result<T>
         R: BufRead,
         T: Deserialize<'de>,
 {
-    let mut deserializer = XmlDeserializer::from_reader(read);
+    let mut deserializer = XmlDeserializer::from_reader(read)?;
     let t = T::deserialize(&mut deserializer)?;
     Ok(t)
 }
 
-pub struct XmlDeserializer<R: BufRead>{
-    reader: EventReader<R>,
-    buffer: VecDeque<XmlEvent>,
+#[derive(Debug)]
+pub enum XmlNode {
+    ObjectKey(String),
+    Object{ name: String, events: VecDeque<XmlNode>},
+    AttributeKey(String),
+    Text(String),
+    Value{key: String, value: String},
 }
 
-impl<'a, R> XmlDeserializer <R>
-    where R: BufRead
-{
-    pub fn from_reader(read: R) -> Self {
-        let config = ParserConfig::new()
-            .trim_whitespace(true)
-            .ignore_comments(true);
-        
-        XmlDeserializer{
-            reader: EventReader::new_with_config(read, config),
-            buffer: VecDeque::new(),
+pub struct XmlDeserializer {
+    resource: String,
+    buffer: VecDeque<XmlNode>,
+}
+
+impl XmlDeserializer {
+    pub fn from_reader<R: BufRead>(read: R) -> Result<Self> {
+        let config = ParserConfig::new().trim_whitespace(true).ignore_comments(true);
+        let mut reader = EventReader::new_with_config(read, config);
+
+        let event = reader.next()?;
+        match event {
+            XmlEvent::StartDocument { encoding, ..} => {
+                println!("encoding: {}", &encoding.to_ascii_lowercase());
+                if &encoding.to_ascii_lowercase() != "utf-8" {
+                    return Err(FhirError::Message(format!( "{} is not valid fhir Encoding", encoding)));
+                }
+            },
+            _ => return Err(FhirError::error("Xml string is not valid XmlDocument")),
+        }
+
+        let event = reader.next()?;
+        match event {
+            XmlEvent::StartElement { name, .. } => {
+                let buffer = Self::read_object(&mut reader, &name.local_name)?;
+                Ok(Self{ resource: name.local_name, buffer})
+            }
+            _ => Err(FhirError::error("Xml element is not valid XmlDocument")),
         }
     }
-    
-    pub fn next_key(&mut self) -> Result<Option<String>> {
-        let event = self.next()?;
-        match event {
-            XmlEvent::StartElement { name, attributes, namespace } => {
-                let key = name.local_name;
 
-                self.push_element_start_event(key.clone(), namespace.clone());
-
-                // 检测有没有属性值，如果存在，将属性转换为元素，存储到缓冲区
-                for attr in &attributes {
-                    self.push_text_event(attr.name.local_name.clone(), attr.value.clone(), namespace.clone());
-                }
-
-                return Ok(Some(key));
-            }
-            XmlEvent::EndElement { name, .. } => {
-                tracing::debug!("元素的Map结束: {:?}", name);
-                return Ok(None)
-            }
-            _ => {
-                return Err(FhirError::error(format!("获取到未预期的元素: {:?}", &event).as_str()));
-            }
-        };
+    pub fn from_event(resource: String, buffer: VecDeque<XmlNode>) -> Self {
+        Self{ resource, buffer }
     }
 
-    pub fn next_element(&mut self) -> Result<Option<&XmlEvent>> {
-        let event = self.next()?;
-        match event {
-            XmlEvent::StartElement { name, attributes, namespace } => {
-                self.push_element_start_event(name.local_name, namespace.clone());
+    fn read_object<R: BufRead>(reader: &mut EventReader<R>, element_name: &String) -> Result<VecDeque<XmlNode>> {
+        let mut events = VecDeque::new();
 
-                // 检测有没有属性值，如果存在，将属性转换为元素，存储到缓冲区
-                for attr in &attributes {
-                    self.push_text_event(attr.name.local_name.clone(), attr.value.clone(), namespace.clone());
-                }
-
-                return Ok(Some(self.peek()?));
-            }
-            _ => {
-                self.buffer.push_back(event);
-                return Ok(None)
-            }
-        };
-    }
-
-    /// 首先从缓冲区获取下一个元素，如果不存在，再通过reader获取
-    /// 缓冲区为先进先出队列
-    fn next(&mut self) -> Result<XmlEvent> {
-        let event = match self.buffer.pop_front(){
-            Some(event) => {Ok(event)}
-            None => {
-                self.read_useful_next_from_reader()
-            }
-        };
-
-        tracing::debug!("POP: {:?}", &event);
-
-        event
-    }
-
-    pub fn peek(&mut self) -> Result<&XmlEvent> {
-        match self.buffer.front() {
-            Some(_) => {}
-            None => {
-                let new = self.read_useful_next_from_reader()?;
-                self.buffer.push_back(new);
-            }
-        };
-
-        let event = self.buffer.front().unwrap();
-        tracing::debug!("PEEK: {:?}", event);
-
-        Ok(event)
-    }
-
-    /// 从reader中获取下一个有用的元素
-    fn read_useful_next_from_reader(&mut self) -> Result<XmlEvent> {
         loop {
-            match self.reader.next()? {
-                XmlEvent::StartDocument { .. }
-                | XmlEvent::ProcessingInstruction { .. }
-                | XmlEvent::Whitespace { .. }
-                | XmlEvent::Comment(_) => { /* skip */ }
-                other => return Ok(other),
+            let event = reader.next()?;
+            match event {
+                XmlEvent::StartElement { name, attributes, .. } => {
+                    let mut nodes = Self::read_object(reader, &name.local_name)?;
+                    events.push_back(XmlNode::ObjectKey(name.local_name.to_owned()));
+                    for attribute in attributes {
+                        nodes.push_back(XmlNode::AttributeKey(attribute.name.local_name.clone()));
+                        nodes.push_back(XmlNode::Value{key: attribute.name.local_name, value: attribute.value});
+                    }
+                    events.push_back(XmlNode::Object{ name: name.local_name.to_owned(), events: nodes});
+                },
+                XmlEvent::CData(_) |
+                XmlEvent::StartDocument { .. } |
+                XmlEvent::ProcessingInstruction { .. } |
+                XmlEvent::Whitespace { .. } |
+                XmlEvent::Comment(_) => { /* skip */ }
+                XmlEvent::Characters(s) => { events.push_back(XmlNode::Text(s)); }
+                XmlEvent::EndElement { name, .. } => {
+                    if element_name != &name.local_name {
+                        return Err(FhirError::Message(format!("End tag </{}> didn't match the start tag <{}>", name.local_name, element_name))) ;
+                    }
+                    break
+                },
+                XmlEvent::EndDocument => unreachable!(),
+            }
+        }
+
+        Ok(events)
+    }
+
+    fn next_key(&mut self) -> Option<String> {
+        loop {
+            match self.next() {
+                None => return None,
+                Some(node) => {
+                    match node {
+                        XmlNode::ObjectKey(key) => return Some(key),
+                        XmlNode::AttributeKey(key) => return Some(key),
+                        _ => continue,
+                    }
+                }
             }
         }
     }
 
-    fn push_text_event(&mut self, key: String, value: String, namespace: Namespace) {
-        let start = XmlEvent::StartElement {
-            name: OwnedName::local(key.clone()),
-            attributes: vec![],
-            namespace,
-        };
-        let event = XmlEvent::Characters(value);
-
-        let end = XmlEvent::EndElement {
-            name: OwnedName::local(key),
-        };
-
-        self.buffer.push_back(start);
-        self.buffer.push_back(event);
-        self.buffer.push_back(end);
+    fn next(&mut self) -> Option<XmlNode> {
+        self.buffer.pop_front()
     }
 
-    fn push_element_start_event(&mut self, name: String, namespace: Namespace) {
-        let event = XmlEvent::StartElement {
-            name: OwnedName::local(name.clone()),
-            attributes: vec![],
-            namespace,
-        };
-
-        self.buffer.push_front(event);
+    fn events(&mut self) -> VecDeque<XmlNode> {
+        self.buffer.drain(..).collect()
     }
 
-    /// 从Element中获取属性值
-    /// ## 规则
-    /// 属性值只有一个，目前在规范中要么是value，要么是url（在Extension中）
-    /// 
-    /// ## 返回值
-    /// 要么返回None，表示没有属性
-    /// 要么返回一个Key-Value对
-    #[deprecated]
-    fn read_attribute_from_element(&mut self, attributes: &Vec<OwnedAttribute>) -> Option<(String, String)> {
-        match attributes.first() {
-            None => {None}
-            Some(attr) => {
-                Some((attr.name.local_name.clone(), attr.value.clone()))
+    fn narrative(&self, name: String, events: VecDeque<XmlNode>, namespace: Option<String>) -> String {
+        let mut current_sub_element = vec![];
+        let mut current_attributes = vec![];
+
+        for event in events {
+            match event {
+                XmlNode::Object { name, events } => {
+                    let ss = self.narrative(name, events, None);
+                    current_sub_element.push(ss);
+                }
+                XmlNode::Text(text) => current_sub_element.push(Self::xhtml_encode(text)),
+                XmlNode::Value{key, value} => current_attributes.push(format!("{}=\"{}\"", key, value)),
+                _ => {}
             }
         }
+
+        format!("<{}{}{}>{}</{}>",
+            name,
+            match namespace {
+                Some(ns) => format!(" xmlns=\"{}\"", ns),
+                None => "".to_string(),
+            },
+            if current_attributes.is_empty() {String::new()} else {format!(" {}", current_attributes.join(" "))},
+            current_sub_element.join(""),
+            name
+        )
+    }
+
+    fn array(&mut self) -> Result<VecDeque<XmlNode>> {
+        let mut vec = VecDeque::new();
+        let mut matched_name = None;
+
+        while let Some(node) = self.next() {
+           match &node {
+               XmlNode::Object{ name, .. } => {
+                   matched_name = Some(name.to_owned());
+                   vec.push_back(node);
+               },
+               XmlNode::ObjectKey(key) => {
+                    match &matched_name {
+                        None => return Err(FhirError::Message(format!("{}", key))),
+                        Some(name) => {
+                            if name != key {
+                                self.buffer.push_front(node);
+                                break
+                            }
+                        }
+                    }
+               }
+               XmlNode::AttributeKey(_) | XmlNode::Text(_) | XmlNode::Value{..} => {
+                   self.buffer.push_front(node);
+                   break
+               },
+           }
+        }
+
+        Ok(vec)
+    }
+
+    fn empty(&self) -> bool {
+        self.buffer.is_empty()
+    }
+
+    fn xhtml_encode(input: String) -> String {
+        input.chars().map(|c| match c {
+            '&' => "&amp;".to_string(),
+            '<' => "&lt;".to_string(),
+            '>' => "&gt;".to_string(),
+            '"' => "&quot;".to_string(),
+            '\'' => "&#x27;".to_string(),
+            '/' => "&#x2F;".to_string(),
+            _ => c.to_string(),
+        }).collect()
     }
 }
 
-impl<'de, 'a,  R: BufRead> Deserializer<'de> for &'a mut XmlDeserializer<R> {
+#[test]
+fn test_xml_deserializer() -> Result<()> {
+    let script_str = include_str!("../../../examples/transform/testscript.xml");
+    let s = Cursor::new(script_str);
+    let de = XmlDeserializer::from_reader(s)?;
+
+    let buffer = de.buffer.into_iter().collect::<Vec<_>>();
+
+    println!("{:?}", buffer);
+    Ok(())
+}
+
+impl<'de> Deserializer<'de> for &mut XmlDeserializer {
     fn deserialize_str<V>(self, visitor: V) -> Result<V::Value> where V: Visitor<'de> {
-
-        self.next()?;
-        let value = match self.next()? {
-            XmlEvent::Characters(text) => {
-                visitor.visit_str(text.as_str())?
+        match self.next() {
+            None => Err(FhirError::error("在尝试获取字符串时读到EOF")),
+            Some(node) => {
+                match node {
+                    XmlNode::Value{value, ..} => visitor.visit_str(value.as_str()),
+                    _ => Err(FhirError::error("在尝试获取字符串时读到其它数据类型")),
+                }
             }
-            _ => {
-                return Err(FhirError::error("错误的字符串元素"));
-            }
-        };
-        self.next()?;
-
-        Ok(value)
+        }
     }
 
     fn deserialize_number<V>(self, visitor: V) -> Result<V::Value> where V: Visitor<'de> {
-        self.next()?;
-        let value = match self.next()? {
-            XmlEvent::Characters(text) => {
-                visitor.visit_str(text.as_str())?
+        match self.next() {
+            None => Err(FhirError::error("在尝试获取数值时读到EOF")),
+            Some(node) => {
+                match node {
+                    XmlNode::Value{value, ..} => visitor.visit_str(value.as_str()),
+                    _ => Err(FhirError::error("在尝试获取数值时读到其它数据类型")),
+                }
             }
-            _ => {
-                return Err(FhirError::error("错误的数值元素"));
-            }
-        };
-        self.next()?;
-
-        Ok(value)
+        }
     }
 
     fn deserialize_map<V>(self, visitor: V) -> Result<V::Value> where V: Visitor<'de> {
-        tracing::debug!("开始处理Map了");
-        visitor.visit_map(XmlProcessor::new(self))
+        debug!("开始处理Map了");
+        let buffer = self.events();
+        visitor.visit_vec( XmlMapProcessor::from_event("".into(), buffer))
     }
 
     fn deserialize_vec<V>(self, visitor: V) -> Result<V::Value> where V: Visitor<'de> {
-        tracing::debug!("开始处理数组了");
-        visitor.visit_vec( XmlVecProcessor::new(self))
+        debug!("开始处理数组了");
+        let buffer = self.array()?;
+        visitor.visit_vec( XmlMapProcessor::from_event("".into(), buffer))
     }
 
     fn deserialize_enum<V>(self, visitor: V) -> Result<V::Value> where V: Visitor<'de> {
-        tracing::debug!("开始处理枚举类型");
-        loop {
-            let root = self.peek()?;
-            return match root {
-                XmlEvent::StartElement { name, .. } => {
-                    let value = visitor.visit_enum(name.local_name.clone().as_str(), self)?;
-                    Ok(value)
+        debug!("开始处理枚举类型");
+        visitor.visit_enum(&self.resource.clone(), self)
+    }
+
+    fn deserialize_narrative<V>(self, visitor: V) -> Result<V::Value> where V: Visitor<'de> {
+        debug!("开始处理Narrative了");
+        match self.next() {
+            None => Err(FhirError::error("在尝试获取Narrative时读到EOF")),
+            Some(node) => {
+                match node {
+                    XmlNode::Object{ name, events} => {
+                        for event in &events {
+                            println!("{:#?}", event);
+                        }
+                        let xhtml = self.narrative(name, events, Some(String::from("http://www.w3.org/1999/xhtml")));
+                        visitor.visit_str(xhtml.as_str())
+                    },
+                    _ => Err(FhirError::error("在尝试获取Narrative时读到其它数据类型")),
                 }
-                _ => Err(FhirError::error("未读到XML的根元素"))
             }
-        };
+        }
     }
 
     fn deserialize_struct<V>(self, _name: &str, visitor: V) -> Result<V::Value> where V: Visitor<'de> {
-        tracing::debug!("开始处理结构体");
-        loop{
-            let event = self.next()?;
-            return match event {
-                XmlEvent::StartElement { .. } => {
-                    let value = visitor.visit_map(XmlProcessor::new(self))?;
-                    Ok(value)
+        debug!("开始处理结构体");
+
+        match self.next() {
+            None => Err(FhirError::error("在尝试获取结构体时读到EOF")),
+            Some(node) => {
+                match node {
+                    XmlNode::Object{ name, events} => {
+                        visitor.visit_map(XmlMapProcessor::from_event(name, events))
+                    },
+                    _ => Err(FhirError::error("在尝试获取结构体时读到其它数据类型")),
                 }
-                _ => {
-                    tracing::debug!("{:?}", &event);
-                    Err(FhirError::error("未读到XML的根元素"))
-                }
-            };
+            }
         }
+    }
+
+    fn deserialize_resource<V>(self, name: &str, visitor: V) -> Result<V::Value> where V: Visitor<'de>{
+        debug!("开始处理资源");
+
+        if name != &self.resource {
+            return Err(FhirError::Message(format!("Resource Type not matched: {} and {}", name, &self.resource)));
+        }
+
+        visitor.visit_map(XmlMapProcessor::from_event(self.resource.to_owned(), self.events()))
     }
 
     fn deserialize_primitive<V>(self, name: &str, visitor: V) -> Result<V::Value> where V: Visitor<'de> {
@@ -259,75 +305,34 @@ impl<'de, 'a,  R: BufRead> Deserializer<'de> for &'a mut XmlDeserializer<R> {
     }
 }
 
-pub struct XmlProcessor<'a, R: BufRead> {
-    de: &'a mut XmlDeserializer<R>,
+pub struct XmlMapProcessor {
+    de: XmlDeserializer,
 }
 
-impl<'a, R: BufRead> XmlProcessor<'a, R> {
-    fn new(de: &'a mut XmlDeserializer<R>) -> Self {
-        XmlProcessor { de }
+impl XmlMapProcessor {
+    fn from_event(resource: String, buffer: VecDeque<XmlNode>) -> Self {
+        let de = XmlDeserializer::from_event(resource, buffer);
+        XmlMapProcessor { de }
     }
 }
 
-impl<'a, 'de, R: BufRead> MapAccess<'de> for XmlProcessor<'a, R> {
+impl<'de> MapAccess<'de> for XmlMapProcessor {
     fn next_key(&mut self) -> Result<Option<String>> {
-        let value = self.de.next_key()?;
+        let value = self.de.next_key();
         tracing::debug!("读取到key: {:?}", &value);
         Ok(value)
     }
 
     fn next_value<De>(&mut self) -> Result<De> where De: Deserialize<'de> {
-        De::deserialize(&mut *self.de)
+        De::deserialize(&mut self.de)
     }
 }
 
-pub struct XmlVecProcessor<'a, R: BufRead> {
-    de: &'a mut XmlDeserializer<R>,
-    name: String,
-}
-
-impl<'a, R: BufRead> XmlVecProcessor<'a, R> {
-    fn new(de: &'a mut XmlDeserializer<R>) -> Self {
-
-        let event = de.peek().unwrap();
-        let name = match event {
-            XmlEvent::StartElement {name, .. } => {
-                name.local_name.clone()
-            }
-            _ => { "Error".to_string()}
-        };
-        tracing::debug!("数组元素名称为:{:?}", &name);
-
-        XmlVecProcessor {
-            de,
-            name
-        }
-    }
-}
-
-impl<'a, 'de, R:BufRead> VecAccess<'de> for XmlVecProcessor<'a, R> {
+impl<'de> VecAccess<'de> for XmlMapProcessor {
     fn next_element<T>(&mut self) -> Result<Option<T>> where T: Deserialize<'de> {
-
-        let next = self.de.next_element()?;
-        tracing::debug!("获取数组元素:{:?}", &next);
-
-        match next {
-            Some(XmlEvent::StartElement { name, .. })
-                if name.local_name == self.name => {
-                T::deserialize(&mut *self.de).map(Some)
-            }
-            Some(XmlEvent::StartElement { .. }) => {
-                Ok(None)
-            }
-            Some(XmlEvent::EndElement { .. }) => {
-                Ok(None)
-            }
-            None => {
-                Ok(None)
-            }
-            _ => {
-                Err(FhirError::error("======ddfdfdfsdfsdfssfs"))
-            }
+        if self.de.empty() {
+            return Ok(None);
         }
+        Ok(Some(T::deserialize(&mut self.de)?))
     }
 }

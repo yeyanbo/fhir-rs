@@ -62,7 +62,7 @@ pub struct AdministrableProductDefinition {
     pub route_of_administration: Option<Vec<AdministrableProductDefinitionRouteOfAdministrationBackboneElement>>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct AdministrableProductDefinitionPropertyBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -84,7 +84,7 @@ pub struct AdministrableProductDefinitionPropertyBackboneElement {
     pub status: Option<CodeableConcept>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct AdministrableProductDefinitionRouteOfAdministrationBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -118,7 +118,7 @@ pub struct AdministrableProductDefinitionRouteOfAdministrationBackboneElement {
     pub target_species: Option<Vec<AdministrableProductDefinitionRouteOfAdministrationTargetSpeciesBackboneElement>>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct AdministrableProductDefinitionRouteOfAdministrationTargetSpeciesBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -137,7 +137,7 @@ pub struct AdministrableProductDefinitionRouteOfAdministrationTargetSpeciesBackb
     pub withdrawal_period: Option<Vec<AdministrableProductDefinitionRouteOfAdministrationTargetSpeciesWithdrawalPeriodBackboneElement>>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct AdministrableProductDefinitionRouteOfAdministrationTargetSpeciesWithdrawalPeriodBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]

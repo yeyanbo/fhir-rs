@@ -59,7 +59,7 @@ pub struct Ingredient {
     pub substance: Option<IngredientSubstanceBackboneElement>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct IngredientManufacturerBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -78,7 +78,7 @@ pub struct IngredientManufacturerBackboneElement {
     pub manufacturer: Option<Reference>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct IngredientSubstanceBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -97,7 +97,7 @@ pub struct IngredientSubstanceBackboneElement {
     pub strength: Option<Vec<IngredientSubstanceStrengthBackboneElement>>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct IngredientSubstanceStrengthBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -134,7 +134,7 @@ pub struct IngredientSubstanceStrengthBackboneElement {
     pub reference_strength: Option<Vec<IngredientSubstanceStrengthReferenceStrengthBackboneElement>>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct IngredientSubstanceStrengthReferenceStrengthBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]

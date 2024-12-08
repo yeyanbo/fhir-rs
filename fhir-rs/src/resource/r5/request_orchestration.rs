@@ -83,7 +83,7 @@ pub struct RequestOrchestration {
     pub action: Option<Vec<RequestOrchestrationActionBackboneElement>>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct RequestOrchestrationActionBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -177,7 +177,7 @@ pub struct RequestOrchestrationActionBackboneElement {
     pub action: Option<Vec<RequestOrchestrationActionBackboneElement>>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct RequestOrchestrationActionParticipantBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -208,7 +208,7 @@ pub struct RequestOrchestrationActionParticipantBackboneElement {
     pub actor: Option<Reference>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct RequestOrchestrationActionDynamicValueBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -227,7 +227,7 @@ pub struct RequestOrchestrationActionDynamicValueBackboneElement {
     pub expression: Option<Expression>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct RequestOrchestrationActionConditionBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -246,7 +246,7 @@ pub struct RequestOrchestrationActionConditionBackboneElement {
     pub expression: Option<Expression>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct RequestOrchestrationActionOutputBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -268,7 +268,7 @@ pub struct RequestOrchestrationActionOutputBackboneElement {
     pub related_data: Option<StringDt>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct RequestOrchestrationActionInputBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -290,7 +290,7 @@ pub struct RequestOrchestrationActionInputBackboneElement {
     pub related_data: Option<IdDt>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct RequestOrchestrationActionRelatedActionBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]

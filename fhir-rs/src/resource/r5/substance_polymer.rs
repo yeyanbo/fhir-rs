@@ -50,7 +50,7 @@ pub struct SubstancePolymer {
     pub repeat: Option<Vec<SubstancePolymerRepeatBackboneElement>>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct SubstancePolymerRepeatBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -72,7 +72,7 @@ pub struct SubstancePolymerRepeatBackboneElement {
     pub repeat_unit: Option<Vec<SubstancePolymerRepeatRepeatUnitBackboneElement>>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct SubstancePolymerRepeatRepeatUnitBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -100,7 +100,7 @@ pub struct SubstancePolymerRepeatRepeatUnitBackboneElement {
     pub structural_representation: Option<Vec<SubstancePolymerRepeatRepeatUnitStructuralRepresentationBackboneElement>>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct SubstancePolymerRepeatRepeatUnitDegreeOfPolymerisationBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -125,7 +125,7 @@ pub struct SubstancePolymerRepeatRepeatUnitDegreeOfPolymerisationBackboneElement
     pub high: Option<IntegerDt>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct SubstancePolymerRepeatRepeatUnitStructuralRepresentationBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -150,7 +150,7 @@ pub struct SubstancePolymerRepeatRepeatUnitStructuralRepresentationBackboneEleme
     pub attachment: Option<Attachment>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct SubstancePolymerMonomerSetBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -169,7 +169,7 @@ pub struct SubstancePolymerMonomerSetBackboneElement {
     pub starting_material: Option<Vec<SubstancePolymerMonomerSetStartingMaterialBackboneElement>>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct SubstancePolymerMonomerSetStartingMaterialBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]

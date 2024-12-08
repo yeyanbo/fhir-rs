@@ -134,7 +134,7 @@ pub struct PlanDefinition {
     pub as_needed: Option<CodeableConcept>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct PlanDefinitionActorBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -156,7 +156,7 @@ pub struct PlanDefinitionActorBackboneElement {
     pub option: Option<Vec<PlanDefinitionActorOptionBackboneElement>>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct PlanDefinitionActorOptionBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -181,7 +181,7 @@ pub struct PlanDefinitionActorOptionBackboneElement {
     pub role: Option<CodeableConcept>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct PlanDefinitionActionBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -281,7 +281,7 @@ pub struct PlanDefinitionActionBackboneElement {
     pub action: Option<Vec<PlanDefinitionActionBackboneElement>>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct PlanDefinitionActionOutputBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -303,7 +303,7 @@ pub struct PlanDefinitionActionOutputBackboneElement {
     pub related_data: Option<StringDt>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct PlanDefinitionActionDynamicValueBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -322,7 +322,7 @@ pub struct PlanDefinitionActionDynamicValueBackboneElement {
     pub expression: Option<Expression>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct PlanDefinitionActionConditionBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -341,7 +341,7 @@ pub struct PlanDefinitionActionConditionBackboneElement {
     pub expression: Option<Expression>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct PlanDefinitionActionRelatedActionBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -366,7 +366,7 @@ pub struct PlanDefinitionActionRelatedActionBackboneElement {
     pub offset: Option<Range>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct PlanDefinitionActionInputBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -388,7 +388,7 @@ pub struct PlanDefinitionActionInputBackboneElement {
     pub related_data: Option<IdDt>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct PlanDefinitionActionParticipantBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -419,7 +419,7 @@ pub struct PlanDefinitionActionParticipantBackboneElement {
     pub function: Option<CodeableConcept>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct PlanDefinitionGoalBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -453,7 +453,7 @@ pub struct PlanDefinitionGoalBackboneElement {
     pub target: Option<Vec<PlanDefinitionGoalTargetBackboneElement>>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct PlanDefinitionGoalTargetBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]

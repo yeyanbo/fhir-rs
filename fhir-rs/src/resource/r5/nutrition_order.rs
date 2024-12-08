@@ -98,7 +98,7 @@ pub struct NutritionOrder {
     pub note: Option<Vec<Annotation>>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct NutritionOrderSupplementBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -126,7 +126,7 @@ pub struct NutritionOrderSupplementBackboneElement {
     pub instruction: Option<StringDt>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct NutritionOrderSupplementScheduleBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -148,7 +148,7 @@ pub struct NutritionOrderSupplementScheduleBackboneElement {
     pub as_needed_for: Option<CodeableConcept>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct NutritionOrderEnteralFormulaBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -188,7 +188,7 @@ pub struct NutritionOrderEnteralFormulaBackboneElement {
     pub administration_instruction: Option<MarkdownDt>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct NutritionOrderEnteralFormulaAdministrationBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -210,7 +210,7 @@ pub struct NutritionOrderEnteralFormulaAdministrationBackboneElement {
     pub rate: Option<Ratio>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct NutritionOrderEnteralFormulaAdministrationScheduleBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -232,7 +232,7 @@ pub struct NutritionOrderEnteralFormulaAdministrationScheduleBackboneElement {
     pub as_needed_for: Option<CodeableConcept>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct NutritionOrderEnteralFormulaAdditiveBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -254,7 +254,7 @@ pub struct NutritionOrderEnteralFormulaAdditiveBackboneElement {
     pub quantity: Option<Quantity>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct NutritionOrderOralDietBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -285,7 +285,7 @@ pub struct NutritionOrderOralDietBackboneElement {
     pub instruction: Option<StringDt>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct NutritionOrderOralDietNutrientBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -304,7 +304,7 @@ pub struct NutritionOrderOralDietNutrientBackboneElement {
     pub amount: Option<Quantity>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct NutritionOrderOralDietScheduleBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -326,7 +326,7 @@ pub struct NutritionOrderOralDietScheduleBackboneElement {
     pub as_needed_for: Option<CodeableConcept>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct NutritionOrderOralDietTextureBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]

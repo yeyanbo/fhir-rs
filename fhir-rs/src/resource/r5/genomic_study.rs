@@ -74,7 +74,7 @@ pub struct GenomicStudy {
     pub analysis: Option<Vec<GenomicStudyAnalysisBackboneElement>>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct GenomicStudyAnalysisBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -141,7 +141,7 @@ pub struct GenomicStudyAnalysisBackboneElement {
     pub device: Option<Vec<GenomicStudyAnalysisDeviceBackboneElement>>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct GenomicStudyAnalysisInputBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -163,7 +163,7 @@ pub struct GenomicStudyAnalysisInputBackboneElement {
     pub generated_by: Option<Reference>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct GenomicStudyAnalysisPerformerBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -182,7 +182,7 @@ pub struct GenomicStudyAnalysisPerformerBackboneElement {
     pub role: Option<CodeableConcept>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct GenomicStudyAnalysisOutputBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -201,7 +201,7 @@ pub struct GenomicStudyAnalysisOutputBackboneElement {
     pub type_: Option<CodeableConcept>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct GenomicStudyAnalysisDeviceBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]

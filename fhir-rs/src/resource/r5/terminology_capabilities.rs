@@ -110,7 +110,7 @@ pub struct TerminologyCapabilities {
     pub closure: Option<TerminologyCapabilitiesClosureBackboneElement>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct TerminologyCapabilitiesImplementationBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -129,7 +129,7 @@ pub struct TerminologyCapabilitiesImplementationBackboneElement {
     pub url: Option<UrlDt>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct TerminologyCapabilitiesCodeSystemBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -154,7 +154,7 @@ pub struct TerminologyCapabilitiesCodeSystemBackboneElement {
     pub subsumption: Option<BooleanDt>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct TerminologyCapabilitiesCodeSystemVersionBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -185,7 +185,7 @@ pub struct TerminologyCapabilitiesCodeSystemVersionBackboneElement {
     pub property: Option<Vec<CodeDt>>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct TerminologyCapabilitiesCodeSystemVersionFilterBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -204,7 +204,7 @@ pub struct TerminologyCapabilitiesCodeSystemVersionFilterBackboneElement {
     pub op: Option<Vec<CodeDt>>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct TerminologyCapabilitiesSoftwareBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -223,7 +223,7 @@ pub struct TerminologyCapabilitiesSoftwareBackboneElement {
     pub version: Option<StringDt>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct TerminologyCapabilitiesValidateCodeBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -239,7 +239,7 @@ pub struct TerminologyCapabilitiesValidateCodeBackboneElement {
     pub translations: Option<BooleanDt>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct TerminologyCapabilitiesTranslationBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -255,7 +255,7 @@ pub struct TerminologyCapabilitiesTranslationBackboneElement {
     pub needs_map: Option<BooleanDt>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct TerminologyCapabilitiesExpansionBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -283,7 +283,7 @@ pub struct TerminologyCapabilitiesExpansionBackboneElement {
     pub text_filter: Option<MarkdownDt>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct TerminologyCapabilitiesExpansionParameterBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -302,7 +302,7 @@ pub struct TerminologyCapabilitiesExpansionParameterBackboneElement {
     pub documentation: Option<StringDt>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct TerminologyCapabilitiesClosureBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]

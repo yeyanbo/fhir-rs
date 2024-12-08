@@ -125,7 +125,7 @@ pub struct Appointment {
     pub recurrence_template: Option<Vec<AppointmentRecurrenceTemplateBackboneElement>>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct AppointmentParticipantBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -153,7 +153,7 @@ pub struct AppointmentParticipantBackboneElement {
     pub status: Option<CodeDt>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct AppointmentRecurrenceTemplateBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -196,7 +196,7 @@ pub struct AppointmentRecurrenceTemplateBackboneElement {
     pub excluding_recurrence_id: Option<Vec<PositiveIntDt>>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct AppointmentRecurrenceTemplateMonthlyTemplateBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -221,7 +221,7 @@ pub struct AppointmentRecurrenceTemplateMonthlyTemplateBackboneElement {
     pub month_interval: Option<PositiveIntDt>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct AppointmentRecurrenceTemplateWeeklyTemplateBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -258,7 +258,7 @@ pub struct AppointmentRecurrenceTemplateWeeklyTemplateBackboneElement {
     pub week_interval: Option<PositiveIntDt>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct AppointmentRecurrenceTemplateYearlyTemplateBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]

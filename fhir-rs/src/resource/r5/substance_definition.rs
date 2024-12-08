@@ -101,7 +101,7 @@ pub struct SubstanceDefinition {
     pub source_material: Option<SubstanceDefinitionSourceMaterialBackboneElement>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct SubstanceDefinitionNameBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -147,7 +147,7 @@ pub struct SubstanceDefinitionNameBackboneElement {
     pub source: Option<Vec<Reference>>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct SubstanceDefinitionNameOfficialBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -169,7 +169,7 @@ pub struct SubstanceDefinitionNameOfficialBackboneElement {
     pub date: Option<DateTimeDt>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct SubstanceDefinitionPropertyBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -188,7 +188,7 @@ pub struct SubstanceDefinitionPropertyBackboneElement {
     pub value: Option<Attachment>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct SubstanceDefinitionCharacterizationBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -213,7 +213,7 @@ pub struct SubstanceDefinitionCharacterizationBackboneElement {
     pub file: Option<Vec<Attachment>>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct SubstanceDefinitionStructureBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -250,7 +250,7 @@ pub struct SubstanceDefinitionStructureBackboneElement {
     pub representation: Option<Vec<SubstanceDefinitionStructureRepresentationBackboneElement>>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct SubstanceDefinitionStructureRepresentationBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -275,7 +275,7 @@ pub struct SubstanceDefinitionStructureRepresentationBackboneElement {
     pub document: Option<Reference>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct SubstanceDefinitionCodeBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -303,7 +303,7 @@ pub struct SubstanceDefinitionCodeBackboneElement {
     pub source: Option<Vec<Reference>>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct SubstanceDefinitionMolecularWeightBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -325,7 +325,7 @@ pub struct SubstanceDefinitionMolecularWeightBackboneElement {
     pub amount: Option<Quantity>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct SubstanceDefinitionSourceMaterialBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -353,7 +353,7 @@ pub struct SubstanceDefinitionSourceMaterialBackboneElement {
     pub country_of_origin: Option<Vec<CodeableConcept>>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct SubstanceDefinitionRelationshipBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -387,7 +387,7 @@ pub struct SubstanceDefinitionRelationshipBackboneElement {
     pub source: Option<Vec<Reference>>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct SubstanceDefinitionMoietyBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]

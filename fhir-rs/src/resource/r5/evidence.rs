@@ -122,7 +122,7 @@ pub struct Evidence {
     pub certainty: Option<Vec<EvidenceCertaintyBackboneElement>>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct EvidenceCertaintyBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -153,7 +153,7 @@ pub struct EvidenceCertaintyBackboneElement {
     pub subcomponent: Option<Vec<EvidenceCertaintyBackboneElement>>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct EvidenceVariableDefinitionBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -184,7 +184,7 @@ pub struct EvidenceVariableDefinitionBackboneElement {
     pub directness_match: Option<CodeableConcept>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct EvidenceStatisticBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -227,7 +227,7 @@ pub struct EvidenceStatisticBackboneElement {
     pub model_characteristic: Option<Vec<EvidenceStatisticModelCharacteristicBackboneElement>>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct EvidenceStatisticSampleSizeBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -255,7 +255,7 @@ pub struct EvidenceStatisticSampleSizeBackboneElement {
     pub known_data_count: Option<UnsignedIntDt>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct EvidenceStatisticModelCharacteristicBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -280,7 +280,7 @@ pub struct EvidenceStatisticModelCharacteristicBackboneElement {
     pub attribute_estimate: Option<Vec<EvidenceStatisticAttributeEstimateBackboneElement>>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct EvidenceStatisticModelCharacteristicVariableBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -308,7 +308,7 @@ pub struct EvidenceStatisticModelCharacteristicVariableBackboneElement {
     pub value_range: Option<Vec<Range>>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct EvidenceStatisticAttributeEstimateBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]

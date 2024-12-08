@@ -92,7 +92,7 @@ pub struct StructureMap {
     pub group: Option<Vec<StructureMapGroupBackboneElement>>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct StructureMapConstBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -111,7 +111,7 @@ pub struct StructureMapConstBackboneElement {
     pub value: Option<StringDt>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct StructureMapGroupBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -142,7 +142,7 @@ pub struct StructureMapGroupBackboneElement {
     pub rule: Option<Vec<StructureMapGroupRuleBackboneElement>>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct StructureMapGroupInputBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -167,7 +167,7 @@ pub struct StructureMapGroupInputBackboneElement {
     pub documentation: Option<StringDt>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct StructureMapGroupRuleBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -198,7 +198,7 @@ pub struct StructureMapGroupRuleBackboneElement {
     pub documentation: Option<StringDt>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct StructureMapGroupRuleTargetBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -232,7 +232,7 @@ pub struct StructureMapGroupRuleTargetBackboneElement {
     pub parameter: Option<Vec<StructureMapGroupRuleTargetParameterBackboneElement>>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct StructureMapGroupRuleTargetParameterBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -248,7 +248,7 @@ pub struct StructureMapGroupRuleTargetParameterBackboneElement {
     pub value: Option<DateTimeDt>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct StructureMapGroupRuleDependentBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -267,7 +267,7 @@ pub struct StructureMapGroupRuleDependentBackboneElement {
     pub parameter: Option<Vec<StructureMapGroupRuleTargetParameterBackboneElement>>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct StructureMapGroupRuleSourceBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -313,7 +313,7 @@ pub struct StructureMapGroupRuleSourceBackboneElement {
     pub log_message: Option<StringDt>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct StructureMapStructureBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]

@@ -35,9 +35,17 @@ pub trait Deserializer<'de>: Sized {
         where
             V: Visitor<'de>;
 
+    fn deserialize_narrative<V>(self, visitor: V) -> Result<V::Value>
+        where
+            V: Visitor<'de>;
+
     fn deserialize_struct<V>(self, name: &str, visitor: V) -> Result<V::Value>
         where
             V: Visitor<'de>;
+
+    fn deserialize_resource<V>(self, name: &str, visitor: V) -> Result<V::Value>
+    where
+        V: Visitor<'de>;
 
     fn deserialize_primitive<V>(self, _name: &str, visitor: V) -> Result<V::Value>
         where
@@ -110,100 +118,11 @@ pub trait Visitor<'de>: Sized {
             (None, Some(v)) => {Some(v)}
             (None, None) => {None}
             (Some(a), Some(b)) => {
-                Some(a.set_id(b.id().clone().unwrap()).set_extension(b.extension().clone().unwrap()))
+                Some(a.set_id(b.id().clone().unwrap()).set_extensions(b.extensions().unwrap().clone()))
             }
         }
     }
 }
-
-// pub struct StringDtVisitor;
-// impl<'de> Visitor<'de> for StringDtVisitor {
-//     type Value = StringDt;
-//     fn visit_str(self, v: &str) -> Result<Self::Value> {
-//         Ok(StringDt{
-//             id: None,
-//             extension: None,
-//             value: Some(String::from(v)),
-//         })
-//     }
-
-//     fn visit_map<M>(self, mut map: M) -> Result<Self::Value> where M: MapAccess<'de> {
-//         tracing::debug!("进入到StringDt的map处理函数了");
-
-//         let mut id: Option<String> = None;
-//         let mut extension: Option<Vec<Extension>> = None;
-//         let mut value: Option<String> = None;
-
-//         while let Some(key) = map.next_key()? {
-//             match key.as_str() {
-//                 "id" => {
-//                     id = Some(map.next_value()?);
-//                     tracing::debug!("读取到值: {:?}", &id);
-//                 },
-//                 "extension" => {
-//                     extension = Some(map.next_value()?);
-//                     tracing::debug!("读取到值: {:?}", &extension);
-//                 }
-//                 "value" => {
-//                     value = Some(map.next_value()?);
-//                     tracing::debug!("读取到值: {:?}", &value);
-//                 }
-//                 _ => {return Err(FhirError::error("读到不存在的key了"));},
-//             }
-//         }
-
-//         Ok(StringDt{
-//             id,
-//             extension,
-//             value,
-//         })
-//     }
-// }
-
-// pub struct PositiveIntDtVisitor;
-
-// impl<'de> Visitor<'de> for PositiveIntDtVisitor {
-//     type Value = PositiveIntDt;
-//     fn visit_str(self, v: &str) -> Result<Self::Value> {
-//         Ok(PositiveIntDt{
-//             id: None,
-//             extension: None,
-//             value: Some(PositiveInt::from_str(v)?),
-//         })
-//     }
-
-//     fn visit_map<M>(self, mut map: M) -> Result<Self::Value> where M: MapAccess<'de> {
-//         tracing::debug!("进入到PositiveIntDt的map处理函数了");
-
-//         let mut id: Option<String> = None;
-//         let mut extension: Option<Vec<Extension>> = None;
-//         let mut value: Option<PositiveInt> = None;
-
-//         while let Some(key) = map.next_key()? {
-//             match key.as_str() {
-//                 "id" => {
-//                     id = Some(map.next_value()?);
-//                     tracing::debug!("读取到值: {:?}", &id);
-//                 },
-//                 "extension" => {
-//                     extension = Some(map.next_value()?);
-//                     tracing::debug!("读取到值: {:?}", &extension);
-//                 }
-//                 "value" => {
-//                     value = Some(map.next_value()?);
-//                     tracing::debug!("读取到值: {:?}", &value);
-//                 }
-//                 _ => {return Err(FhirError::error("读到不存在的key了"));},
-//             }
-//         }
-
-//         Ok(PositiveIntDt{
-//             id,
-//             extension,
-//             value,
-//         })
-//     }
-// }
 
 impl<'de, T> Deserialize<'de> for Box<T>
     where
@@ -436,4 +355,89 @@ impl<'de> Deserialize<'de> for i64 {
 
         deserializer.deserialize_number(Integer64Visitor)
     }
+}
+
+impl<'de> Deserialize<'de> for AnyType {
+    fn deserialize<De>(deserializer: De) -> Result<Self> where De: Deserializer<'de> {
+
+        pub struct AnyVisitor;
+
+        impl<'de> Visitor<'de> for AnyVisitor {
+            type Value = AnyType;
+
+            fn visit_enum<De>(self, name: &str, _deserializer: De) -> Result<Self::Value>
+            where
+                De: Deserializer<'de>,
+            {
+                println!("Any Type2: {}", name);
+                Ok(AnyType::String(StringDt::new("a")))
+            }
+        }
+
+        deserializer.deserialize_enum(AnyVisitor)
+    }
+}
+
+macro_rules! impl_deserializer_for_primitive {
+    (
+        $(($inner: ident, $ty: ident, $visitor:ident),)+
+    ) => {
+        $(
+            impl<'de> Deserialize<'de> for $ty {
+                fn deserialize<De>(deserializer: De) -> Result<Self> where De: Deserializer<'de> {
+
+                    pub struct $visitor;
+                    impl<'de> Visitor<'de> for $visitor {
+                        type Value = $ty;
+
+                        fn visit_str(self, v: &str) -> Result<Self::Value> {
+                            $ty::from_str(v)
+                        }
+
+                        fn visit_map<M>(self, mut mapp: M) -> Result<Self::Value> where M: MapAccess<'de> {
+                            let mut id: Option<String> = None;
+                            let mut extension: Option<Vec<Extension>> = None;
+                            let mut value: Option<$inner> = None;
+
+                            while let Some(key) = mapp.next_key()? {
+                                match key.as_str() {
+                                    "id" => id = Some(mapp.next_value()?),
+                                    "extension" => extension = Some(mapp.next_value()?),
+                                    "value" => value = Some(mapp.next_value()?),
+                                    _ => { /* skip */ },
+                                }
+                            }
+
+                            Ok( $ty { id, extension, value } )
+                        }
+                    }
+
+                    deserializer.deserialize_primitive("", $visitor)
+                }
+            }
+        )+
+    };
+}
+
+impl_deserializer_for_primitive!{
+    (String, StringDt, StringDtVisitor),
+    (Id, IdDt, IdDtVisitor),
+    (Base64Binary, Base64BinaryDt, Base64BinaryDtVisitor),
+    (Markdown, MarkdownDt, MarkdownDtVisitor),
+    (Uri, UriDt, UriDtVisitor),
+    (Url, UrlDt, UrlDtVisitor),
+    (Oid, OidDt, OidDtVisitor),
+    (Uuid, UuidDt, UuidDtVisitor),
+    (Canonical, CanonicalDt, CanonicalDtVisitor),
+    (Code, CodeDt, CodeDtVisitor),
+    (Boolean, BooleanDt, BooleanDtVisitor),
+    (DateTime, DateTimeDt, DateTimeDtVisitor),
+    (Date, DateDt, DateDtVisitor),
+    (Time, TimeDt, TimeDtVisitor),
+    (Instant, InstantDt, InstantDtVisitor),
+    (UnsignedInt, UnsignedIntDt, UnsignedIntDtVisitor),
+    (PositiveInt, PositiveIntDt, PositiveIntDtVisitor),
+    (Integer, IntegerDt, IntegerDtVisitor),
+    (Integer64, Integer64Dt, Integer64DtVisitor),
+    (Decimal, DecimalDt, DecimalDtVisitor),
 }

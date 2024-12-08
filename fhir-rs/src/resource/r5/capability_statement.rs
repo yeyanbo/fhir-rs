@@ -119,7 +119,7 @@ pub struct CapabilityStatement {
     pub document: Option<Vec<CapabilityStatementDocumentBackboneElement>>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct CapabilityStatementDocumentBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -141,7 +141,7 @@ pub struct CapabilityStatementDocumentBackboneElement {
     pub profile: Option<CanonicalDt>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct CapabilityStatementSoftwareBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -163,7 +163,7 @@ pub struct CapabilityStatementSoftwareBackboneElement {
     pub release_date: Option<DateTimeDt>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct CapabilityStatementRestBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -200,7 +200,7 @@ pub struct CapabilityStatementRestBackboneElement {
     pub compartment: Option<Vec<CanonicalDt>>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct CapabilityStatementRestInteractionBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -219,7 +219,7 @@ pub struct CapabilityStatementRestInteractionBackboneElement {
     pub documentation: Option<MarkdownDt>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct CapabilityStatementRestResourceBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -286,7 +286,7 @@ pub struct CapabilityStatementRestResourceBackboneElement {
     pub operation: Option<Vec<CapabilityStatementRestResourceOperationBackboneElement>>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct CapabilityStatementRestResourceSearchParamBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -311,7 +311,7 @@ pub struct CapabilityStatementRestResourceSearchParamBackboneElement {
     pub documentation: Option<MarkdownDt>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct CapabilityStatementRestResourceOperationBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -333,7 +333,7 @@ pub struct CapabilityStatementRestResourceOperationBackboneElement {
     pub documentation: Option<MarkdownDt>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct CapabilityStatementRestResourceInteractionBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -352,7 +352,7 @@ pub struct CapabilityStatementRestResourceInteractionBackboneElement {
     pub documentation: Option<MarkdownDt>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct CapabilityStatementRestSecurityBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -374,7 +374,7 @@ pub struct CapabilityStatementRestSecurityBackboneElement {
     pub description: Option<MarkdownDt>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct CapabilityStatementImplementationBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -396,7 +396,7 @@ pub struct CapabilityStatementImplementationBackboneElement {
     pub custodian: Option<Reference>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct CapabilityStatementMessagingBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -421,7 +421,7 @@ pub struct CapabilityStatementMessagingBackboneElement {
     pub supported_message: Option<Vec<CapabilityStatementMessagingSupportedMessageBackboneElement>>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct CapabilityStatementMessagingEndpointBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -440,7 +440,7 @@ pub struct CapabilityStatementMessagingEndpointBackboneElement {
     pub address: Option<UrlDt>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct CapabilityStatementMessagingSupportedMessageBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]

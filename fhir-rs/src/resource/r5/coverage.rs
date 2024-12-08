@@ -89,7 +89,7 @@ pub struct Coverage {
     pub insurance_plan: Option<Reference>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct CoveragePaymentByBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -108,7 +108,7 @@ pub struct CoveragePaymentByBackboneElement {
     pub responsibility: Option<StringDt>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct CoverageCostToBeneficiaryBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -142,7 +142,7 @@ pub struct CoverageCostToBeneficiaryBackboneElement {
     pub exception: Option<Vec<CoverageCostToBeneficiaryExceptionBackboneElement>>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct CoverageCostToBeneficiaryExceptionBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -161,7 +161,7 @@ pub struct CoverageCostToBeneficiaryExceptionBackboneElement {
     pub period: Option<Period>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct CoverageClassBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]

@@ -59,7 +59,7 @@ pub struct InventoryReport {
     pub note: Option<Vec<Annotation>>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct InventoryReportInventoryListingBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -84,7 +84,7 @@ pub struct InventoryReportInventoryListingBackboneElement {
     pub item: Option<Vec<InventoryReportInventoryListingItemBackboneElement>>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct InventoryReportInventoryListingItemBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]

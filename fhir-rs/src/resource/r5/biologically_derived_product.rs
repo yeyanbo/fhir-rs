@@ -68,7 +68,7 @@ pub struct BiologicallyDerivedProduct {
     pub property: Option<Vec<BiologicallyDerivedProductPropertyBackboneElement>>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct BiologicallyDerivedProductCollectionBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -90,7 +90,7 @@ pub struct BiologicallyDerivedProductCollectionBackboneElement {
     pub collected: Option<Period>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct BiologicallyDerivedProductPropertyBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]

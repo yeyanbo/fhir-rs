@@ -140,7 +140,7 @@ pub struct ObservationDefinition {
     pub component: Option<Vec<ObservationDefinitionComponentBackboneElement>>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct ObservationDefinitionQualifiedValueBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -189,7 +189,7 @@ pub struct ObservationDefinitionQualifiedValueBackboneElement {
     pub critical_coded_value_set: Option<CanonicalDt>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct ObservationDefinitionComponentBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]

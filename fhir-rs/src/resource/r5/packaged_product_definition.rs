@@ -74,7 +74,7 @@ pub struct PackagedProductDefinition {
     pub characteristic: Option<Vec<PackagedProductDefinitionPackagingPropertyBackboneElement>>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct PackagedProductDefinitionLegalStatusOfSupplyBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -93,7 +93,7 @@ pub struct PackagedProductDefinitionLegalStatusOfSupplyBackboneElement {
     pub jurisdiction: Option<CodeableConcept>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct PackagedProductDefinitionPackagingBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -139,7 +139,7 @@ pub struct PackagedProductDefinitionPackagingBackboneElement {
     pub packaging: Option<Vec<PackagedProductDefinitionPackagingBackboneElement>>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct PackagedProductDefinitionPackagingContainedItemBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -158,7 +158,7 @@ pub struct PackagedProductDefinitionPackagingContainedItemBackboneElement {
     pub amount: Option<Quantity>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct PackagedProductDefinitionPackagingPropertyBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]

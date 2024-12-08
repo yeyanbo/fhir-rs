@@ -355,7 +355,7 @@ macro_rules! any_resources {
             fn serialize<Ser>(&self, serializer: Ser) -> Result<()> where Ser: Serializer {
                 match self {
                     $(
-                    AnyResource::$resource(resource) => { serializer.serialize_any("resource", resource) }
+                    AnyResource::$resource(resource) => { serializer.serialize_any("", resource) }
                     )+
                 }
             }
@@ -385,7 +385,7 @@ macro_rules! any_resources {
         }
 
         impl Base for AnyResource {
-            fn type_name(&self) -> String {
+            fn type_name(&self) -> &str {
                 match self {
                     $(AnyResource::$resource(resource) => resource.type_name(),)+
                 }

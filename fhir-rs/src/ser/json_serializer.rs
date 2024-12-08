@@ -64,6 +64,16 @@ impl<W> JsonSerializer<W>
         Ok(())
     }
 
+    fn rename_element(&mut self, type_name: &str) -> Result<()> {
+        if let Some(value) = self.tags.pop() {
+            let new_name = format!("{}{}", value, type_name);
+            self.tags.push(new_name.into());
+            return Ok(())
+        }
+
+        Err(FhirError::Message(format!("Empty tags for {}", type_name)))
+    }
+
     fn end_object(&mut self) -> Result<()> {
         let event = JsonEvent::EndObject;
         tracing::debug!("对象结束");
@@ -109,10 +119,10 @@ impl<'ser, W: Write> Serializer for &'ser mut JsonSerializer<W> {
     type SerializeVec = JsonCompositeProcessor<'ser, W>;
     type SerializePrimitive = JsonPrimitiveProcessor<'ser, W>;
     type SerializeExtension = JsonCompositeProcessor<'ser, W>;
+    type SerializeNarrative = JsonPrimitiveProcessor<'ser, W>;
 
-    fn serialize_any<T: Serialize>(self, name: &str, value: &T) -> Result<()> {
-        self.open_element(name)?;
-        // self.build_element()?;
+    fn serialize_any<T: Serialize>(self, type_name: &str, value: &T) -> Result<()> {
+        self.rename_element(type_name)?;
         value.serialize(self)
     }
 
@@ -123,6 +133,11 @@ impl<'ser, W: Write> Serializer for &'ser mut JsonSerializer<W> {
 
     fn serialize_string(self, value: String) -> Result<()> {
         self.serialize_str(value.as_str())
+    }
+
+
+    fn serialize_xhtml(self, value: &Xhtml) -> Result<()> {
+        self.serialize_str(value.0.as_str())
     }
 
     fn serialize_bool(self, value: bool) -> Result<()> {
@@ -204,6 +219,11 @@ impl<'ser, W: Write> Serializer for &'ser mut JsonSerializer<W> {
             ser: self,
         })
     }
+
+    fn serialize_narrative(self) -> Result<Self::SerializeNarrative> {
+        self.serialize_primitive()
+    }
+
 }
 
 pub struct JsonCompositeProcessor<'ser, W: Write> {
@@ -266,6 +286,49 @@ pub struct JsonPrimitiveProcessor<'ser, W: Write> {
     ser: &'ser mut JsonSerializer<W>,
     addition: bool,
     tag: Option<String>,
+}
+
+impl<'ser, W: Write> SerializeNarrative for JsonPrimitiveProcessor<'ser, W> {
+    fn serialize_id(&mut self, value: &Option<String>) -> Result<()> {
+        if let Some(v) = value {
+            if !self.addition {
+                self.addition = true;
+                if let Some(tag) = self.tag.take() {
+                    self.ser.open_element(tag.as_str())?;
+                    self.ser.build_element()?;
+                    self.ser.start_object()?;
+                }
+            }
+
+            self.ser.open_element("id")?;
+            self.ser.build_element()?;
+            v.serialize(&mut *self.ser)?;
+        };
+
+        Ok(())
+    }
+
+    fn serialize_xhtml<T: Serialize>(&mut self, value: &Option<T>) -> Result<()> {
+        match value {
+            None => {
+                self.ser.tags.pop();
+            }
+            Some(val) => {
+                self.ser.build_element()?;
+                val.serialize(&mut *self.ser)?;
+            }
+        }
+        Ok(())
+    }
+
+    fn serialize_end(self) -> Result<()> {
+        if self.addition {
+            self.ser.end_object()?;
+        } else {
+            self.ser.tags.pop();
+        }
+        Ok(())
+    }
 }
 
 impl<'ser, W: Write> SerializePrimitive for JsonPrimitiveProcessor<'ser, W> {
@@ -366,6 +429,7 @@ impl<'ser, W: Write> SerializeExtension for JsonCompositeProcessor<'ser, W> {
     }
 
     fn serialize_value<T: Serialize>(&mut self, value: &T) -> Result<()> {
+        self.ser.open_element("value")?;
         value.serialize(&mut *self.ser)
     }
 

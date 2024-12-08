@@ -68,7 +68,7 @@ pub struct SubstanceSourceMaterial {
     pub part_description: Option<Vec<SubstanceSourceMaterialPartDescriptionBackboneElement>>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct SubstanceSourceMaterialPartDescriptionBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -87,7 +87,7 @@ pub struct SubstanceSourceMaterialPartDescriptionBackboneElement {
     pub part_location: Option<CodeableConcept>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct SubstanceSourceMaterialFractionDescriptionBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -106,7 +106,7 @@ pub struct SubstanceSourceMaterialFractionDescriptionBackboneElement {
     pub material_type: Option<CodeableConcept>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct SubstanceSourceMaterialOrganismBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -143,7 +143,7 @@ pub struct SubstanceSourceMaterialOrganismBackboneElement {
     pub organism_general: Option<SubstanceSourceMaterialOrganismOrganismGeneralBackboneElement>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct SubstanceSourceMaterialOrganismHybridBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -171,7 +171,7 @@ pub struct SubstanceSourceMaterialOrganismHybridBackboneElement {
     pub hybrid_type: Option<CodeableConcept>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct SubstanceSourceMaterialOrganismAuthorBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -190,7 +190,7 @@ pub struct SubstanceSourceMaterialOrganismAuthorBackboneElement {
     pub author_description: Option<StringDt>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct SubstanceSourceMaterialOrganismOrganismGeneralBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]

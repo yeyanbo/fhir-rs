@@ -77,7 +77,7 @@ pub struct CompartmentDefinition {
     pub resource: Option<Vec<CompartmentDefinitionResourceBackboneElement>>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct CompartmentDefinitionResourceBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]

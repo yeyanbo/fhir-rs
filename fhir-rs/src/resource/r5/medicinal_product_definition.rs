@@ -116,7 +116,7 @@ pub struct MedicinalProductDefinition {
     pub characteristic: Option<Vec<MedicinalProductDefinitionCharacteristicBackboneElement>>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct MedicinalProductDefinitionCrossReferenceBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -135,7 +135,7 @@ pub struct MedicinalProductDefinitionCrossReferenceBackboneElement {
     pub type_: Option<CodeableConcept>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct MedicinalProductDefinitionOperationBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -160,7 +160,7 @@ pub struct MedicinalProductDefinitionOperationBackboneElement {
     pub confidentiality_indicator: Option<CodeableConcept>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct MedicinalProductDefinitionNameBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -185,7 +185,7 @@ pub struct MedicinalProductDefinitionNameBackboneElement {
     pub usage: Option<Vec<MedicinalProductDefinitionNameUsageBackboneElement>>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct MedicinalProductDefinitionNameUsageBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -207,7 +207,7 @@ pub struct MedicinalProductDefinitionNameUsageBackboneElement {
     pub language: Option<CodeableConcept>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct MedicinalProductDefinitionNamePartBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -226,7 +226,7 @@ pub struct MedicinalProductDefinitionNamePartBackboneElement {
     pub type_: Option<CodeableConcept>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct MedicinalProductDefinitionCharacteristicBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -245,7 +245,7 @@ pub struct MedicinalProductDefinitionCharacteristicBackboneElement {
     pub value: Option<Attachment>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct MedicinalProductDefinitionContactBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]

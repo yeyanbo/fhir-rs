@@ -41,9 +41,21 @@ pub struct XmlSerializer<W: Write> {
 
 impl<W: Write> XmlSerializer<W> {
     pub fn from_writer(writer: W, pretty: bool) -> Self {
-        let writer = EmitterConfig::new()
-            .perform_indent(pretty)
-            .create_writer(writer);
+
+        let config = EmitterConfig {
+            line_separator: "\n".into(),
+            indent_string: "  ".into(), // two spaces
+            perform_indent: pretty,
+            perform_escaping: false,
+            write_document_declaration: true,
+            normalize_empty_elements: true,
+            cdata_to_characters: false,
+            keep_element_names_stack: true,
+            autopad_comments: true,
+            pad_self_closing: true,
+        };
+
+        let writer = config.create_writer(writer);
 
         XmlSerializer{
             writer,
@@ -79,6 +91,16 @@ impl<W: Write> XmlSerializer<W> {
     fn reopen_element(&mut self) -> Result<()> {
         self.current_tag_attrs = Some(HashMap::with_capacity(4));
         Ok(())
+    }
+
+    fn rename_element(&mut self, type_name: &str) -> Result<()> {
+        if let Some(value) = self.tags.pop() {
+            let new_name = format!("{}{}", value, type_name);
+            self.tags.push(new_name.into());
+            return Ok(())
+        }
+
+        Err(FhirError::Message(format!("Empty tags for {}", type_name)))
     }
 
     fn set_current_attr_key(&mut self, name: &'static str) -> Result<()> {
@@ -128,6 +150,14 @@ impl<W: Write> XmlSerializer<W> {
         Ok(())
     }
 
+    fn write_characters(&mut self, characters: &str) -> Result<()> {
+        let event = XmlEvent::Characters(characters);
+        tracing::debug!("{:?}", &event);
+
+        self.writer.write(event)?;
+        Ok(())
+    }
+
     fn debug(&mut self) {
         tracing::debug!("tags: {:?} attr_key: {:?}", self.tags, self.current_attr_key);
     }
@@ -139,9 +169,10 @@ impl<'ser, W: Write> Serializer for &'ser mut XmlSerializer<W> {
     type SerializeVec = XmlCompositeProcessor<'ser, W>;
     type SerializePrimitive = XmlCompositeProcessor<'ser, W>;
     type SerializeExtension = XmlCompositeProcessor<'ser, W>;
+    type SerializeNarrative = XmlCompositeProcessor<'ser, W>;
 
-    fn serialize_any<T: Serialize>(self, name: &str, value: &T) -> Result<()> {
-        self.open_element(name)?;
+    fn serialize_any<T: Serialize>(self, type_name: &str, value: &T) -> Result<()> {
+        self.rename_element(type_name)?;
         value.serialize(self)
     }
 
@@ -154,6 +185,12 @@ impl<'ser, W: Write> Serializer for &'ser mut XmlSerializer<W> {
     fn serialize_string(self, value: String)  -> Result<()> {
         tracing::debug!("tags: {:?} attr_key: {:?} value: {:?}", self.tags, self.current_attr_key, &value );
         self.set_current_attr_value(value)?;
+        Ok(())
+    }
+
+    fn serialize_xhtml(self, value: &Xhtml) -> Result<()> {
+        tracing::debug!("tags: {:?} attr_key: {:?} value: {:?}", self.tags, self.current_attr_key, &value );
+        self.write_characters(&value.0)?;
         Ok(())
     }
 
@@ -207,7 +244,6 @@ impl<'ser, W: Write> Serializer for &'ser mut XmlSerializer<W> {
     }
 
     fn serialize_primitive(self) -> Result<Self::SerializePrimitive> {
-
         Ok(XmlCompositeProcessor {
             ser: self,
         })
@@ -244,6 +280,12 @@ impl<'ser, W: Write> Serializer for &'ser mut XmlSerializer<W> {
         self.start_document()?;
         self.start_root(name)?;
 
+        Ok(XmlCompositeProcessor {
+            ser: self,
+        })
+    }
+
+    fn serialize_narrative(self) -> Result<Self::SerializeNarrative> {
         Ok(XmlCompositeProcessor {
             ser: self,
         })
@@ -334,6 +376,24 @@ impl<'ser, W: Write> SerializePrimitive for XmlCompositeProcessor<'ser, W> {
     }
 }
 
+impl<'ser, W: Write> SerializeNarrative for XmlCompositeProcessor<'ser, W> {
+    fn serialize_id(&mut self, value: &Option<String>) -> Result<()> {
+        Ok(())
+    }
+
+    fn serialize_xhtml<T: Serialize>(&mut self, value: &Option<T>) -> Result<()> {
+        self.ser.tags.pop();
+        if let Some(val) = value {
+            val.serialize(&mut *self.ser)?;
+        };
+        Ok(())
+    }
+
+    fn serialize_end(self) -> Result<()> {
+        Ok(())
+    }
+}
+
 impl<'ser, W: Write> SerializeVec for XmlCompositeProcessor<'ser, W> {
     fn serialize_element<T: Serialize>(&mut self, value: &T) -> Result<()> {
         tracing::debug!("处理数组的单个元素");
@@ -375,6 +435,7 @@ impl<'ser, W: Write> SerializeExtension for XmlCompositeProcessor<'ser, W> {
     }
 
     fn serialize_value<T: Serialize>(&mut self, value: &T) -> Result<()> {
+        self.ser.open_element("value")?;
         value.serialize(&mut *self.ser)
     }
 

@@ -98,7 +98,7 @@ pub struct TestPlan {
     pub test_case: Option<Vec<TestPlanTestCaseBackboneElement>>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct TestPlanDependencyBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -117,7 +117,7 @@ pub struct TestPlanDependencyBackboneElement {
     pub predecessor: Option<Reference>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct TestPlanTestCaseBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -148,7 +148,7 @@ pub struct TestPlanTestCaseBackboneElement {
     pub assertion: Option<Vec<TestPlanTestCaseAssertionBackboneElement>>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct TestPlanTestCaseDependencyBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -167,7 +167,7 @@ pub struct TestPlanTestCaseDependencyBackboneElement {
     pub predecessor: Option<Reference>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct TestPlanTestCaseTestDataBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -189,7 +189,7 @@ pub struct TestPlanTestCaseTestDataBackboneElement {
     pub source: Option<Reference>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct TestPlanTestCaseTestRunBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -208,7 +208,7 @@ pub struct TestPlanTestCaseTestRunBackboneElement {
     pub script: Option<TestPlanTestCaseTestRunScriptBackboneElement>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct TestPlanTestCaseTestRunScriptBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -227,7 +227,7 @@ pub struct TestPlanTestCaseTestRunScriptBackboneElement {
     pub source: Option<Reference>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct TestPlanTestCaseAssertionBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]

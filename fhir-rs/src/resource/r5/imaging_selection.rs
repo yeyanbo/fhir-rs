@@ -80,7 +80,7 @@ pub struct ImagingSelection {
     pub instance: Option<Vec<ImagingSelectionInstanceBackboneElement>>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct ImagingSelectionPerformerBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -99,7 +99,7 @@ pub struct ImagingSelectionPerformerBackboneElement {
     pub actor: Option<Reference>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct ImagingSelectionInstanceBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -130,7 +130,7 @@ pub struct ImagingSelectionInstanceBackboneElement {
     pub image_region_3_d: Option<Vec<ImagingSelectionInstanceImageRegion3DBackboneElement>>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct ImagingSelectionInstanceImageRegion2DBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -149,7 +149,7 @@ pub struct ImagingSelectionInstanceImageRegion2DBackboneElement {
     pub coordinate: Option<Vec<DecimalDt>>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct ImagingSelectionInstanceImageRegion3DBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]

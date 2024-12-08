@@ -77,7 +77,7 @@ pub struct BiologicallyDerivedProductDispense {
     pub usage_instruction: Option<StringDt>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct BiologicallyDerivedProductDispensePerformerBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]

@@ -104,7 +104,7 @@ pub struct SubscriptionTopic {
     pub notification_shape: Option<Vec<SubscriptionTopicNotificationShapeBackboneElement>>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct SubscriptionTopicEventTriggerBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -126,7 +126,7 @@ pub struct SubscriptionTopicEventTriggerBackboneElement {
     pub resource: Option<UriDt>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct SubscriptionTopicCanFilterByBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -157,7 +157,7 @@ pub struct SubscriptionTopicCanFilterByBackboneElement {
     pub modifier: Option<Vec<CodeDt>>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct SubscriptionTopicResourceTriggerBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -185,7 +185,7 @@ pub struct SubscriptionTopicResourceTriggerBackboneElement {
     pub fhir_path_criteria: Option<StringDt>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct SubscriptionTopicResourceTriggerQueryCriteriaBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -213,7 +213,7 @@ pub struct SubscriptionTopicResourceTriggerQueryCriteriaBackboneElement {
     pub require_both: Option<BooleanDt>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct SubscriptionTopicNotificationShapeBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]

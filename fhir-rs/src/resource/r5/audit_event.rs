@@ -71,7 +71,7 @@ pub struct AuditEvent {
     pub entity: Option<Vec<AuditEventEntityBackboneElement>>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct AuditEventSourceBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -93,7 +93,7 @@ pub struct AuditEventSourceBackboneElement {
     pub type_: Option<Vec<CodeableConcept>>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct AuditEventOutcomeBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -112,7 +112,7 @@ pub struct AuditEventOutcomeBackboneElement {
     pub detail: Option<Vec<CodeableConcept>>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct AuditEventAgentBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -149,7 +149,7 @@ pub struct AuditEventAgentBackboneElement {
     pub authorization: Option<Vec<CodeableConcept>>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct AuditEventEntityBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -180,7 +180,7 @@ pub struct AuditEventEntityBackboneElement {
     pub agent: Option<Vec<AuditEventAgentBackboneElement>>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct AuditEventEntityDetailBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]

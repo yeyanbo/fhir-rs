@@ -41,7 +41,7 @@ pub struct SubstanceReferenceInformation {
     pub target: Option<Vec<SubstanceReferenceInformationTargetBackboneElement>>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct SubstanceReferenceInformationGeneBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -63,7 +63,7 @@ pub struct SubstanceReferenceInformationGeneBackboneElement {
     pub source: Option<Vec<Reference>>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct SubstanceReferenceInformationTargetBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -100,7 +100,7 @@ pub struct SubstanceReferenceInformationTargetBackboneElement {
     pub source: Option<Vec<Reference>>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct SubstanceReferenceInformationGeneElementBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]

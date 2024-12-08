@@ -101,7 +101,7 @@ pub struct Questionnaire {
     pub item: Option<Vec<QuestionnaireItemBackboneElement>>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct QuestionnaireItemBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -168,7 +168,7 @@ pub struct QuestionnaireItemBackboneElement {
     pub item: Option<Vec<QuestionnaireItemBackboneElement>>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct QuestionnaireItemAnswerOptionBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -187,7 +187,7 @@ pub struct QuestionnaireItemAnswerOptionBackboneElement {
     pub initial_selected: Option<BooleanDt>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct QuestionnaireItemEnableWhenBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -209,7 +209,7 @@ pub struct QuestionnaireItemEnableWhenBackboneElement {
     pub answer: Option<Reference>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct QuestionnaireItemInitialBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]

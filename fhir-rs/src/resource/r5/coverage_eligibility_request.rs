@@ -74,7 +74,7 @@ pub struct CoverageEligibilityRequest {
     pub item: Option<Vec<CoverageEligibilityRequestItemBackboneElement>>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct CoverageEligibilityRequestEventBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -93,7 +93,7 @@ pub struct CoverageEligibilityRequestEventBackboneElement {
     pub when: Option<Period>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct CoverageEligibilityRequestItemBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -136,7 +136,7 @@ pub struct CoverageEligibilityRequestItemBackboneElement {
     pub detail: Option<Vec<Reference>>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct CoverageEligibilityRequestItemDiagnosisBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -152,7 +152,7 @@ pub struct CoverageEligibilityRequestItemDiagnosisBackboneElement {
     pub diagnosis: Option<Reference>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct CoverageEligibilityRequestInsuranceBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -174,7 +174,7 @@ pub struct CoverageEligibilityRequestInsuranceBackboneElement {
     pub business_arrangement: Option<StringDt>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct CoverageEligibilityRequestSupportingInfoBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]

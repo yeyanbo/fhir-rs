@@ -113,7 +113,7 @@ pub struct SpecimenDefinition {
     pub type_tested: Option<Vec<SpecimenDefinitionTypeTestedBackboneElement>>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct SpecimenDefinitionTypeTestedBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -156,7 +156,7 @@ pub struct SpecimenDefinitionTypeTestedBackboneElement {
     pub testing_destination: Option<Vec<CodeableConcept>>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct SpecimenDefinitionTypeTestedContainerBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -193,7 +193,7 @@ pub struct SpecimenDefinitionTypeTestedContainerBackboneElement {
     pub preparation: Option<MarkdownDt>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct SpecimenDefinitionTypeTestedContainerAdditiveBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -209,7 +209,7 @@ pub struct SpecimenDefinitionTypeTestedContainerAdditiveBackboneElement {
     pub additive: Option<Reference>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct SpecimenDefinitionTypeTestedHandlingBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]

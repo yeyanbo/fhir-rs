@@ -59,7 +59,7 @@ pub struct ManufacturedItemDefinition {
     pub component: Option<Vec<ManufacturedItemDefinitionComponentBackboneElement>>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct ManufacturedItemDefinitionComponentBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -90,7 +90,7 @@ pub struct ManufacturedItemDefinitionComponentBackboneElement {
     pub component: Option<Vec<ManufacturedItemDefinitionComponentBackboneElement>>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct ManufacturedItemDefinitionComponentConstituentBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -115,7 +115,7 @@ pub struct ManufacturedItemDefinitionComponentConstituentBackboneElement {
     pub has_ingredient: Option<Vec<CodeableReference>>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct ManufacturedItemDefinitionPropertyBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]

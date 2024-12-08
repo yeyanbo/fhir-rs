@@ -65,7 +65,7 @@ pub struct RelatedPerson {
     pub communication: Option<Vec<RelatedPersonCommunicationBackboneElement>>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct RelatedPersonCommunicationBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]

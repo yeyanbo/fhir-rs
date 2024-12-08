@@ -65,7 +65,7 @@ pub struct TestReport {
     pub teardown: Option<TestReportTeardownBackboneElement>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct TestReportSetupBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -81,7 +81,7 @@ pub struct TestReportSetupBackboneElement {
     pub action: Option<Vec<TestReportSetupActionBackboneElement>>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct TestReportSetupActionBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -100,7 +100,7 @@ pub struct TestReportSetupActionBackboneElement {
     pub assert: Option<TestReportSetupActionAssertBackboneElement>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct TestReportSetupActionOperationBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -122,7 +122,7 @@ pub struct TestReportSetupActionOperationBackboneElement {
     pub detail: Option<UriDt>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct TestReportSetupActionAssertBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -147,7 +147,7 @@ pub struct TestReportSetupActionAssertBackboneElement {
     pub requirement: Option<Vec<TestReportSetupActionAssertRequirementBackboneElement>>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct TestReportSetupActionAssertRequirementBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -163,7 +163,7 @@ pub struct TestReportSetupActionAssertRequirementBackboneElement {
     pub link: Option<CanonicalDt>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct TestReportTeardownBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -179,7 +179,7 @@ pub struct TestReportTeardownBackboneElement {
     pub action: Option<Vec<TestReportTeardownActionBackboneElement>>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct TestReportTeardownActionBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -195,7 +195,7 @@ pub struct TestReportTeardownActionBackboneElement {
     pub operation: Option<TestReportSetupActionOperationBackboneElement>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct TestReportTestBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -217,7 +217,7 @@ pub struct TestReportTestBackboneElement {
     pub action: Option<Vec<TestReportTestActionBackboneElement>>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct TestReportTestActionBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -236,7 +236,7 @@ pub struct TestReportTestActionBackboneElement {
     pub assert: Option<TestReportSetupActionAssertBackboneElement>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct TestReportParticipantBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]

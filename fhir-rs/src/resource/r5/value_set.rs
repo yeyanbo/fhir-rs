@@ -119,7 +119,7 @@ pub struct ValueSet {
     pub scope: Option<ValueSetScopeBackboneElement>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct ValueSetScopeBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -138,7 +138,7 @@ pub struct ValueSetScopeBackboneElement {
     pub exclusion_criteria: Option<StringDt>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct ValueSetExpansionBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -175,7 +175,7 @@ pub struct ValueSetExpansionBackboneElement {
     pub contains: Option<Vec<ValueSetExpansionContainsBackboneElement>>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct ValueSetExpansionParameterBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -194,7 +194,7 @@ pub struct ValueSetExpansionParameterBackboneElement {
     pub value: Option<DateTimeDt>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct ValueSetExpansionContainsBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -234,7 +234,7 @@ pub struct ValueSetExpansionContainsBackboneElement {
     pub contains: Option<Vec<ValueSetExpansionContainsBackboneElement>>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct ValueSetExpansionContainsPropertyBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -256,7 +256,7 @@ pub struct ValueSetExpansionContainsPropertyBackboneElement {
     pub sub_property: Option<Vec<ValueSetExpansionContainsPropertySubPropertyBackboneElement>>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct ValueSetExpansionContainsPropertySubPropertyBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -275,7 +275,7 @@ pub struct ValueSetExpansionContainsPropertySubPropertyBackboneElement {
     pub value: Option<DecimalDt>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct ValueSetExpansionPropertyBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -294,7 +294,7 @@ pub struct ValueSetExpansionPropertyBackboneElement {
     pub uri: Option<UriDt>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct ValueSetComposeBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -322,7 +322,7 @@ pub struct ValueSetComposeBackboneElement {
     pub property: Option<Vec<StringDt>>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct ValueSetComposeIncludeBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -353,7 +353,7 @@ pub struct ValueSetComposeIncludeBackboneElement {
     pub copyright: Option<StringDt>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct ValueSetComposeIncludeConceptBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -375,7 +375,7 @@ pub struct ValueSetComposeIncludeConceptBackboneElement {
     pub designation: Option<Vec<ValueSetComposeIncludeConceptDesignationBackboneElement>>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct ValueSetComposeIncludeConceptDesignationBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -400,7 +400,7 @@ pub struct ValueSetComposeIncludeConceptDesignationBackboneElement {
     pub value: Option<StringDt>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct ValueSetComposeIncludeFilterBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]

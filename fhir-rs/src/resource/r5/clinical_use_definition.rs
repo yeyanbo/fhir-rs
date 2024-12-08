@@ -65,7 +65,7 @@ pub struct ClinicalUseDefinition {
     pub warning: Option<ClinicalUseDefinitionWarningBackboneElement>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct ClinicalUseDefinitionInteractionBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -93,7 +93,7 @@ pub struct ClinicalUseDefinitionInteractionBackboneElement {
     pub management: Option<Vec<CodeableConcept>>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct ClinicalUseDefinitionInteractionInteractantBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -109,7 +109,7 @@ pub struct ClinicalUseDefinitionInteractionInteractantBackboneElement {
     pub item: Option<CodeableConcept>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct ClinicalUseDefinitionContraindicationBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -140,7 +140,7 @@ pub struct ClinicalUseDefinitionContraindicationBackboneElement {
     pub other_therapy: Option<Vec<ClinicalUseDefinitionContraindicationOtherTherapyBackboneElement>>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct ClinicalUseDefinitionContraindicationOtherTherapyBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -159,7 +159,7 @@ pub struct ClinicalUseDefinitionContraindicationOtherTherapyBackboneElement {
     pub treatment: Option<CodeableReference>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct ClinicalUseDefinitionUndesirableEffectBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -181,7 +181,7 @@ pub struct ClinicalUseDefinitionUndesirableEffectBackboneElement {
     pub frequency_of_occurrence: Option<CodeableConcept>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct ClinicalUseDefinitionWarningBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -200,7 +200,7 @@ pub struct ClinicalUseDefinitionWarningBackboneElement {
     pub code: Option<CodeableConcept>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct ClinicalUseDefinitionIndicationBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]

@@ -53,7 +53,7 @@ pub struct BodyStructure {
     pub patient: Option<Reference>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct BodyStructureIncludedStructureBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -81,7 +81,7 @@ pub struct BodyStructureIncludedStructureBackboneElement {
     pub qualifier: Option<Vec<CodeableConcept>>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct BodyStructureIncludedStructureBodyLandmarkOrientationBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -106,7 +106,7 @@ pub struct BodyStructureIncludedStructureBodyLandmarkOrientationBackboneElement 
     pub surface_orientation: Option<Vec<CodeableConcept>>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct BodyStructureIncludedStructureBodyLandmarkOrientationDistanceFromLandmarkBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]

@@ -125,7 +125,7 @@ pub struct ClaimResponse {
     pub error: Option<Vec<ClaimResponseErrorBackboneElement>>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct ClaimResponseEventBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -144,7 +144,7 @@ pub struct ClaimResponseEventBackboneElement {
     pub when: Option<Period>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct ClaimResponsePaymentBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -175,7 +175,7 @@ pub struct ClaimResponsePaymentBackboneElement {
     pub identifier: Option<Identifier>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct ClaimResponseErrorBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -203,7 +203,7 @@ pub struct ClaimResponseErrorBackboneElement {
     pub expression: Option<Vec<StringDt>>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct ClaimResponseAddItemBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -285,7 +285,7 @@ pub struct ClaimResponseAddItemBackboneElement {
     pub detail: Option<Vec<ClaimResponseAddItemDetailBackboneElement>>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct ClaimResponseAddItemDetailBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -340,7 +340,7 @@ pub struct ClaimResponseAddItemDetailBackboneElement {
     pub sub_detail: Option<Vec<ClaimResponseAddItemDetailSubDetailBackboneElement>>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct ClaimResponseAddItemDetailSubDetailBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -392,7 +392,7 @@ pub struct ClaimResponseAddItemDetailSubDetailBackboneElement {
     pub adjudication: Option<Vec<ClaimResponseItemAdjudicationBackboneElement>>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct ClaimResponseAddItemBodySiteBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -411,7 +411,7 @@ pub struct ClaimResponseAddItemBodySiteBackboneElement {
     pub sub_site: Option<Vec<CodeableConcept>>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct ClaimResponseProcessNoteBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -436,7 +436,7 @@ pub struct ClaimResponseProcessNoteBackboneElement {
     pub language: Option<CodeableConcept>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct ClaimResponseInsuranceBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -464,7 +464,7 @@ pub struct ClaimResponseInsuranceBackboneElement {
     pub claim_response: Option<Reference>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct ClaimResponseItemBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -495,7 +495,7 @@ pub struct ClaimResponseItemBackboneElement {
     pub detail: Option<Vec<ClaimResponseItemDetailBackboneElement>>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct ClaimResponseItemDetailBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -526,7 +526,7 @@ pub struct ClaimResponseItemDetailBackboneElement {
     pub sub_detail: Option<Vec<ClaimResponseItemDetailSubDetailBackboneElement>>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct ClaimResponseItemDetailSubDetailBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -554,7 +554,7 @@ pub struct ClaimResponseItemDetailSubDetailBackboneElement {
     pub adjudication: Option<Vec<ClaimResponseItemAdjudicationBackboneElement>>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct ClaimResponseItemAdjudicationBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -579,7 +579,7 @@ pub struct ClaimResponseItemAdjudicationBackboneElement {
     pub quantity: Option<Quantity>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct ClaimResponseItemReviewOutcomeBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -604,7 +604,7 @@ pub struct ClaimResponseItemReviewOutcomeBackboneElement {
     pub pre_auth_period: Option<Period>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct ClaimResponseTotalBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]

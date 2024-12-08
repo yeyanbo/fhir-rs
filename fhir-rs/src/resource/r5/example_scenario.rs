@@ -89,7 +89,7 @@ pub struct ExampleScenario {
     pub process: Option<Vec<ExampleScenarioProcessBackboneElement>>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct ExampleScenarioInstanceBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -129,7 +129,7 @@ pub struct ExampleScenarioInstanceBackboneElement {
     pub contained_instance: Option<Vec<ExampleScenarioInstanceContainedInstanceBackboneElement>>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct ExampleScenarioInstanceVersionBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -154,7 +154,7 @@ pub struct ExampleScenarioInstanceVersionBackboneElement {
     pub content: Option<Reference>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct ExampleScenarioInstanceContainedInstanceBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -173,7 +173,7 @@ pub struct ExampleScenarioInstanceContainedInstanceBackboneElement {
     pub version_reference: Option<StringDt>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct ExampleScenarioActorBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -198,7 +198,7 @@ pub struct ExampleScenarioActorBackboneElement {
     pub description: Option<MarkdownDt>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct ExampleScenarioProcessBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -226,7 +226,7 @@ pub struct ExampleScenarioProcessBackboneElement {
     pub step: Option<Vec<ExampleScenarioProcessStepBackboneElement>>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct ExampleScenarioProcessStepBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -257,7 +257,7 @@ pub struct ExampleScenarioProcessStepBackboneElement {
     pub pause: Option<BooleanDt>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct ExampleScenarioProcessStepAlternativeBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -279,7 +279,7 @@ pub struct ExampleScenarioProcessStepAlternativeBackboneElement {
     pub step: Option<Vec<ExampleScenarioProcessStepBackboneElement>>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct ExampleScenarioProcessStepOperationBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]

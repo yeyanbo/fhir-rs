@@ -89,7 +89,7 @@ pub struct GraphDefinition {
     pub link: Option<Vec<GraphDefinitionLinkBackboneElement>>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct GraphDefinitionNodeBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -114,7 +114,7 @@ pub struct GraphDefinitionNodeBackboneElement {
     pub profile: Option<CanonicalDt>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct GraphDefinitionLinkBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -154,7 +154,7 @@ pub struct GraphDefinitionLinkBackboneElement {
     pub compartment: Option<Vec<GraphDefinitionLinkCompartmentBackboneElement>>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct GraphDefinitionLinkCompartmentBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]

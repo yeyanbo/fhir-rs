@@ -29,12 +29,15 @@ pub trait Serializer: Sized {
     type SerializePrimitive: SerializePrimitive;
     type SerializeStruct: SerializeStruct;
     type SerializeExtension: SerializeExtension;
+    type SerializeNarrative: SerializeNarrative;
     type SerializeVec: SerializeVec;
 
-    fn serialize_any<T: Serialize>(self, name: &str, value: &T) -> Result<()>;
+    fn serialize_any<T: Serialize>(self, type_name: &str, value: &T) -> Result<()>;
     fn serialize_str(self, value: &str) -> Result<()>;
-
     fn serialize_string(self, value: String) -> Result<()>;
+
+    /// 序列化一个复合XHTML规则的字符串
+    fn serialize_xhtml(self, value: &Xhtml) -> Result<()>;
     /// 序列化一个布尔值
     ///
     /// Serialize a `bool` value
@@ -57,6 +60,7 @@ pub trait Serializer: Sized {
     fn serialize_resource(self, name: &'static str) -> Result<Self::SerializeResource>;
     fn serialize_struct(self, name: &'static str) -> Result<Self::SerializeStruct>;
     fn serialize_extension(self) -> Result<Self::SerializeExtension>;
+    fn serialize_narrative(self) -> Result<Self::SerializeNarrative>;
 }
 
 pub trait SerializeResource {
@@ -85,6 +89,12 @@ pub trait SerializePrimitive {
     fn serialize_end(self) -> Result<()>;
 }
 
+pub trait SerializeNarrative {
+    fn serialize_id(&mut self, value: &Option<String>) -> Result<()>;
+    fn serialize_xhtml<T: Serialize>(&mut self, value: &Option<T>) -> Result<()>;
+    fn serialize_end(self) -> Result<()>;
+}
+
 pub trait SerializeExtension {
     fn serialize_id(&mut self, value: &Option<String>) -> Result<()>;
     fn serialize_extension(&mut self, value: &Option<Vec<Extension>>) -> Result<()>;
@@ -96,6 +106,12 @@ pub trait SerializeExtension {
 impl Serialize for String {
     fn serialize<Ser: Serializer>(&self, serializer: Ser) -> Result<()> {
         serializer.serialize_str(self)
+    }
+}
+
+impl Serialize for Xhtml {
+    fn serialize<Ser: Serializer>(&self, serializer: Ser) -> Result<()> {
+        serializer.serialize_xhtml(&self)
     }
 }
 
@@ -185,4 +201,117 @@ impl<T: Serialize> Serialize for Box<T> {
     fn serialize<Ser>(&self, serializer: Ser) -> Result<()> where Ser: Serializer {
         (**self).serialize(serializer)
     }
+}
+
+
+macro_rules! impl_serialize_for_primitive {
+    (
+        $($ty: ident, )+
+    ) => {
+        $(
+            impl Serialize for $ty {
+                fn serialize<Ser: Serializer>(&self, serializer: Ser) -> Result<()> {
+                    let mut primitive  = serializer.serialize_primitive()?;
+                    primitive.serialize_id(&self.id)?;
+                    primitive.serialize_value(&self.value)?;
+                    primitive.serialize_extension(&self.extension)?;
+                    primitive.serialize_end()
+                }
+            }
+        )+
+    };
+}
+
+impl_serialize_for_primitive!{
+    StringDt,
+    IdDt,
+    Base64BinaryDt,
+    MarkdownDt,
+    UriDt,
+    UrlDt,
+    OidDt,
+    UuidDt,
+    CanonicalDt,
+    CodeDt,
+    BooleanDt,
+    DateTimeDt,
+    DateDt,
+    TimeDt,
+    InstantDt,
+    UnsignedIntDt,
+    PositiveIntDt,
+    IntegerDt,
+    Integer64Dt,
+    DecimalDt,
+}
+
+macro_rules! impl_serialize_for_anytype {
+    (
+        $($id: ident,)+
+    ) => {
+        impl Serialize for AnyType {
+            fn serialize<Ser>(&self, serializer: Ser) -> Result<()> where Ser: Serializer {
+                match self {
+                    $(AnyType::$id(value) => serializer.serialize_any(stringify!($id), value),)+
+                }
+            }
+        }
+    };
+}
+
+impl_serialize_for_anytype!{
+    String,
+    Id,
+    Base64Binary,
+    Markdown,
+    Uri,
+    Url,
+    Oid,
+    Uuid,
+    Canonical,
+    Code,
+    Boolean,
+    DateTime,
+    Date,
+    Time,
+    Instant,
+    UnsignedInt,
+    PositiveInt,
+    Integer,
+    Integer64,
+    Decimal,
+    Address,
+    Age,
+    Annotation,
+    Attachment,
+    CodeableConcept,
+    CodeableReference,
+    Coding,
+    ContactPoint,
+    Count,
+    Distance,
+    Duration,
+    HumanName,
+    Identifier,
+    Money,
+    Period,
+    Quantity,
+    Range,
+    Ratio,
+    RatioRange,
+    Reference,
+    SampledData,
+    Signature,
+    Timing,
+    ContactDetail,
+    DataRequirement,
+    Expression,
+    ParameterDefinition,
+    RelatedArtifact,
+    TriggerDefinition,
+    UsageContext,
+    Availability,
+    ExtendedContactDetail,
+    Dosage,
+    Meta,
 }

@@ -89,7 +89,7 @@ pub struct MedicationKnowledge {
     pub definitional: Option<MedicationKnowledgeDefinitionalBackboneElement>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct MedicationKnowledgeIndicationGuidelineBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -108,7 +108,7 @@ pub struct MedicationKnowledgeIndicationGuidelineBackboneElement {
     pub dosing_guideline: Option<Vec<MedicationKnowledgeIndicationGuidelineDosingGuidelineBackboneElement>>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct MedicationKnowledgeIndicationGuidelineDosingGuidelineBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -133,7 +133,7 @@ pub struct MedicationKnowledgeIndicationGuidelineDosingGuidelineBackboneElement 
     pub patient_characteristic: Option<Vec<MedicationKnowledgeIndicationGuidelineDosingGuidelinePatientCharacteristicBackboneElement>>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct MedicationKnowledgeIndicationGuidelineDosingGuidelinePatientCharacteristicBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -152,7 +152,7 @@ pub struct MedicationKnowledgeIndicationGuidelineDosingGuidelinePatientCharacter
     pub value: Option<Range>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct MedicationKnowledgeIndicationGuidelineDosingGuidelineDosageBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -171,7 +171,7 @@ pub struct MedicationKnowledgeIndicationGuidelineDosingGuidelineDosageBackboneEl
     pub dosage: Option<Vec<Dosage>>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct MedicationKnowledgeMedicineClassificationBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -193,7 +193,7 @@ pub struct MedicationKnowledgeMedicineClassificationBackboneElement {
     pub classification: Option<Vec<CodeableConcept>>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct MedicationKnowledgeRegulatoryBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -218,7 +218,7 @@ pub struct MedicationKnowledgeRegulatoryBackboneElement {
     pub max_dispense: Option<MedicationKnowledgeRegulatoryMaxDispenseBackboneElement>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct MedicationKnowledgeRegulatoryMaxDispenseBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -237,7 +237,7 @@ pub struct MedicationKnowledgeRegulatoryMaxDispenseBackboneElement {
     pub period: Option<Duration>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct MedicationKnowledgeRegulatorySubstitutionBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -256,7 +256,7 @@ pub struct MedicationKnowledgeRegulatorySubstitutionBackboneElement {
     pub allowed: Option<BooleanDt>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct MedicationKnowledgeStorageGuidelineBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -281,7 +281,7 @@ pub struct MedicationKnowledgeStorageGuidelineBackboneElement {
     pub environmental_setting: Option<Vec<MedicationKnowledgeStorageGuidelineEnvironmentalSettingBackboneElement>>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct MedicationKnowledgeStorageGuidelineEnvironmentalSettingBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -300,7 +300,7 @@ pub struct MedicationKnowledgeStorageGuidelineEnvironmentalSettingBackboneElemen
     pub value: Option<CodeableConcept>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct MedicationKnowledgeDefinitionalBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -328,7 +328,7 @@ pub struct MedicationKnowledgeDefinitionalBackboneElement {
     pub drug_characteristic: Option<Vec<MedicationKnowledgeDefinitionalDrugCharacteristicBackboneElement>>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct MedicationKnowledgeDefinitionalDrugCharacteristicBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -347,7 +347,7 @@ pub struct MedicationKnowledgeDefinitionalDrugCharacteristicBackboneElement {
     pub value: Option<Attachment>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct MedicationKnowledgeDefinitionalIngredientBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -369,7 +369,7 @@ pub struct MedicationKnowledgeDefinitionalIngredientBackboneElement {
     pub strength: Option<Quantity>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct MedicationKnowledgePackagingBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -388,7 +388,7 @@ pub struct MedicationKnowledgePackagingBackboneElement {
     pub packaged_product: Option<Reference>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct MedicationKnowledgeRelatedMedicationKnowledgeBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -407,7 +407,7 @@ pub struct MedicationKnowledgeRelatedMedicationKnowledgeBackboneElement {
     pub reference: Option<Vec<Reference>>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct MedicationKnowledgeMonographBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -426,7 +426,7 @@ pub struct MedicationKnowledgeMonographBackboneElement {
     pub source: Option<Reference>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct MedicationKnowledgeCostBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
@@ -451,7 +451,7 @@ pub struct MedicationKnowledgeCostBackboneElement {
     pub cost: Option<CodeableConcept>,
 }
 
-#[derive(BackboneElement, Debug, Clone, Default)]
+#[derive(Element, BackboneElement, Debug, Clone, Default)]
 pub struct MedicationKnowledgeMonitoringProgramBackboneElement {
     /// Unique id for inter-element referencing
     #[fhir(name="id", min="0", max="1", summary=false, modifier=false, choice="")]
